@@ -328,35 +328,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 </head>
 <body>
 
-<!-- Password Gate -->
-<div class="pw-gate" id="pwGate">
-  <div class="pw-card">
-    <img src="logo.svg" alt="The Crazy Store">
-    <h1>Design System</h1>
-    <p>Enter the password to access the build guide</p>
-    <input type="password" id="pwInput" placeholder="Password" autofocus autocomplete="off">
-    <button onclick="checkPw()">Enter</button>
-    <div class="pw-err" id="pwErr">Wrong password. Try again.</div>
-    <div class="pw-foot">The Crazy Store &copy; 2026</div>
-  </div>
-</div>
-<script>
-(function(){
-  if(sessionStorage.getItem('cs_auth')==='1'){document.getElementById('pwGate').classList.add('hidden')}
-  document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw()});
-})();
-function checkPw(){
-  var v=document.getElementById('pwInput').value;
-  if(v==='crazytoy'){
-    sessionStorage.setItem('cs_auth','1');
-    document.getElementById('pwGate').classList.add('hidden');
-  } else {
-    document.getElementById('pwErr').style.display='block';
-    document.getElementById('pwInput').value='';
-    document.getElementById('pwInput').focus();
-  }
-}
-</script>
+<!-- Password Gate (disabled on localhost, enabled on live via index.html) -->
 
 <div class="app">
 
@@ -437,73 +409,196 @@ function checkPw(){
 <!-- ATOM 3: SearchBar -->
 <div class="atom-card">
 <div class="atom-card-header"><h4>Nav/SearchBar</h4><span class="atom-type comp">Molecule</span></div>
-<div class="atom-preview white-bg" style="gap:14px;flex-direction:column;align-items:stretch;padding:16px 20px">
-  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:46px;flex-shrink:0">DEFAULT</span>
-    <div style="flex:1;display:flex;align-items:center;height:34px">
-      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 12px;display:flex;align-items:center;gap:6px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:11px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
-      <div style="flex:1;background:#EEF1F3;padding:0 12px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:12px;color:#74808B">Search...</span></div>
-      <div style="background:#FFE800;width:34px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+
+<!-- ── Visual States ── -->
+<div class="atom-preview white-bg" style="gap:16px;flex-direction:column;align-items:stretch;padding:20px 20px">
+
+  <!-- default -->
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:70px;flex-shrink:0">default</span>
+    <div style="flex:1;display:flex;align-items:center;height:42px">
+      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 20px 0 20px;display:flex;align-items:center;gap:8px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:14px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
+      <div style="flex:1;background:#EEF1F3;padding:0 16px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:14px;color:#74808B">Search...</span></div>
+      <div style="background:#FFE800;width:42px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:46px;flex-shrink:0">FOCUS</span>
-    <div style="flex:1;display:flex;align-items:center;height:34px;box-shadow:0 0 0 2px #FFE800;border-radius:8px">
-      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 12px;display:flex;align-items:center;gap:6px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:11px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
-      <div style="flex:1;background:#EEF1F3;padding:0 12px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:12px;color:#002244">bouncy ball</span></div>
-      <div style="background:#FFE800;width:34px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+
+  <!-- hover on input -->
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:70px;flex-shrink:0">hover</span>
+    <div style="flex:1;display:flex;align-items:center;height:42px">
+      <div style="background:#E1E6EA;border:1px solid #A0AEB8;padding:0 20px 0 20px;display:flex;align-items:center;gap:8px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:14px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
+      <div style="flex:1;background:#E8EBEE;padding:0 16px;height:100%;display:flex;align-items:center;border:1px solid #A0AEB8;border-left:0"><span style="font-size:14px;color:#74808B">Search...</span></div>
+      <div style="background:#FFE800;width:42px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+    </div>
+  </div>
+
+  <!-- focus -->
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:70px;flex-shrink:0">focus</span>
+    <div style="flex:1;display:flex;align-items:center;height:42px;box-shadow:0 0 0 2px #FFE800;border-radius:8px">
+      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 20px 0 20px;display:flex;align-items:center;gap:8px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:14px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
+      <div style="flex:1;background:#FFFFFF;padding:0 16px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:14px;color:#1D1B15">bouncy ball<span style="display:inline-block;width:1px;height:14px;background:#004D87;margin-left:1px;vertical-align:middle;animation:blink 1s step-end infinite"></span></span></div>
+      <div style="background:#FFE800;width:42px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+    </div>
+  </div>
+
+  <!-- dropdown open -->
+  <div style="display:flex;align-items:flex-start;gap:8px"><span style="font-size:9px;color:#8A98A4;width:70px;flex-shrink:0;padding-top:12px">dropdown<br>open</span>
+    <div style="flex:1;display:flex;flex-direction:column;position:relative">
+      <div style="display:flex;align-items:center;height:42px">
+        <div style="background:#D6DBE0;border:1px solid #004D87;border-bottom:0;padding:0 20px 0 20px;display:flex;align-items:center;gap:8px;height:100%;white-space:nowrap;border-radius:8px 0 0 0"><span style="font-size:14px;font-weight:600;color:#004D87">All categories</span><span style="font-size:8px;color:#004D87">&#9650;</span></div>
+        <div style="flex:1;background:#EEF1F3;padding:0 16px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:14px;color:#74808B">Search...</span></div>
+        <div style="background:#FFE800;width:42px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #C0CBD4;border-top:0;border-radius:0 0 8px 8px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:4px 0;width:170px">
+        <div style="padding:8px 16px;font-size:13px;color:#004D87;font-weight:600;background:rgba(0,77,135,.05)">All categories</div>
+        <div style="padding:8px 16px;font-size:13px;color:#312E25">Books</div>
+        <div style="padding:8px 16px;font-size:13px;color:#312E25">DIY &amp; Hardware</div>
+        <div style="padding:8px 16px;font-size:13px;color:#312E25">Electrical</div>
+        <div style="padding:8px 16px;font-size:13px;color:#312E25;background:#F9FAFB">Fashion &amp; Personal</div>
+        <div style="padding:8px 16px;font-size:13px;color:#74808B">Household</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- without category (hasCategory=false) -->
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:70px;flex-shrink:0">no category</span>
+    <div style="flex:1;display:flex;align-items:center;height:42px">
+      <div style="flex:1;background:#EEF1F3;padding:0 16px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-radius:8px 0 0 8px"><span style="font-size:14px;color:#74808B">Search...</span></div>
+      <div style="background:#FFE800;width:42px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
     </div>
   </div>
 </div>
-<div class="tip" style="margin:8px 0"><strong>Anatomy:</strong> This molecule has 3 subparts — optional Category Dropdown + Text Input + Submit Button — in a single horizontal auto layout frame.</div>
+
+<style>@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}</style>
+
+<div class="tip" style="margin:8px 0"><strong>Anatomy:</strong> 3 subparts — Category Dropdown (optional) + Text Input + Submit Button — in a single horizontal auto layout frame with clip content.</div>
+
+<!-- ── Outer Frame ── -->
 <table class="dtable"><thead><tr><th class="prop-name" style="width:30%">Outer Frame</th><th>Value</th></tr></thead><tbody>
-  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, gap <span class="tk">space-0</span> (0px)</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, gap 0</td></tr>
   <tr><td class="prop-name">Width</td><td>Fill container (flex grow 1)</td></tr>
-  <tr><td class="prop-name">Height</td><td>Hug contents</td></tr>
-  <tr><td class="prop-name">Height</td><td>42px</td></tr>
-  <tr><td class="prop-name">Radius</td><td>8px</td></tr>
+  <tr><td class="prop-name">Height</td><td>42px (fixed)</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/12</span> (not radius/4 — this is larger to look smooth)</td></tr>
   <tr><td class="prop-name">Clip content</td><td>Yes</td></tr>
+  <tr><td class="prop-name">Fill</td><td>none (children fill individually)</td></tr>
 </tbody></table>
-<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Dropdown (optional)</th><th>Value</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">Greyscale/100</span></td></tr>
-  <tr><td class="prop-name">Border</td><td>1px <span class="tk">greyscale/border/default</span> (#C0CBD4)</td></tr>
-  <tr><td class="prop-name">Text</td><td>Inter Medium 14px, <span class="tk">Neutral/900</span> (#312E25)</td></tr>
-  <tr><td class="prop-name">Chevron</td><td>chevron-down 20px, <span class="tk">Neutral/900</span></td></tr>
+
+<!-- ── Category Dropdown ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Dropdown</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Layer name</td><td>.category-trigger</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center aligned</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#E5E7EB"></span> <span class="tk">color/grey/91</span> (#E5E7EB)</td></tr>
+  <tr><td class="prop-name">Border right</td><td><span class="tk">stroke weight/1</span> <span class="tk">color/grey/80</span> (#CCCCCC)</td></tr>
+  <tr><td class="prop-name">Text content</td><td>"All categories"</td></tr>
+  <tr><td class="prop-name">Text font</td><td><span class="tk">font family/Font 1</span> (Inter)</td></tr>
+  <tr><td class="prop-name">Text weight</td><td>500 (Medium)</td></tr>
+  <tr><td class="prop-name">Text size</td><td>14px</td></tr>
+  <tr><td class="prop-name">Text line height</td><td><span class="tk">line height/20</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="cd" style="background:#231F20"></span> <span class="tk">color/grey/13</span></td></tr>
+  <tr><td class="prop-name">Chevron icon</td><td>chevron-down, 12x12px</td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="cd" style="background:#878787"></span> <span class="tk">color/grey/53</span></td></tr>
+  <tr><td class="prop-name">Gap</td><td><span class="tk">item spacing/10</span> (10px)</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">item spacing/10</span> V, <span class="tk">item spacing/20</span> H</td></tr>
   <tr><td class="prop-name">Width</td><td>Hug contents</td></tr>
-  <tr><td class="prop-name">Padding</td><td>10px V, 20px L, 19px R</td></tr>
-  <tr><td class="prop-name">Gap</td><td><span class="tk">stack-gap-sm</span> (8px)</td></tr>
-  <tr><td class="prop-name">Radius</td><td>8px left only (rounded-bl, rounded-tl)</td></tr>
+  <tr><td class="prop-name">Height</td><td>Fill container (42px)</td></tr>
+  <tr><td class="prop-name">Radius</td><td>0 (clipped by outer frame)</td></tr>
 </tbody></table>
+
+<!-- ── Category Dropdown: States ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Category Dropdown States</th><th class="state-col">state=closed</th><th class="state-col">state=hover</th><th class="state-col">state=open</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">color/grey/91</span></td><td class="changed"><span class="tk">color/grey/80</span></td><td class="changed"><span class="tk">color/grey/80</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="tk">color/grey/80</span></td><td class="changed"><span class="tk">color/grey/53</span></td><td class="changed"><span class="tk">color/azure/26</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">color/grey/13</span></td><td class="same">same</td><td class="changed"><span class="tk">color/azure/26</span></td></tr>
+  <tr><td class="prop-name">Text weight</td><td>500</td><td class="same">same</td><td class="changed"><span class="tk">font weight/700</span></td></tr>
+  <tr><td class="prop-name">Chevron</td><td>&#9660; down</td><td class="same">same</td><td class="changed">&#9650; up (rotate 180&deg;)</td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="tk">color/grey/53</span></td><td class="same">same</td><td class="changed"><span class="tk">color/azure/26</span></td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+
+<!-- ── Category Dropdown: Menu Panel ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Menu Panel</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Layer name</td><td>.category-menu</td></tr>
+  <tr><td class="prop-name">Position</td><td>Absolute, top: 42px, left: 0</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFFFFF"></span> <span class="tk">color/white/solid</span></td></tr>
+  <tr><td class="prop-name">Border</td><td><span class="tk">stroke weight/1</span> <span class="tk">color/grey/91</span></td></tr>
+  <tr><td class="prop-name">Radius</td><td>0 0 <span class="tk">radius/4</span> <span class="tk">radius/4</span> (bottom corners only)</td></tr>
+  <tr><td class="prop-name">Shadow</td><td>0 4px 12px rgba(0,0,0,.1)</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Vertical, stretch, gap 0</td></tr>
+  <tr><td class="prop-name">Padding</td><td>4px 0</td></tr>
+  <tr><td class="prop-name">Min width</td><td>Match trigger width</td></tr>
+</tbody></table>
+
+<!-- ── Category Dropdown: Menu Item ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Category Menu Item</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=selected</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td>transparent</td><td class="changed"><span class="tk">color/grey/98</span> (#F9FAFB)</td><td class="changed">rgba(0,77,135,.05)</td></tr>
+  <tr><td class="prop-name">Text font</td><td><span class="tk">font family/Font 1</span> (Inter)</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text size</td><td>14px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text weight</td><td><span class="tk">font weight/400</span></td><td class="same">same</td><td class="changed"><span class="tk">font weight/700</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">color/grey/13</span></td><td class="same">same</td><td class="changed"><span class="tk">color/azure/26</span> (#004B85)</td></tr>
+  <tr><td class="prop-name">Padding</td><td>8px H, <span class="tk">item spacing/s</span> (16px) V</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Height</td><td>Hug contents (min 36px)</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+
+<!-- ── Text Input ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Text Input</th><th>Value</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#EEF1F3"></span><span class="tk">Greyscale/50</span></td></tr>
-  <tr><td class="prop-name">Border</td><td>1px <span class="tk">greyscale/border/default</span> (#C0CBD4)</td></tr>
-  <tr><td class="prop-name">Value font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
-  <tr><td class="prop-name">Value weight</td><td><span class="tk">font/weight/roman</span></td></tr>
-  <tr><td class="prop-name">Value size</td><td><span class="tk">font/line-height/xs</span> (16px)</td></tr>
-  <tr><td class="prop-name">Value line height</td><td><span class="tk">font/line-height/xs</span> (16px)</td></tr>
+  <tr><td class="prop-name">Layer name</td><td>.search-input</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center aligned</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#F9FAFB"></span> <span class="tk">color/grey/98</span> (#F9FAFB)</td></tr>
+  <tr><td class="prop-name">Border left</td><td>0 (shared with category)</td></tr>
+  <tr><td class="prop-name">Border top/bottom</td><td><span class="tk">stroke weight/1</span> <span class="tk">color/grey/91</span></td></tr>
+  <tr><td class="prop-name">Text font</td><td><span class="tk">font family/Font 1</span> (Inter)</td></tr>
+  <tr><td class="prop-name">Text weight</td><td><span class="tk">font weight/400</span></td></tr>
+  <tr><td class="prop-name">Text size</td><td><span class="tk">font size/16</span></td></tr>
+  <tr><td class="prop-name">Text line height</td><td><span class="tk">line height/20</span></td></tr>
+  <tr><td class="prop-name">Input text color</td><td><span class="cd" style="background:#231F20"></span> <span class="tk">color/grey/13</span></td></tr>
   <tr><td class="prop-name">Placeholder text</td><td>"Search..."</td></tr>
-  <tr><td class="prop-name">Placeholder color</td><td><span class="cd" style="background:#74808B"></span><span class="tk">Greyscale/500</span></td></tr>
-  <tr><td class="prop-name">Width</td><td>285px (input content area)</td></tr>
-  <tr><td class="prop-name">Padding</td><td><span class="tk">button-padding-y</span> V, <span class="tk">button-padding-x</span> H</td></tr>
-  <tr><td class="prop-name">Radius</td><td>8px (all corners, clipped by parent)</td></tr>
+  <tr><td class="prop-name">Placeholder color</td><td><span class="cd" style="background:#878787"></span> <span class="tk">color/grey/53</span></td></tr>
+  <tr><td class="prop-name">Width</td><td>Fill container (flex: 1)</td></tr>
+  <tr><td class="prop-name">Height</td><td>Fill container (42px)</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">item spacing/12</span> V, <span class="tk">item spacing/s</span> (16px) H</td></tr>
+  <tr><td class="prop-name">Radius</td><td>0 (clipped by outer frame)</td></tr>
 </tbody></table>
+
+<!-- ── Text Input: States ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Text Input States</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=focus</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">color/grey/98</span></td><td class="changed"><span class="tk">color/grey/91</span></td><td class="changed"><span class="tk">color/white/solid</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="tk">color/grey/91</span></td><td class="changed"><span class="tk">color/grey/53</span></td><td class="changed"><span class="tk">color/azure/26</span></td></tr>
+  <tr><td class="prop-name">Outer focus ring</td><td>none</td><td>none</td><td class="changed">0 0 0 2px <span class="tk">color/yellow/50</span></td></tr>
+  <tr><td class="prop-name">Placeholder</td><td>"Search..."</td><td class="same">same</td><td class="changed">hidden (user text replaces)</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>text</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+
+<!-- ── Submit Button ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Submit Button</th><th>Value</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFE800"></span><span class="tk">Yellow/500</span></td></tr>
-  <tr><td class="prop-name">Border</td><td>1px <span class="tk">Yellow/300</span> (#FFF2AC)</td></tr>
-  <tr><td class="prop-name">Size</td><td>42 x 42px</td></tr>
+  <tr><td class="prop-name">Layer name</td><td>.search-submit</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFEB00"></span> <span class="tk">color/yellow/50</span> (#FFEB00)</td></tr>
+  <tr><td class="prop-name">Border</td><td><span class="tk">stroke weight/1</span> <span class="tk">color/yellow/56</span> (#FFDF20)</td></tr>
+  <tr><td class="prop-name">Width</td><td>42px (fixed)</td></tr>
+  <tr><td class="prop-name">Height</td><td>Fill container (42px)</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center/center</td></tr>
   <tr><td class="prop-name">Icon</td><td>Search SVG, 20 x 20px</td></tr>
-  <tr><td class="prop-name">Icon color</td><td>dark stroke (#1D1B15)</td></tr>
-  <tr><td class="prop-name">Padding V</td><td>6px</td></tr>
-  <tr><td class="prop-name">Padding H</td><td><span class="tk">stack-gap-sm</span> (10px)</td></tr>
+  <tr><td class="prop-name">Icon stroke</td><td><span class="cd" style="background:#231F20"></span> <span class="tk">color/grey/13</span>, 2px weight</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">item spacing/10</span> all sides</td></tr>
+  <tr><td class="prop-name">Radius</td><td>0 (clipped by outer frame)</td></tr>
   <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
 </tbody></table>
-<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=focus</th></tr></thead><tbody>
-  <tr><td class="prop-name">Focus ring</td><td>none</td><td class="changed">0 0 0 2px <span class="tk">Yellow/500</span></td></tr>
-  <tr><td class="prop-name">Placeholder</td><td>visible</td><td class="changed">hidden (replaced by user text)</td></tr>
-  <tr><td class="prop-name">Submit btn fill</td><td><span class="tk">DeepSeaBlue/500</span></td><td class="same">same</td></tr>
-  <tr><td class="prop-name">Input fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td></tr>
+
+<!-- ── Submit Button: States ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Submit Button States</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=active</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">color/yellow/50</span></td><td class="changed"><span class="tk">color/yellow/56</span></td><td class="changed">darken 10%</td></tr>
+  <tr><td class="prop-name">Icon stroke</td><td><span class="tk">color/grey/13</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Scale</td><td>1</td><td class="same">same</td><td class="changed">0.95 (press effect)</td></tr>
 </tbody></table>
-<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Boolean Property</th><th>true</th><th>false</th></tr></thead><tbody>
-  <tr><td class="prop-name">hasCategory</td><td>Category dropdown visible (left section with border-right)</td><td class="changed">Category dropdown hidden, input takes full width</td></tr>
-</tbody></table></div>
+
+<!-- ── Variant Properties ── -->
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Variant Property</th><th>Values</th><th>Effect</th></tr></thead><tbody>
+  <tr><td class="prop-name">state</td><td><span class="pill">default</span> <span class="pill">hover</span> <span class="pill">focus</span></td><td>Changes input fill, border, focus ring</td></tr>
+  <tr><td class="prop-name">hasCategory (boolean)</td><td><span class="pill">true</span> <span class="pill">false</span></td><td>true = .category-trigger visible; false = hidden, input takes full width with left radius</td></tr>
+  <tr><td class="prop-name">categoryOpen (boolean)</td><td><span class="pill">true</span> <span class="pill">false</span></td><td>true = chevron up, .category-menu visible below; false = chevron down, menu hidden</td></tr>
+</tbody></table>
+
+<div class="warn"><strong>Important:</strong> The category dropdown menu panel uses absolute positioning — it sits outside the SearchBar's clip area. In Figma, toggle the menu panel visibility using a boolean property, not a separate variant.</div>
+</div>
 
 <!-- ATOM 4: Badge -->
 <div class="atom-card">
