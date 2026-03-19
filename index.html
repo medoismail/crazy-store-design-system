@@ -370,19 +370,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <!-- ATOM 1: .logo -->
 <div class="atom-card">
 <div class="atom-card-header"><h4>Nav/Logo</h4><span class="atom-type prim">Asset</span></div>
-<div class="atom-preview azure-bg" style="gap:32px;flex-wrap:wrap">
-  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">default</div><div class="a-logo"><img src="logo.svg" alt="Crazy Store"></div></div>
-  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">compact (scrolled)</div><div class="a-logo compact"><img src="logo.svg" alt="Crazy Store"></div></div>
+<div class="atom-preview azure-bg" style="gap:24px;flex-wrap:wrap;align-items:flex-end">
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">L (large)</div><div class="a-logo" style="width:146px;height:65.55px"><img src="logo.svg" alt="Crazy Store" style="width:100%;height:100%"></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">M (medium)</div><div class="a-logo" style="width:120px;height:54px"><img src="logo.svg" alt="Crazy Store" style="width:100%;height:100%"></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">S (small)</div><div class="a-logo compact" style="width:80px;height:36px"><img src="logo.svg" alt="Crazy Store" style="width:100%;height:100%"></div></div>
 </div>
-<div class="tip" style="margin:8px 0"><strong>This is an SVG asset, not a text component.</strong> The logo is a single SVG file placed as an image fill or imported vector. No text layers, no font properties — just size variants.</div>
-<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">size=default</th><th class="state-col">size=compact</th></tr></thead><tbody>
-  <tr><td class="prop-name">Type</td><td>SVG image (logo.svg)</td><td class="same">same asset</td></tr>
-  <tr><td class="prop-name">Height</td><td>36px</td><td class="changed">24px</td></tr>
-  <tr><td class="prop-name">Width</td><td>Auto (preserve aspect ratio)</td><td class="same">same</td></tr>
-  <tr><td class="prop-name">Constraints</td><td>Fixed height, hug width</td><td class="same">same</td></tr>
+<div class="tip" style="margin:8px 0"><strong>This is an SVG asset, not a text component.</strong> The logo is a single SVG file placed as an image fill or imported vector. No text layers, no font properties — just 3 size variants.</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">size=L</th><th class="state-col">size=M</th><th class="state-col">size=S</th></tr></thead><tbody>
+  <tr><td class="prop-name">Type</td><td>SVG image (logo.svg)</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Width</td><td>146px</td><td class="changed">120px</td><td class="changed">80px</td></tr>
+  <tr><td class="prop-name">Height</td><td>65.55px</td><td class="changed">54px</td><td class="changed">36px</td></tr>
+  <tr><td class="prop-name">Aspect ratio</td><td>~2.23:1 (locked)</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Constraints</td><td>Fixed W+H, preserve ratio</td><td class="same">same</td><td class="same">same</td></tr>
 </tbody></table>
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Variant Property</th><th>Values</th><th>When to use</th></tr></thead><tbody>
-  <tr><td class="prop-name">size</td><td><span class="pill">default</span> <span class="pill">compact</span></td><td>compact = scrolled navbar state (reduced height)</td></tr>
+  <tr><td class="prop-name">size</td><td><span class="pill">L</span> <span class="pill">M</span> <span class="pill">S</span></td><td>L = hero/footer, M = desktop navbar, S = scrolled navbar / mobile</td></tr>
 </tbody></table></div>
 
 <!-- ATOM 2: ActionItem -->
