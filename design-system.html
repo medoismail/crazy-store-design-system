@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crazy Store — Components</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ FIGMA FILE VARIABLES (source of truth) ═══ */
+:root{
+  --color-azure-26:#004B85;--color-azure-26-80:#004D87cc;--color-azure-26-90:#004B85e5;
+  --color-azure-33:#0069A8;--color-azure-44:#0075E2;--color-azure-84:#D1D5DC;
+  --color-cyan-63:#42D5FE;--color-yellow-50:#FFEB00;--color-yellow-56:#FFDF20;
+  --color-orange-54:#E5672E;--color-orange-44:#E2A700;
+  --color-grey-13:#231F20;--color-grey-53:#878787;--color-grey-80:#CCC;
+  --color-grey-91:#E5E7EB;--color-grey-98:#F9FAFB;
+  --color-white-solid:#FFF;--color-black-solid:#000;--color-black-50:rgba(0,0,0,.5);
+  --font-1:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --font-2:'Helvetica',Arial,sans-serif;
+  --font-3:'Dimbo',cursive,sans-serif;
+  --fw-400:400;--fw-700:700;
+  --fs-16:16px;--fs-18:18px;--fs-36:36px;--fs-48:48px;
+  --lh-20:20px;--lh-24:24px;--lh-28:28px;--lh-40:40px;--lh-72:72px;
+  --sp-0:0;--sp-10:10px;--sp-12:12px;--sp-s:16px;--sp-20:20px;--sp-40:40px;
+  --radius-4:4px;--radius-12:12px;
+  --stroke-1:1px;--height-48:48px;--width-1280:1280px;
+  --shadow-md:0 2px 4px -2px rgba(0,0,0,.05),0 4px 6px -1px rgba(0,0,0,.1);
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-1);background:var(--color-grey-91);color:var(--color-grey-13);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--color-azure-44);outline-offset:2px;border-radius:var(--radius-4)}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.shell{display:flex;min-height:100vh}
+
+/* ═══ SIDEBAR ═══ */
+.sb{width:220px;background:var(--color-azure-26);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:200}
+.sb::-webkit-scrollbar{width:3px}.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+.sb-top{padding:16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px}
+.sb-top .logo{width:30px;height:30px;background:var(--color-yellow-50);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--color-azure-26)}
+.sb-top h1{color:var(--color-white-solid);font-size:12px;font-weight:var(--fw-700)}
+.sb-top h1 small{display:block;font-size:9px;font-weight:var(--fw-400);color:rgba(255,255,255,.35);margin-top:1px}
+.sb .g{padding:12px 0 2px}.sb .gt{font-size:8px;font-weight:var(--fw-700);text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.2);padding:0 14px 4px}
+.sb a{display:block;padding:6px 14px 6px 16px;font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s,background .15s;border-left:2px solid transparent}
+@media(hover:hover){.sb a:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}}
+.sb a.active{color:var(--color-white-solid);background:rgba(255,255,255,.06);border-left-color:var(--color-yellow-50);font-weight:600}
+
+/* ═══ MAIN ═══ */
+.ct{margin-left:220px;flex:1;min-width:0}
+.pg{display:none}.pg.active{display:block;animation:fi .2s var(--ease)}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ph{padding:20px 28px;background:rgba(255,255,255,.95);border-bottom:var(--stroke-1) solid var(--color-grey-91);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.ph h2{font-size:18px;font-weight:var(--fw-700);letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.ph p{font-size:12px;color:var(--color-grey-53);margin-top:2px}
+.tg{font-size:8px;font-weight:var(--fw-700);padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.tg-c{background:#DCFCE7;color:#166534}
+.sc{padding:24px 28px;border-bottom:var(--stroke-1) solid var(--color-grey-91)}.sc:last-child{border-bottom:none}
+.sc h3{font-size:14px;font-weight:var(--fw-700);margin-bottom:14px;letter-spacing:-.01em}
+.sc h4{font-size:10px;font-weight:var(--fw-700);color:var(--color-grey-53);text-transform:uppercase;letter-spacing:.7px;margin:16px 0 6px}
+
+/* Mock frame */
+.mk{background:var(--color-white-solid);border-radius:var(--radius-12);box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;margin:10px 0}
+.ml{font-size:9px;font-weight:600;color:var(--color-grey-53);text-transform:uppercase;letter-spacing:.8px;text-align:center;padding:8px 0;background:var(--color-grey-98);border-top:var(--stroke-1) solid var(--color-grey-91)}
+
+/* Variable ref */
+.vr{display:inline-block;font-size:9px;background:var(--color-grey-98);padding:1px 5px;border-radius:3px;color:var(--color-azure-26);font-family:'SF Mono',monospace;border:1px solid var(--color-grey-91)}
+
+/* Toast */
+.toast{position:fixed;bottom:16px;right:16px;background:var(--color-grey-13);color:#fff;padding:8px 14px;border-radius:6px;font-size:11px;opacity:0;transform:translateY(10px);transition:.2s var(--ease);z-index:400;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){.sb{display:none}.ct{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sb">
+  <div class="sb-top"><div class="logo">CS</div><h1>Components<small>The Crazy Store</small></h1></div>
+  <div class="g"><div class="gt">Components</div>
+    <a href="#" data-p="nav" class="active">Top Navigation</a>
+    <a href="#" data-p="footer">Footer</a>
+    <a href="#" data-p="cards">Product Cards</a>
+    <a href="#" data-p="dropdown">Dropdown Menus</a>
+    <a href="#" data-p="store">Store Location</a>
+    <a href="#" data-p="carousel">Carousel / Pagination</a>
+  </div>
+</aside>
+
+<main class="ct">
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 1. TOP NAVIGATION                                     -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg active" id="nav">
+<div class="ph"><h2>Top Navigation <span class="tg tg-c">Component</span></h2><p>All states use file variables. Navbar bg: <span class="vr">color/azure/26</span> Height: <span class="vr">height/48</span></p></div>
+
+<!-- Desktop Default -->
+<div class="sc"><h3>Desktop — Default (guest, with search)</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 24px;height:var(--height-48);gap:var(--sp-s);font-family:var(--font-1)">
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <nav style="display:flex;gap:var(--sp-20);align-items:center">
+    <span style="color:var(--color-white-solid);font-size:14px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px">Promotions <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2 3L4 5L6 3" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span style="color:var(--color-white-solid);font-size:14px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px">Products <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2 3L4 5L6 3" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Store Finder</span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Contact Us</span>
+  </nav>
+  <div style="flex:1"></div>
+  <div style="display:flex;background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden">
+    <input style="border:none;padding:6px var(--sp-12);font-size:13px;outline:none;width:220px;font-family:var(--font-1);color:var(--color-grey-13)" placeholder="Search...">
+    <div style="background:var(--color-azure-26);padding:6px var(--sp-12);display:flex;align-items:center;cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+  </div>
+</div>
+<div class="ml">state=default · auth=guest · search=visible · <span class="vr">color/azure/26</span> bg · <span class="vr">height/48</span></div>
+</div></div>
+
+<!-- Desktop Hover -->
+<div class="sc"><h3>Desktop — Hover State</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 24px;height:var(--height-48);gap:var(--sp-s);font-family:var(--font-1)">
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <nav style="display:flex;gap:var(--sp-20);align-items:center">
+    <span style="color:var(--color-white-solid);font-size:14px;cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:4px;display:flex;align-items:center;gap:4px">Promotions <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2 3L4 5L6 3" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer;display:flex;align-items:center;gap:4px">Products <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2 3L4 5L6 3" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Store Finder</span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Contact Us</span>
+  </nav>
+  <div style="flex:1"></div>
+  <div style="display:flex;background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden">
+    <input style="border:none;padding:6px var(--sp-12);font-size:13px;outline:none;width:220px;font-family:var(--font-1)" placeholder="Search...">
+    <div style="background:var(--color-azure-26);padding:6px var(--sp-12);display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+  </div>
+</div>
+<div class="ml">state=hover · "Promotions" underline on hover</div>
+</div></div>
+
+<!-- Desktop Active / Products open -->
+<div class="sc"><h3>Desktop — Active (Products menu open)</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 24px;height:var(--height-48);gap:var(--sp-s);font-family:var(--font-1)">
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <nav style="display:flex;gap:var(--sp-20);align-items:center">
+    <span style="color:rgba(255,255,255,.6);font-size:14px;cursor:pointer">Promotions</span>
+    <span style="color:var(--color-white-solid);font-size:14px;cursor:pointer;font-weight:var(--fw-700);border-bottom:2px solid var(--color-yellow-50);padding-bottom:2px;display:flex;align-items:center;gap:4px">Products <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2 5L4 3L6 5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <span style="color:rgba(255,255,255,.6);font-size:14px;cursor:pointer">Store Finder</span>
+    <span style="color:rgba(255,255,255,.6);font-size:14px;cursor:pointer">Contact Us</span>
+  </nav>
+</div>
+<!-- Mega Menu Panel -->
+<div style="background:var(--color-white-solid);padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 32px;font-family:var(--font-1);border-top:2px solid var(--color-yellow-50)">
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Books</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Household</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Seasonal</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; DIY &amp; Hardware</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Outdoor, Camping &amp; Pools</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Stationery, Arts &amp; Crafts</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Electrical &amp; Batteries</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Party</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Thingamajig</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Fashion &amp; Personal Care</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Pets</div>
+  <div style="padding:6px 0;font-size:14px;color:var(--color-grey-13);cursor:pointer;display:flex;align-items:center;gap:6px">&#8250; Toys, Games &amp; Sport</div>
+</div>
+<div class="ml">state=active · Products menu open · border-top: <span class="vr">color/yellow/50</span> · mega menu bg: <span class="vr">color/white/solid</span></div>
+</div></div>
+
+<!-- Desktop Scrolled -->
+<div class="sc"><h3>Desktop — Scrolled</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 24px;height:40px;gap:var(--sp-12);font-family:var(--font-1);box-shadow:0 2px 8px rgba(0,0,0,.2)">
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:3px 6px;font-weight:800;font-size:9px;color:var(--color-azure-26)">CS</div>
+  <nav style="display:flex;gap:var(--sp-s);align-items:center">
+    <span style="color:rgba(255,255,255,.85);font-size:12px;cursor:pointer">Promotions</span>
+    <span style="color:rgba(255,255,255,.85);font-size:12px;cursor:pointer">Products</span>
+    <span style="color:rgba(255,255,255,.85);font-size:12px;cursor:pointer">Store Finder</span>
+    <span style="color:rgba(255,255,255,.85);font-size:12px;cursor:pointer">Contact Us</span>
+  </nav>
+  <div style="flex:1"></div>
+  <div style="display:flex;background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden">
+    <input style="border:none;padding:4px var(--sp-10);font-size:12px;outline:none;width:180px;font-family:var(--font-1)" placeholder="Search...">
+    <div style="background:var(--color-azure-26);padding:4px var(--sp-10);display:flex;align-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+  </div>
+</div>
+<div class="ml">state=scrolled · height: 40px (reduced from 48) · shadow added · logo collapses</div>
+</div></div>
+
+<!-- Desktop Logged In -->
+<div class="sc"><h3>Desktop — Logged In</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 24px;height:var(--height-48);gap:var(--sp-s);font-family:var(--font-1)">
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <nav style="display:flex;gap:var(--sp-20);align-items:center">
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Promotions</span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Products</span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Store Finder</span>
+    <span style="color:rgba(255,255,255,.85);font-size:14px;cursor:pointer">Contact Us</span>
+  </nav>
+  <div style="flex:1"></div>
+  <div style="display:flex;background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden;margin-right:var(--sp-12)">
+    <input style="border:none;padding:6px var(--sp-12);font-size:13px;outline:none;width:200px;font-family:var(--font-1)" placeholder="Search...">
+    <div style="background:var(--color-azure-26);padding:6px var(--sp-12);display:flex;align-items:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+  </div>
+  <div style="width:32px;height:32px;border-radius:50%;background:var(--color-azure-33);display:flex;align-items:center;justify-content:center;color:var(--color-white-solid);font-size:12px;font-weight:var(--fw-700);cursor:pointer">MS</div>
+</div>
+<div class="ml">auth=logged-in · avatar replaces guest CTA · <span class="vr">color/azure/33</span> avatar bg</div>
+</div></div>
+
+<!-- Mobile -->
+<div class="sc"><h3>Mobile — Collapsed</h3>
+<div class="mk" style="max-width:375px;margin:10px auto">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 var(--sp-s);height:var(--height-48);justify-content:space-between">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+</div>
+<div class="ml">device=mobile · hamburger left · logo center · search right</div>
+</div></div>
+
+<!-- Mobile Menu Open -->
+<div class="sc"><h3>Mobile — Menu Open</h3>
+<div class="mk" style="max-width:375px;margin:10px auto">
+<div style="background:var(--color-azure-26);display:flex;align-items:center;padding:0 var(--sp-s);height:var(--height-48);justify-content:space-between">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7" transform="rotate(45 12 12)"/><line x1="4" y1="17" x2="20" y2="17" transform="rotate(-45 12 12)"/></svg>
+  <div style="background:var(--color-yellow-50);border-radius:var(--radius-4);padding:4px 8px;font-weight:800;font-size:10px;color:var(--color-azure-26)">CRAZY STORE</div>
+  <div style="width:18px"></div>
+</div>
+<div style="background:var(--color-azure-26);padding:0 var(--sp-s) var(--sp-20);font-family:var(--font-1)">
+  <div style="padding:var(--sp-12) 0;border-bottom:1px solid rgba(255,255,255,.08);color:var(--color-white-solid);font-size:var(--fs-16);font-weight:600">Promotions</div>
+  <div style="padding:var(--sp-12) 0;border-bottom:1px solid rgba(255,255,255,.08);color:var(--color-white-solid);font-size:var(--fs-16);font-weight:600">Products</div>
+  <div style="padding:var(--sp-12) 0;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:var(--fs-16)">Store Finder</div>
+  <div style="padding:var(--sp-12) 0;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:var(--fs-16)">Contact Us</div>
+  <div style="margin-top:var(--sp-s);display:flex;background:rgba(255,255,255,.1);border-radius:var(--radius-4);overflow:hidden">
+    <input style="flex:1;border:none;padding:var(--sp-10) var(--sp-12);font-size:14px;outline:none;background:transparent;color:var(--color-white-solid);font-family:var(--font-1)" placeholder="Search...">
+    <div style="padding:var(--sp-10) var(--sp-12);display:flex;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+  </div>
+</div>
+<div class="ml">device=mobile · menu=open · X icon replaces hamburger</div>
+</div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 2. FOOTER                                              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg" id="footer">
+<div class="ph"><h2>Footer <span class="tg tg-c">Component</span></h2><p>bg: <span class="vr">color/azure/26 90%</span> · text: <span class="vr">color/white/solid</span></p></div>
+<div class="sc"><h3>Desktop</h3>
+<div class="mk">
+<div style="background:var(--color-azure-26-90);font-family:var(--font-1)">
+<div style="max-width:960px;margin:0 auto;padding:var(--sp-40) 24px 24px;display:grid;grid-template-columns:auto 1fr 1fr auto;gap:var(--sp-40);align-items:start">
+  <div><div style="width:90px;height:90px;border-radius:50%;background:var(--color-yellow-50);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:var(--color-azure-26);text-align:center;padding:12px;line-height:1.3">QUALITY PROMISE</div></div>
+  <div><div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:var(--fs-16);line-height:var(--lh-24);margin-bottom:4px">Products</div><div style="columns:2;gap:var(--sp-20);color:rgba(255,255,255,.65);font-size:14px;line-height:var(--lh-24)"><div>Books</div><div>DIY &amp; Hardware</div><div>Electrical</div><div>Fashion</div><div>Household</div><div>Outdoor</div><div>Party</div><div>Pets</div><div>Seasonal</div><div>Stationery</div><div>Toys &amp; Games</div></div></div>
+  <div><div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:var(--fs-16);line-height:var(--lh-24);margin-bottom:4px">Quick Links</div><div style="color:rgba(255,255,255,.65);font-size:14px;line-height:var(--lh-24)"><div>About Us</div><div>News &amp; Events</div><div>Contact Us</div><div>Careers</div><div>Privacy Policy</div><div>Returns</div><div>Terms</div></div></div>
+  <div style="width:180px">
+    <div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:var(--fs-16);line-height:var(--lh-24);margin-bottom:8px">Sign Up</div>
+    <div style="background:var(--color-azure-26-80);padding:var(--sp-12) var(--sp-s);border-radius:6px;box-shadow:0 2px 2px rgba(0,77,135,.3);cursor:pointer;text-align:center;margin-bottom:var(--sp-20)"><span style="color:var(--color-white-solid);font-family:var(--font-2);font-size:var(--fs-18);line-height:var(--lh-28);text-decoration:underline">Join the CRAZY CLUB</span></div>
+    <div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:var(--fs-16);margin-bottom:8px">Follow Us</div>
+    <div style="display:flex;gap:var(--sp-12)">
+      <div style="background:var(--color-azure-26);padding:6px var(--sp-10);border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700);cursor:pointer">fb</div>
+      <div style="background:var(--color-azure-26);padding:6px var(--sp-10);border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700);cursor:pointer">X</div>
+      <div style="background:var(--color-azure-26);padding:6px var(--sp-10);border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700);cursor:pointer">ig</div>
+      <div style="background:var(--color-azure-26);padding:6px var(--sp-10);border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700);cursor:pointer">in</div>
+      <div style="background:var(--color-azure-26);padding:6px var(--sp-10);border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700);cursor:pointer">tk</div>
+    </div>
+  </div>
+</div>
+<div style="text-align:center;color:rgba(255,255,255,.4);font-size:12px;padding:var(--sp-10) 0;border-top:1px solid rgba(255,255,255,.06)">&#169; 2026 - All rights reserved</div>
+</div>
+<div class="ml">device=desktop · bg: <span class="vr">color/azure/26 90%</span> · CTA: <span class="vr">color/azure/26 80%</span> + <span class="vr">font family/Font 2</span> 18/28 underline</div>
+</div></div>
+
+<div class="sc"><h3>Mobile</h3>
+<div class="mk" style="max-width:375px;margin:10px auto">
+<div style="background:var(--color-azure-26-90);font-family:var(--font-1);padding:var(--sp-40) var(--sp-20) var(--sp-20);text-align:center">
+  <div style="width:80px;height:80px;border-radius:50%;background:var(--color-yellow-50);margin:0 auto var(--sp-20);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:var(--color-azure-26);line-height:1.3">QUALITY<br>PROMISE</div>
+  <div style="margin-bottom:var(--sp-20)"><div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:14px;margin-bottom:8px">Products</div><div style="color:rgba(255,255,255,.6);font-size:13px;line-height:var(--lh-24)">Books &middot; DIY &middot; Electrical &middot; Fashion &middot; Household &middot; Party &middot; Pets &middot; Toys</div></div>
+  <div style="margin-bottom:var(--sp-20)"><div style="font-weight:var(--fw-700);color:var(--color-white-solid);font-size:14px;margin-bottom:8px">Quick Links</div><div style="color:rgba(255,255,255,.6);font-size:13px;line-height:var(--lh-24)">About &middot; Contact &middot; Careers &middot; Privacy &middot; Terms</div></div>
+  <div style="display:flex;gap:var(--sp-12);justify-content:center;margin-bottom:var(--sp-20)">
+    <div style="background:var(--color-azure-26);padding:8px 12px;border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700)">fb</div>
+    <div style="background:var(--color-azure-26);padding:8px 12px;border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700)">X</div>
+    <div style="background:var(--color-azure-26);padding:8px 12px;border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700)">ig</div>
+    <div style="background:var(--color-azure-26);padding:8px 12px;border-radius:var(--radius-4);color:var(--color-white-solid);font-size:10px;font-weight:var(--fw-700)">in</div>
+  </div>
+  <div style="color:rgba(255,255,255,.3);font-size:11px;padding-top:var(--sp-12);border-top:1px solid rgba(255,255,255,.06)">&#169; 2026 The Crazy Store</div>
+</div>
+<div class="ml">device=mobile · stacked center-aligned</div>
+</div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 3. PRODUCT CARDS                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg" id="cards">
+<div class="ph"><h2>Product Cards <span class="tg tg-c">Component</span></h2><p>Badge bg: <span class="vr">color/azure/33</span> · Hover: shadow + translateY(-3px)</p></div>
+<div class="sc"><h3>Grid View — All Badge Types</h3>
+<div class="mk"><div style="background:var(--color-grey-98);padding:var(--sp-20);display:grid;grid-template-columns:repeat(5,1fr);gap:var(--sp-s);font-family:var(--font-1)" id="cg"></div><div class="ml">layout=grid · 5 columns · gap: <span class="vr">item spacing/s</span></div></div></div>
+<div class="sc"><h3>List View</h3>
+<div class="mk"><div style="padding:var(--sp-s);max-width:480px;margin:0 auto" id="cl"></div><div class="ml">layout=list · image 80px · content fill</div></div></div>
+<div class="sc"><h3>With Discount</h3>
+<div class="mk"><div style="background:var(--color-grey-98);padding:var(--sp-20);display:flex;gap:var(--sp-s);justify-content:center;font-family:var(--font-1)">
+<div style="width:160px;background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+  <div style="height:130px;background:linear-gradient(135deg,#e8f5e9,#a5d6a7);display:flex;align-items:center;justify-content:center;font-size:36px">&#127873;</div>
+  <div style="padding:8px"><span style="display:block;background:var(--color-orange-54);color:var(--color-white-solid);padding:4px 0;border-radius:var(--radius-4);font-size:11px;font-weight:var(--fw-700);text-align:center">Sale</span></div>
+  <div style="padding:0 var(--sp-10) var(--sp-12);text-align:center"><div style="font-size:12px;margin-bottom:4px">Easter Basket Set</div><div style="font-size:14px;font-weight:var(--fw-700)">R 89.99 <span style="text-decoration:line-through;color:var(--color-grey-53);font-weight:var(--fw-400);font-size:11px">R 129.99</span></div></div>
+</div>
+</div><div class="ml">badge=sale · was-price strikethrough · <span class="vr">color/orange/54</span> badge</div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 4. DROPDOWN MENUS                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg" id="dropdown">
+<div class="ph"><h2>Dropdown Menus <span class="tg tg-c">Component</span></h2><p>Border: <span class="vr">color/azure/84</span> · Focus border: <span class="vr">color/azure/26</span></p></div>
+<div class="sc"><h3>All States</h3>
+<div style="display:flex;gap:40px;flex-wrap:wrap;padding:20px 0;align-items:flex-start">
+<!-- Closed -->
+<div style="width:200px"><h4 style="font-size:10px;font-weight:var(--fw-700);color:var(--color-grey-53);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Closed</h4>
+<div style="border:var(--stroke-1) solid var(--color-azure-84);border-radius:var(--radius-4);padding:var(--sp-10) 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px;cursor:pointer;background:var(--color-white-solid)">Select category <span style="color:var(--color-grey-53);font-size:10px">&#9660;</span></div></div>
+<!-- Open + Hover -->
+<div style="width:200px"><h4 style="font-size:10px;font-weight:var(--fw-700);color:var(--color-grey-53);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Open</h4>
+<div style="border:2px solid var(--color-azure-26);border-radius:var(--radius-4) var(--radius-4) 0 0;padding:var(--sp-10) 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px;cursor:pointer;background:var(--color-white-solid)">Household <span style="color:var(--color-azure-26);font-size:10px">&#9650;</span></div>
+<div style="border:var(--stroke-1) solid var(--color-grey-91);border-top:none;border-radius:0 0 var(--radius-4) var(--radius-4);background:var(--color-white-solid);box-shadow:var(--shadow-md)">
+  <div style="padding:var(--sp-10) 14px;font-size:14px;cursor:pointer;background:var(--color-grey-98)">Books</div>
+  <div style="padding:var(--sp-10) 14px;font-size:14px;cursor:pointer">DIY &amp; Hardware</div>
+  <div style="padding:var(--sp-10) 14px;font-size:14px;font-weight:var(--fw-700);color:var(--color-azure-26);display:flex;justify-content:space-between;background:rgba(0,75,133,.03)">Household <span style="font-size:12px">&#10003;</span></div>
+  <div style="padding:var(--sp-10) 14px;font-size:14px;cursor:pointer">Party</div>
+  <div style="padding:var(--sp-10) 14px;font-size:14px;cursor:pointer">Pets</div>
+</div></div>
+<!-- Selected -->
+<div style="width:200px"><h4 style="font-size:10px;font-weight:var(--fw-700);color:var(--color-grey-53);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Selected (closed)</h4>
+<div style="border:var(--stroke-1) solid var(--color-azure-84);border-radius:var(--radius-4);padding:var(--sp-10) 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px;cursor:pointer;background:var(--color-white-solid);font-weight:500">Household <span style="color:var(--color-grey-53);font-size:10px">&#9660;</span></div></div>
+</div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 5. STORE LOCATION                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg" id="store">
+<div class="ph"><h2>Store Location <span class="tg tg-c">Component</span></h2><p>Card border-left: <span class="vr">color/azure/26</span> · CTA buttons use file variables</p></div>
+<div class="sc"><h3>Map + List Sidebar</h3>
+<div class="mk"><div style="display:flex;min-height:280px;font-family:var(--font-1)">
+  <div style="flex:1;background:linear-gradient(160deg,var(--color-cyan-63) 0%,var(--color-azure-33) 50%,var(--color-azure-26) 100%);position:relative;display:flex;align-items:center;justify-content:center">
+    <div style="color:rgba(255,255,255,.3);font-size:13px;font-weight:600">Map</div>
+    <div style="position:absolute;top:50px;left:40%;width:20px;height:20px;background:var(--color-orange-54);border-radius:50%;border:3px solid var(--color-white-solid);box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>
+    <div style="position:absolute;top:100px;left:55%;width:20px;height:20px;background:var(--color-azure-26);border-radius:50%;border:3px solid var(--color-white-solid);box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>
+  </div>
+  <div style="width:260px;background:var(--color-white-solid);border-left:var(--stroke-1) solid var(--color-grey-91)">
+    <div style="padding:var(--sp-12) var(--sp-s);border-bottom:var(--stroke-1) solid var(--color-grey-91);background:var(--color-grey-98)"><input style="width:100%;padding:6px var(--sp-10);border:var(--stroke-1) solid var(--color-azure-84);border-radius:var(--radius-4);font-size:13px;font-family:var(--font-1);outline:none" placeholder="Search stores..."></div>
+    <div style="border-left:3px solid var(--color-orange-54);padding:var(--sp-12) var(--sp-s);background:rgba(229,103,46,.03);border-bottom:var(--stroke-1) solid var(--color-grey-91)"><div style="font-weight:var(--fw-700);font-size:13px;color:var(--color-azure-26)">V&A Waterfront</div><div style="font-size:11px;color:var(--color-grey-53)">Cape Town &middot; 2.3 km</div></div>
+    <div style="padding:var(--sp-12) var(--sp-s);border-bottom:var(--stroke-1) solid var(--color-grey-91);cursor:pointer"><div style="font-weight:600;font-size:13px">Canal Walk</div><div style="font-size:11px;color:var(--color-grey-53)">Century City &middot; 5.1 km</div></div>
+    <div style="padding:var(--sp-12) var(--sp-s);cursor:pointer"><div style="font-weight:600;font-size:13px">Cavendish</div><div style="font-size:11px;color:var(--color-grey-53)">Claremont &middot; 6.8 km</div></div>
+  </div>
+</div><div class="ml">layout=map-sidebar · selected: border-left <span class="vr">color/orange/54</span></div></div></div>
+
+<div class="sc"><h3>Detail Card</h3>
+<div class="mk"><div style="padding:var(--sp-20);max-width:360px;margin:0 auto;font-family:var(--font-1)">
+<div style="background:var(--color-white-solid);border-radius:var(--radius-4);padding:var(--sp-s);box-shadow:0 1px 3px rgba(0,0,0,.04);border-left:4px solid var(--color-azure-26)">
+  <div style="font-weight:var(--fw-700);font-size:var(--fs-16);color:var(--color-azure-26);margin-bottom:4px">V&A Waterfront</div>
+  <div style="font-size:14px;color:var(--color-grey-13);line-height:var(--lh-24)">Shop 7148, Victoria Wharf<br>Cape Town, 8001</div>
+  <div style="font-size:14px;color:var(--color-azure-33);margin:6px 0">021 418 1045</div>
+  <div style="font-size:12px;color:var(--color-grey-53);margin-bottom:var(--sp-12)">Mon-Fri 9:00-18:00 &middot; Sat 9:00-17:00</div>
+  <div style="display:flex;gap:8px">
+    <button style="background:var(--color-azure-26);color:var(--color-white-solid);border:none;padding:8px var(--sp-s);border-radius:var(--radius-4);font-size:12px;font-weight:var(--fw-700);font-family:var(--font-1);cursor:pointer;flex:1">Get Directions</button>
+    <button style="background:var(--color-white-solid);color:var(--color-azure-26);border:2px solid var(--color-azure-26);padding:8px var(--sp-s);border-radius:var(--radius-4);font-size:12px;font-weight:var(--fw-700);font-family:var(--font-1);cursor:pointer;flex:1">Call Store</button>
+  </div>
+</div>
+</div><div class="ml">state=default · border-left <span class="vr">color/azure/26</span> · buttons use <span class="vr">color/azure/26</span></div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 6. CAROUSEL / PAGINATION                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="pg" id="carousel">
+<div class="ph"><h2>Carousel &amp; Pagination <span class="tg tg-c">Component</span></h2></div>
+<div class="sc"><h3>Dots</h3>
+<div style="background:var(--color-grey-98);border-radius:var(--radius-12);padding:28px;display:flex;justify-content:center">
+  <div style="display:flex;gap:8px;align-items:center">
+    <div style="width:10px;height:10px;border-radius:50%;background:var(--color-azure-26)"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--color-azure-84)"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--color-azure-84)"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--color-azure-84)"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--color-azure-84)"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--color-azure-84)"></div>
+  </div>
+</div>
+<div style="font-size:10px;color:var(--color-grey-53);text-align:center;margin-top:6px">active: 10px <span class="vr">color/azure/26</span> · inactive: 8px <span class="vr">color/azure/84</span></div>
+</div>
+<div class="sc"><h3>Progress Bar</h3>
+<div style="background:var(--color-grey-98);border-radius:var(--radius-12);padding:28px;display:flex;justify-content:center">
+  <div style="width:240px;height:4px;background:var(--color-azure-84);border-radius:9999px;overflow:hidden"><div style="width:16%;height:100%;background:var(--color-azure-26);border-radius:9999px"></div></div>
+</div></div>
+<div class="sc"><h3>Numeric Pagination</h3>
+<div style="background:var(--color-grey-98);border-radius:var(--radius-12);padding:28px;display:flex;justify-content:center">
+  <div style="display:flex;align-items:center;gap:6px;font-size:14px;font-family:var(--font-1)">
+    Page 1 of 6
+    <button style="width:30px;height:30px;border:var(--stroke-1) solid var(--color-azure-84);border-radius:var(--radius-4);background:var(--color-white-solid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;margin-left:8px">&#9654;</button>
+    <button style="width:30px;height:30px;border:var(--stroke-1) solid var(--color-azure-84);border-radius:var(--radius-4);background:var(--color-white-solid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px">&#9654;&#9654;</button>
+  </div>
+</div></div>
+</div>
+
+</main></div>
+<div class="toast" id="toast"></div>
+<script>
+// Nav
+document.querySelectorAll('.sb a').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.sb a').forEach(l=>l.classList.remove('active'));a.classList.add('active');document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));const pg=document.getElementById(a.dataset.p);if(pg){pg.classList.add('active');window.scrollTo(0,0)}})});
+// Cards
+const C=[
+  {e:'&#128048;',bg:'#e3f2fd,#42D5FE',b:'promo',n:'Stuffed Bunny, 44cm',p:'R 149.99'},
+  {e:'&#129414;',bg:'#fff9c4,#FFDF20',b:'promo',n:'Stuffed Duck, 42cm',p:'R 149.00'},
+  {e:'&#128056;',bg:'#fce4ec,#f8bbd0',b:'new',n:'Bunny Wristlet, 10cm',p:'R 129.99'},
+  {e:'&#127873;',bg:'#e8f5e9,#a5d6a7',b:'sale',n:'Easter Basket Set',p:'R 89.99',w:'R 129.99'},
+  {e:'&#129528;',bg:'#e0e0e0,#bdbdbd',b:'oos',n:'Bunny Sunglasses',p:'R 24.99'}
+];
+const B={promo:{bg:'var(--color-azure-33)',c:'#fff',t:'On Promotion'},new:{bg:'var(--color-orange-54)',c:'#fff',t:'New'},sale:{bg:'var(--color-orange-44)',c:'#fff',t:'Sale'},oos:{bg:'var(--color-grey-53)',c:'#fff',t:'Out of Stock'}};
+const cg=document.getElementById('cg');
+if(cg)cg.innerHTML=C.map(c=>{const b=B[c.b],o=c.b==='oos';return`<div style="background:var(--color-white-solid);border-radius:var(--radius-4);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);${o?'opacity:.55':'cursor:pointer'};transition:transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s"${o?'':` onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px -4px rgba(0,75,133,.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 2px rgba(0,0,0,.04)'"`}><div style="height:110px;background:linear-gradient(135deg,${c.bg});display:flex;align-items:center;justify-content:center;font-size:32px;${o?'filter:grayscale(1)':''}">${c.e}</div><div style="padding:6px 8px"><span style="display:block;background:${b.bg};color:${b.c};padding:3px 0;border-radius:var(--radius-4);font-size:10px;font-weight:var(--fw-700);text-align:center">${b.t}</span></div><div style="padding:0 8px 10px;text-align:center"><div style="font-size:11px;line-height:1.4;margin-bottom:2px">${c.n}</div><div style="font-size:12px;font-weight:var(--fw-700);${o?'color:var(--color-grey-53)':''}">${c.p}${c.w?` <span style="text-decoration:line-through;color:var(--color-grey-53);font-weight:400;font-size:10px">${c.w}</span>`:''}</div></div></div>`}).join('');
+const cl=document.getElementById('cl');
+if(cl)cl.innerHTML=C.slice(0,3).map(c=>{const b=B[c.b];return`<div style="display:flex;gap:var(--sp-12);background:var(--color-white-solid);border-radius:var(--radius-4);padding:var(--sp-10);box-shadow:0 1px 2px rgba(0,0,0,.04);margin-bottom:8px;cursor:pointer;transition:box-shadow .2s" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'" onmouseout="this.style.boxShadow='0 1px 2px rgba(0,0,0,.04)'"><div style="width:70px;height:70px;background:linear-gradient(135deg,${c.bg});border-radius:var(--radius-4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px">${c.e}</div><div style="flex:1;display:flex;flex-direction:column;justify-content:center"><span style="display:inline-block;background:${b.bg};color:${b.c};padding:2px 6px;border-radius:3px;font-size:9px;font-weight:var(--fw-700);width:fit-content;margin-bottom:3px">${b.t}</span><div style="font-size:13px;font-weight:var(--fw-700)">${c.n}</div><div style="font-size:13px;font-weight:var(--fw-700);color:var(--color-azure-26);margin-top:2px">${c.p}</div></div></div>`}).join('');
+</script>
+</body>
+</html>

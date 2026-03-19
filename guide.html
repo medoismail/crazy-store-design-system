@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figma Build Guide — The Crazy Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* === THE CRAZY STORE DESIGN SYSTEM === */
+  /* Primitive: Neutral */
+  --n50:#FFFFFF;--n100:#FDFCF9;--n200:#FDFCF9;--n300:#FBF9F4;--n400:#F9F6EE;--n500:#F8F5EB;
+  --n600:#C7BE9F;--n700:#928B74;--n800:#605C4C;--n900:#312E25;--n950:#1D1B15;
+  /* Primitive: DarkMidnightBlue */
+  --dmb50:#DFE8FF;--dmb100:#BCD2FF;--dmb200:#71AAFF;--dmb300:#0080E3;--dmb400:#00589F;--dmb500:#003462;--dmb600:#002B52;--dmb700:#002244;
+  /* Primitive: DeepSeaBlue */
+  --dsb400:#0070C0;--dsb500:#004D87;--dsb600:#003F70;
+  /* Primitive: Yellow */
+  --y300:#FFF2AC;--y400:#FFED79;--y500:#FFE800;--y600:#C7B500;
+  /* Primitive: Greyscale */
+  --g50:#EEF1F3;--g100:#E1E6EA;--g200:#C0CBD4;--g300:#A3B3C1;--g400:#8A98A4;--g500:#74808B;
+  /* Primitive: Red / Green */
+  --r500:#ED1D24;--gn400:#2EA625;--gn500:#258B1D;
+  /* Semantic mapping */
+  --bg:var(--n300);--surface:var(--n50);--surface2:var(--n100);--surface3:var(--g50);
+  --border:var(--g100);--border2:var(--g200);
+  --text:var(--dmb700);--text2:var(--dsb600);--text3:var(--g400);
+  --accent:var(--dsb500);--accent2:var(--dmb400);
+  --highlight:var(--y500);--highlight2:var(--y300);
+  --green:var(--gn400);--red:var(--r500);
+  --font:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --radius:4px;--radius-sm:4px;--radius-xs:4px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  /* Mock aliases */
+  --cs-azure:var(--dsb500);--cs-azure33:var(--dsb400);--cs-azure44:var(--dmb400);--cs-azure84:var(--g200);
+  --cs-yellow:var(--y500);--cs-yellow56:var(--y600);
+  --cs-orange54:var(--r500);--cs-orange44:var(--y600);
+  --cs-grey13:var(--dmb700);--cs-grey53:var(--g400);--cs-grey80:var(--g200);--cs-grey91:var(--g100);--cs-grey98:var(--g50);
+  --cs-neutral50:var(--n50);--cs-neutral200:var(--n200);--cs-neutral950:var(--n950);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--highlight);color:var(--dmb700)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius)}
+
+.app{max-width:920px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{padding:48px 0 32px;text-align:center;border-bottom:1px solid var(--border)}
+.hero-logo{width:100px;height:auto;margin:0 auto 16px;display:block}
+.hero h1{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px;color:var(--dmb500)}
+.hero h1 span{color:var(--dsb500)}
+.hero p{font-size:14px;color:var(--text2);max-width:520px;margin:0 auto}
+.hero .badge{display:inline-block;background:var(--accent);color:var(--n50);font-size:11px;font-weight:700;padding:4px 12px;border-radius:var(--radius);margin-bottom:16px;letter-spacing:.3px}
+
+/* Progress */
+.progress-bar{position:sticky;top:0;z-index:100;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+.progress-track{height:4px;background:var(--g100);border-radius:9999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:9999px;width:0%;transition:width .3s var(--ease)}
+.progress-label{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--text3);font-weight:500}
+
+/* Comp card */
+.comp{margin:24px 0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface);box-shadow:0 1px 3px rgba(0,34,68,.04)}
+.comp-header{padding:20px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .15s;border-bottom:1px solid transparent}
+.comp-header:hover{background:var(--surface2)}
+.comp.open .comp-header{border-bottom:1px solid var(--border)}
+.comp-num{width:36px;height:36px;background:var(--accent);color:var(--n50);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0}
+.comp-num.done{background:var(--green)}.comp-num.done::after{content:'\2713';color:var(--n50)}.comp-num.done span{display:none}
+.comp-info{flex:1}.comp-info h2{font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--dmb500)}.comp-info p{font-size:12px;color:var(--text3);margin-top:1px}
+.comp-tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:var(--radius);text-transform:uppercase;letter-spacing:.5px}
+.comp-tag.component{background:rgba(0,77,135,.08);color:var(--accent)}
+.comp-chevron{color:var(--text3);transition:transform .2s var(--ease)}.comp.open .comp-chevron{transform:rotate(90deg)}
+.comp-body{display:none;padding:0}.comp.open .comp-body{display:block;animation:slideDown .25s var(--ease)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Steps */
+.steps{counter-reset:step}
+.step{counter-increment:step;padding:20px 24px;border-bottom:1px solid var(--border);position:relative}
+.step:last-child{border-bottom:none}
+.step-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.step-check{width:22px;height:22px;border:2px solid var(--border2);border-radius:var(--radius);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;cursor:pointer;margin-top:1px}
+.step-check:hover{border-color:var(--accent)}
+.step.done .step-check{background:var(--green);border-color:var(--green)}
+.step.done .step-check::after{content:'\2713';color:var(--n50);font-size:13px;font-weight:700}
+.step.done .step-title{text-decoration:line-through;color:var(--text3)}
+.step-title{font-size:14px;font-weight:600;flex:1;color:var(--dmb700)}
+.step-body{margin-top:12px;padding-left:34px}
+
+/* Spec */
+.spec{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:8px 0;font-size:13px;line-height:1.7}
+.spec-row{display:flex;gap:8px;align-items:baseline;padding:3px 0}
+.spec-key{color:var(--text3);min-width:110px;font-size:12px;flex-shrink:0}
+.spec-val{color:var(--text);font-weight:500}
+.tk{display:inline-block;font-size:10px;font-family:'SF Mono','Fira Code',monospace;background:rgba(0,77,135,.06);color:var(--accent);padding:2px 7px;border-radius:var(--radius);border:1px solid rgba(0,77,135,.12);white-space:nowrap;font-weight:600}
+.cd{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:4px;border:1px solid var(--g200)}
+.tip{background:rgba(0,77,135,.04);border:1px solid rgba(0,77,135,.1);border-radius:var(--radius);padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--dsb500);line-height:1.6}.tip strong{color:var(--dmb300)}
+.warn{background:rgba(237,29,36,.04);border:1px solid rgba(237,29,36,.12);border-radius:var(--radius);padding:12px 14px;margin:10px 0;font-size:12.5px;color:var(--r500);line-height:1.6}
+.tree{font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:2;background:var(--surface2);border:1px solid var(--border);padding:14px 16px;border-radius:var(--radius);color:var(--text2);white-space:pre;overflow-x:auto;margin:8px 0}.tree .n{color:var(--accent)}.tree .d{color:var(--text3)}
+.vtable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.vtable th{text-align:left;padding:8px 12px;background:var(--surface2);font-size:11px;text-transform:none;letter-spacing:0;color:var(--text3);border-bottom:1px solid var(--border);font-weight:500}
+.vtable td{padding:8px 12px;border-bottom:1px solid var(--border)}.vtable tr:last-child td{border-bottom:none}
+.vtable .pill{display:inline-block;background:rgba(0,77,135,.06);color:var(--accent);padding:2px 8px;border-radius:var(--radius);font-size:11px;margin:1px 2px;font-weight:600}
+
+/* Detailed state property table */
+.dtable{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.dtable th{text-align:left;padding:6px 10px;background:var(--surface2);font-size:11px;text-transform:none;letter-spacing:0;color:var(--text3);border-bottom:1px solid var(--border);position:sticky;top:0;font-weight:500}
+.dtable td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.dtable tr:last-child td{border-bottom:none}
+.dtable .prop-name{color:var(--text3);font-weight:600;font-size:10px;white-space:nowrap}
+.dtable .state-col{min-width:100px}
+.dtable .highlight{background:rgba(0,77,135,.02)}
+.dtable .changed{color:var(--dsb500);font-weight:600}
+.dtable .same{color:var(--text3);font-style:italic;font-size:10px}
+
+/* ═══════════════════════════════════════ */
+/* VISUAL MOCKS                           */
+/* ═══════════════════════════════════════ */
+.mock-section{margin:14px 0}
+.mock-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mock-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.mock-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.mock-frame{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;flex:1;min-width:0}
+.mock-frame.mobile{max-width:375px;flex:0 0 375px}
+.mock-frame-label{background:var(--bg);padding:6px 12px;font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.mock-frame-label .dot{width:5px;height:5px;border-radius:50%}
+.state-tabs{display:flex;gap:0;margin:10px 0;border:1px solid var(--border);border-radius:6px;overflow:hidden;width:fit-content}
+.state-tab{padding:5px 12px;font-size:11px;font-weight:600;background:var(--surface2);color:var(--text3);cursor:pointer;border-right:1px solid var(--border);transition:.15s}
+.state-tab:last-child{border-right:none}
+.state-tab:hover{color:var(--text)}
+.state-tab.active{background:var(--accent);color:var(--bg)}
+
+/* Nav mock */
+.m-nav{height:48px;background:var(--cs-azure);display:flex;align-items:center;padding:0 16px;gap:16px;transition:all .3s}
+.m-nav.scrolled{height:40px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.m-nav .logo{display:flex;align-items:center}.m-nav .logo img{height:28px;width:auto}
+.m-nav .links{display:flex;gap:16px;flex:0 0 auto}
+.m-nav .links a{color:#fff;font-size:12px;font-weight:500;text-decoration:none;opacity:.85;transition:.15s;position:relative}
+.m-nav .links a:hover{opacity:1}
+.m-nav .links a.active{opacity:1}
+.m-nav .links a.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--cs-yellow);border-radius:1px}
+.m-nav .links a .chev{font-size:8px;margin-left:2px;opacity:.5}
+.m-nav .search{flex:1;display:flex;max-width:260px;margin-left:auto;height:28px}
+.m-nav .search .scat{background:#E1E6EA;border:1px solid #C0CBD4;padding:0 8px;display:flex;align-items:center;gap:4px;white-space:nowrap;font-size:9px;font-weight:500;color:#312E25;border-radius:8px 0 0 8px}
+.m-nav .search .scat .chv{font-size:7px;color:#8A98A4}
+.m-nav .search input{border:1px solid #C0CBD4;border-left:0;background:#EEF1F3;padding:0 8px;font-size:10px;flex:1;outline:none;font-family:var(--font);min-width:0;color:#74808B}
+.m-nav .search .sbtn{background:#FFE800;border:1px solid #FFF2AC;padding:0 8px;cursor:pointer;display:flex;align-items:center;border-radius:0 8px 8px 0}
+.m-nav .search .sbtn svg{width:11px;height:11px;stroke:#1D1B15;fill:none;stroke-width:2.5;stroke-linecap:round}
+/* Nav hover item */
+.m-nav .links a.hov-demo{background:rgba(255,255,255,.1);padding:4px 8px;border-radius:3px;margin:-4px -8px}
+/* Logged-in icons */
+.m-nav .auth-icons{display:flex;gap:10px;align-items:center;margin-left:8px}
+.m-nav .auth-icons .ic{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.m-nav .auth-icons .ic svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2}
+.m-nav .auth-icons .avatar{width:22px;height:22px;border-radius:50%;background:var(--cs-yellow);color:var(--cs-azure);font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* Mobile nav */
+.m-nav-mobile{height:48px;background:var(--cs-azure);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.m-nav-mobile .logo img{height:22px!important}
+.m-nav-mobile .hamburger{display:flex;flex-direction:column;gap:3px;cursor:pointer}
+.m-nav-mobile .hamburger span{width:18px;height:2px;background:#fff;border-radius:1px}
+.m-nav-mobile .search-ic svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+
+/* Mega menu */
+.m-mega{background:#fff;border-top:2px solid var(--cs-yellow);padding:16px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 32px}
+.m-mega a{color:var(--cs-grey13);font-size:12px;text-decoration:none;padding:4px 0;display:block;transition:.1s}
+.m-mega a:hover{color:var(--cs-azure)}
+.m-mega a::before{content:'\203A ';color:var(--cs-grey80);margin-right:4px}
+
+/* Footer mock */
+.m-footer{background:var(--cs-azure);padding:24px 20px 12px}
+.m-footer-inner{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px}
+.m-footer h4{color:#fff;font-size:11px;font-weight:700;margin-bottom:8px}
+.m-footer a{display:block;color:rgba(255,255,255,.6);font-size:10px;text-decoration:none;padding:2px 0;transition:.15s}
+.m-footer a:hover{color:#fff}
+.m-footer-social{display:flex;gap:6px;margin-top:10px}
+.m-footer-social .sic{width:24px;height:24px;background:rgba(255,255,255,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.m-footer-social .sic:hover{background:rgba(255,255,255,.2)}
+.m-footer-social .sic svg{width:12px;height:12px;fill:#fff}
+.m-footer-copyright{text-align:center;color:rgba(255,255,255,.35);font-size:9px;margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.m-footer-cta{background:rgba(0,77,135,.5);border-radius:4px;padding:8px 14px;color:#fff;font-size:11px;text-decoration:underline;text-align:center;margin-top:10px;cursor:pointer}
+.m-footer-mobile .m-footer-inner{grid-template-columns:1fr 1fr}
+
+/* Product cards */
+.m-card-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px}
+.m-card{background:#fff;border-radius:4px;overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s;position:relative}
+.m-card:hover:not(.oos){box-shadow:0 8px 20px rgba(0,75,133,.12);transform:translateY(-2px)}
+.m-card .img{aspect-ratio:1;background:var(--cs-grey98);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.m-card .img .placeholder{width:40%;height:40%;border-radius:6px;background:var(--cs-grey91)}
+.m-card .badge-m{font-size:8px;font-weight:700;color:#fff;padding:3px 0;text-align:center}
+.m-card .badge-m.promo{background:var(--cs-azure33)}.m-card .badge-m.new{background:var(--cs-orange54)}.m-card .badge-m.sale{background:var(--cs-orange44)}.m-card .badge-m.oos-b{background:var(--cs-grey53)}
+.m-card .title-m{font-size:9px;color:var(--cs-grey13);text-align:center;padding:4px 6px;line-height:1.3;height:30px;overflow:hidden}
+.m-card .price-m{text-align:center;padding:0 6px 8px;font-size:10px;font-weight:700;color:var(--cs-grey13)}
+.m-card .price-m .was{font-weight:400;font-size:8px;color:var(--cs-grey53);text-decoration:line-through;margin-left:3px}
+.m-card.oos .img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.m-card.oos .price-m{color:var(--cs-grey53)}
+.m-card-list{display:flex;flex-direction:column;gap:6px;padding:12px}
+.m-card-h{background:#fff;border-radius:4px;display:flex;overflow:hidden;height:60px;cursor:pointer;transition:box-shadow .2s}
+.m-card-h:hover{box-shadow:0 4px 12px rgba(0,75,133,.1)}
+.m-card-h .img-h{width:60px;flex-shrink:0;background:var(--cs-grey98);display:flex;align-items:center;justify-content:center}
+.m-card-h .img-h .ph{width:28px;height:28px;border-radius:4px;background:var(--cs-grey91)}
+.m-card-h .info-h{flex:1;padding:6px 10px;display:flex;flex-direction:column;justify-content:center}
+.m-card-h .info-h .t{font-size:10px;color:var(--cs-grey13);font-weight:500}.m-card-h .info-h .p{font-size:10px;font-weight:700;color:var(--cs-grey13);margin-top:2px}
+.m-card-h .badge-h{writing-mode:vertical-rl;font-size:7px;font-weight:700;color:#fff;padding:4px 3px;display:flex;align-items:center;justify-content:center}
+
+/* Dropdown */
+.m-dd-wrap{display:flex;gap:20px;padding:16px;align-items:flex-start;flex-wrap:wrap}
+.m-dd{position:relative;width:180px}
+.m-dd-trigger{border:1px solid var(--cs-grey91);border-radius:4px;padding:8px 12px;font-size:12px;color:var(--cs-grey13);background:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.m-dd-trigger.open{border:2px solid var(--cs-azure);padding:7px 11px}
+.m-dd-trigger .chev{font-size:8px;color:var(--cs-grey53);transition:transform .2s}
+.m-dd-trigger.open .chev{transform:rotate(180deg)}
+.m-dd-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--cs-grey91);border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:5;display:none}
+.m-dd-menu.show{display:block}
+.m-dd-item{padding:8px 12px;font-size:11px;color:var(--cs-grey13);cursor:pointer;transition:.1s;display:flex;justify-content:space-between;align-items:center}
+.m-dd-item:hover{background:var(--cs-grey98)}
+.m-dd-item.selected{background:rgba(0,75,133,.03);color:var(--cs-azure);font-weight:600}
+.m-dd-item.selected::after{content:'\2713';font-size:12px;color:var(--cs-azure)}
+
+/* Store card */
+.m-store-wrap{padding:12px;display:flex;gap:12px;flex-wrap:wrap}
+.m-store{background:#fff;border-radius:4px;padding:14px;flex:1;min-width:200px;border-left:4px solid transparent;transition:.15s}
+.m-store.selected{border-left-color:var(--cs-azure);background:#f7faff}
+.m-store h5{font-size:13px;font-weight:700;color:var(--cs-azure);margin-bottom:4px}
+.m-store .addr{font-size:11px;color:var(--cs-grey13);line-height:1.4}
+.m-store .phone{font-size:11px;color:var(--cs-azure33);margin-top:4px}
+.m-store .hours{font-size:10px;color:var(--cs-grey53);margin-top:4px}
+.m-store .btns{display:flex;gap:6px;margin-top:10px}
+.m-store .btn-p{background:var(--cs-azure);color:#fff;border:none;padding:5px 10px;border-radius:3px;font-size:10px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.m-store .btn-s{background:#fff;color:var(--cs-azure);border:1px solid var(--cs-azure);padding:5px 10px;border-radius:3px;font-size:10px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.m-map{background:var(--cs-grey98);border-radius:4px;flex:1;min-width:200px;min-height:180px;display:flex;align-items:center;justify-content:center;color:var(--cs-grey80);font-size:12px;font-weight:600;border:2px dashed var(--cs-grey91)}
+
+/* Carousel indicators */
+.m-carousel-wrap{padding:20px;display:flex;flex-direction:column;gap:20px;align-items:center}
+.m-dots{display:flex;gap:8px;align-items:center}
+.m-dot{width:8px;height:8px;border-radius:50%;background:var(--cs-azure84);transition:.2s}
+.m-dot.active{width:10px;height:10px;background:var(--cs-azure)}
+.m-progress{display:flex;flex-direction:column;align-items:center;gap:6px}
+.m-pbar{width:200px;height:4px;background:var(--cs-azure84);border-radius:9999px;overflow:hidden}
+.m-pbar-fill{height:100%;background:var(--cs-azure);border-radius:9999px;width:40%;transition:width .5s}
+.m-pbar-label{font-size:10px;color:var(--cs-grey53)}
+.m-pagination{display:flex;align-items:center;gap:8px}
+.m-pg-btn{width:28px;height:28px;border:1px solid var(--cs-azure84);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:.15s}
+.m-pg-btn:hover{border-color:var(--cs-azure);background:rgba(0,75,133,.03)}
+.m-pg-btn svg{width:12px;height:12px;stroke:var(--cs-azure);fill:none;stroke-width:2}
+.m-pg-text{font-size:11px;color:var(--cs-grey53);font-weight:500}
+
+/* ═══════════════════════════════════════ */
+/* ATOM ANATOMY CARDS                     */
+/* ═══════════════════════════════════════ */
+.atoms-section{margin:32px 0}
+.atoms-title{font-size:20px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.atoms-title::before{content:'';width:4px;height:24px;background:var(--accent);border-radius:2px}
+.atoms-subtitle{font-size:13px;color:var(--text3);margin-bottom:20px;padding-left:14px}
+.atom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.atom-grid{grid-template-columns:1fr}}
+.atom-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
+.atom-card:hover{border-color:var(--border2)}
+.atom-card-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.atom-card-header h4{font-size:13px;font-weight:700;letter-spacing:-.01em}
+.atom-type{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.atom-type.prim{background:rgba(255,235,0,.1);color:var(--accent)}
+.atom-type.comp{background:rgba(34,197,94,.1);color:var(--green)}
+
+/* Atom visual preview */
+.atom-preview{padding:16px;display:flex;align-items:center;justify-content:center;min-height:60px;background:var(--surface2);position:relative}
+.atom-preview.white-bg{background:#fff}
+.atom-preview.azure-bg{background:var(--cs-azure)}
+
+/* Atom property annotations */
+.atom-props{padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.atom-prop{display:flex;align-items:center;gap:8px;font-size:11px}
+.atom-prop-key{color:var(--text3);min-width:70px;font-size:10px;flex-shrink:0}
+.atom-prop-val{color:var(--text);font-weight:500;font-size:11px}
+.atom-prop-var{display:inline-flex;align-items:center;gap:4px}
+
+/* Specific atom mocks */
+.a-logo{display:inline-block}.a-logo img{height:36px;width:auto}.a-logo.compact img{height:24px}
+.a-navitem{color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px}
+.a-navitem .ch{font-size:8px;opacity:.5}
+.a-search{display:flex;border-radius:4px;overflow:hidden;width:220px}
+.a-search input{border:none;padding:6px 10px;font-size:11px;flex:1;outline:none;font-family:var(--font);background:#fff;color:var(--cs-grey13)}
+.a-search .sb{background:var(--cs-azure);border:none;padding:6px 10px;display:flex;align-items:center;cursor:pointer}
+.a-search .sb svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2}
+.a-badge{font-size:9px;font-weight:700;color:#fff;padding:4px 24px;text-align:center;border-radius:0}
+.a-price{display:flex;align-items:baseline;gap:6px;font-family:var(--font)}
+.a-price .curr{font-size:14px;font-weight:700;color:var(--cs-grey13)}
+.a-price .was{font-size:11px;color:var(--cs-grey53);text-decoration:line-through}
+.a-btn-p{background:var(--cs-azure);color:#fff;border:none;padding:8px 18px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.a-btn-s{background:#fff;color:var(--cs-azure);border:2px solid var(--cs-azure);padding:6px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.a-input{display:flex;flex-direction:column;gap:4px;width:200px}
+.a-input label{font-size:11px;font-weight:500;color:var(--cs-grey13)}
+.a-input input{border:1px solid var(--cs-grey91);padding:8px 12px;border-radius:4px;font-size:13px;font-family:var(--font);outline:none;color:var(--cs-grey13)}
+.a-input input::placeholder{color:var(--cs-grey53)}
+.a-input .helper{font-size:10px;color:var(--cs-grey53)}
+.a-dd-trigger{border:1px solid var(--cs-grey91);border-radius:4px;padding:8px 12px;font-size:12px;color:var(--cs-grey13);background:#fff;display:flex;justify-content:space-between;align-items:center;width:170px;cursor:pointer}
+.a-dd-trigger .ch{font-size:8px;color:var(--cs-grey53)}
+.a-social{width:30px;height:30px;background:rgba(255,255,255,.12);border-radius:4px;display:flex;align-items:center;justify-content:center}
+.a-social svg{width:14px;height:14px;fill:#fff}
+.a-link-group{display:flex;flex-direction:column;gap:2px}
+.a-link-group h4{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.a-link-group a{font-size:10px;color:rgba(255,255,255,.6);text-decoration:none;padding:1px 0}
+.a-dot-active{width:10px;height:10px;border-radius:50%;background:var(--cs-azure)}
+.a-dot-inactive{width:8px;height:8px;border-radius:50%;background:var(--cs-azure84)}
+.a-store-card{background:#fff;border-radius:4px;padding:12px;border-left:4px solid var(--cs-azure);width:220px}
+.a-store-card h5{font-size:12px;font-weight:700;color:var(--cs-azure);margin-bottom:3px}
+.a-store-card p{font-size:10px;color:var(--cs-grey13);line-height:1.4}
+.a-store-card .ph{font-size:10px;color:var(--cs-azure33);margin-top:3px}
+
+/* Annotation lines */
+.anno{position:relative;display:inline-flex;align-items:center;gap:4px}
+.anno::after{content:'';position:absolute;left:-6px;top:50%;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+
+@media(max-width:640px){.app{padding:0 16px}.hero h1{font-size:24px}.comp-header{padding:16px}.m-card-grid{grid-template-columns:repeat(3,1fr)}}
+/* Password gate */
+.pw-gate{position:fixed;inset:0;z-index:9999;background:#FBF9F4;display:flex;align-items:center;justify-content:center;transition:opacity .3s,visibility .3s}
+.pw-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.pw-card{background:#fff;border:1px solid #C0CBD4;border-radius:8px;padding:48px 40px;width:100%;max-width:380px;text-align:center;box-shadow:0 4px 24px rgba(0,34,68,.06)}
+.pw-card img{width:100px;margin-bottom:24px}
+.pw-card h1{font-size:20px;font-weight:800;color:#003462;margin-bottom:4px;letter-spacing:-.02em}
+.pw-card p{font-size:13px;color:#8A98A4;margin-bottom:24px}
+.pw-card input{width:100%;padding:12px 16px;border:1px solid #C0CBD4;border-radius:8px;font-size:14px;font-family:inherit;outline:none;background:#EEF1F3;color:#002244;transition:border .15s}
+.pw-card input:focus{border-color:#004D87;box-shadow:0 0 0 2px rgba(0,77,135,.12)}
+.pw-card button{width:100%;padding:12px;background:#004D87;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:12px;transition:background .15s}
+.pw-card button:hover{background:#003462}
+.pw-err{color:#ED1D24;font-size:12px;margin-top:8px;font-weight:500;display:none}
+.pw-foot{margin-top:20px;font-size:11px;color:#C0CBD4}
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div class="pw-gate" id="pwGate">
+  <div class="pw-card">
+    <img src="logo.svg" alt="The Crazy Store">
+    <h1>Design System</h1>
+    <p>Enter the password to access the build guide</p>
+    <input type="password" id="pwInput" placeholder="Password" autofocus autocomplete="off">
+    <button onclick="checkPw()">Enter</button>
+    <div class="pw-err" id="pwErr">Wrong password. Try again.</div>
+    <div class="pw-foot">The Crazy Store &copy; 2026</div>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('cs_auth')==='1'){document.getElementById('pwGate').classList.add('hidden')}
+  document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw()});
+})();
+function checkPw(){
+  var v=document.getElementById('pwInput').value;
+  if(v==='crazytoy'){
+    sessionStorage.setItem('cs_auth','1');
+    document.getElementById('pwGate').classList.add('hidden');
+  } else {
+    document.getElementById('pwErr').style.display='block';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+  }
+}
+</script>
+
+<div class="app">
+
+<div class="hero">
+  <img src="logo.svg" alt="The Crazy Store" class="hero-logo">
+  <div class="badge">Figma Build Guide</div>
+  <h1>Build the <span>Crazy Store</span><br>Design System</h1>
+  <p>Step-by-step with live visual mocks. Check off each step. Every value references your Figma file variables.</p>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="pf"></div></div>
+  <div class="progress-label"><span id="pcount">0 / 26 steps</span><span id="ppct">0%</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- ATOMS LIBRARY                                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="atoms-section">
+<div class="atoms-title">Atoms Library</div>
+<div class="atoms-subtitle">Every primitive building block used across components. Build these first, then compose into components.</div>
+
+<!-- Full-width atom cards -->
+<div style="display:flex;flex-direction:column;gap:20px">
+
+<!-- ATOM 1: .logo -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>.logo</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview azure-bg" style="gap:20px;flex-wrap:wrap">
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">DEFAULT</div><div class="a-logo"><img src="logo.svg" alt="Crazy Store"></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">SCROLLED</div><div class="a-logo compact"><img src="logo.svg" alt="CS"></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">size=default</th><th class="state-col">size=compact</th></tr></thead><tbody>
+  <tr><td class="prop-name">Asset</td><td>logo.svg (full logo, height 36px)</td><td class="changed">logo.svg (compact, height 24px)</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFEB00"></span><span class="tk">Yellow/500</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="cd" style="background:#004B85"></span><span class="tk">DeepSeaBlue/500</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font weight</td><td><span class="tk">font/weight/bold</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font size</td><td>10px</td><td class="changed">8px</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td>4px</td><td class="changed">2px</td></tr>
+  <tr><td class="prop-name">Padding H</td><td>8px</td><td class="changed">6px</td></tr>
+  <tr><td class="prop-name">Width</td><td>Hug contents</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center</td><td class="same">same</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 2: ActionItem -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Nav/TopBar/ActionItem</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview azure-bg" style="gap:24px;flex-wrap:wrap">
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">DEFAULT</div><div class="a-navitem">Promotions <span class="ch">&#9660;</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">HOVER</div><div class="a-navitem" style="background:rgba(255,255,255,.1);padding:6px 10px;border-radius:4px">Promotions <span class="ch">&#9660;</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">ACTIVE</div><div class="a-navitem" style="position:relative;padding-bottom:4px">Promotions <span class="ch">&#9650;</span><span style="position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--cs-yellow);border-radius:1px"></span></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=active</th></tr></thead><tbody>
+  <tr><td class="prop-name">Background</td><td>transparent</td><td class="changed">rgba(255,255,255,.10)</td><td>transparent</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text opacity</td><td>85%</td><td class="changed">100%</td><td class="changed">100%</td></tr>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font weight</td><td><span class="tk">font/weight/bold</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font size</td><td>14px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding</td><td>0</td><td class="changed">6px V, 10px H</td><td>0</td></tr>
+  <tr><td class="prop-name">Radius</td><td>0</td><td class="changed"><span class="tk">radius/4</span></td><td>0</td></tr>
+  <tr><td class="prop-name">Underline</td><td>none</td><td>none</td><td class="changed">2px <span class="tk">Yellow/500</span></td></tr>
+  <tr><td class="prop-name">Chevron dir</td><td>&#9660; down</td><td class="same">same</td><td class="changed">&#9650; up (180&deg;)</td></tr>
+  <tr><td class="prop-name">Gap</td><td>4px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Boolean Property</th><th>true</th><th>false</th></tr></thead><tbody>
+  <tr><td class="prop-name">hasChevron</td><td>Chevron icon visible (8px, white 60%)</td><td class="changed">Chevron layer hidden</td></tr>
+</tbody></table>
+<div class="atom-props" style="margin-top:4px">
+  <div class="atom-prop"><span class="atom-prop-key">Text prop</span><span class="atom-prop-val">label (expose as Figma text property for overrides)</span></div>
+</div></div>
+
+<!-- ATOM 3: SearchBar -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Nav/SearchBar</h4><span class="atom-type comp">Molecule</span></div>
+<div class="atom-preview white-bg" style="gap:14px;flex-direction:column;align-items:stretch;padding:16px 20px">
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:46px;flex-shrink:0">DEFAULT</span>
+    <div style="flex:1;display:flex;align-items:center;height:34px">
+      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 12px;display:flex;align-items:center;gap:6px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:11px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
+      <div style="flex:1;background:#EEF1F3;padding:0 12px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:12px;color:#74808B">Search...</span></div>
+      <div style="background:#FFE800;width:34px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:9px;color:#8A98A4;width:46px;flex-shrink:0">FOCUS</span>
+    <div style="flex:1;display:flex;align-items:center;height:34px;box-shadow:0 0 0 2px #FFE800;border-radius:8px">
+      <div style="background:#E1E6EA;border:1px solid #C0CBD4;padding:0 12px;display:flex;align-items:center;gap:6px;height:100%;white-space:nowrap;border-radius:8px 0 0 8px"><span style="font-size:11px;font-weight:500;color:#312E25">All categories</span><span style="font-size:8px;color:#8A98A4">&#9660;</span></div>
+      <div style="flex:1;background:#EEF1F3;padding:0 12px;height:100%;display:flex;align-items:center;border:1px solid #C0CBD4;border-left:0"><span style="font-size:12px;color:#002244">bouncy ball</span></div>
+      <div style="background:#FFE800;width:34px;height:100%;display:flex;align-items:center;justify-content:center;border:1px solid #FFF2AC;border-radius:0 8px 8px 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1B15" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+    </div>
+  </div>
+</div>
+<div class="tip" style="margin:8px 0"><strong>Anatomy:</strong> This molecule has 3 subparts — optional Category Dropdown + Text Input + Submit Button — in a single horizontal auto layout frame.</div>
+<table class="dtable"><thead><tr><th class="prop-name" style="width:30%">Outer Frame</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, gap <span class="tk">space-0</span> (0px)</td></tr>
+  <tr><td class="prop-name">Width</td><td>Fill container (flex grow 1)</td></tr>
+  <tr><td class="prop-name">Height</td><td>Hug contents</td></tr>
+  <tr><td class="prop-name">Height</td><td>42px</td></tr>
+  <tr><td class="prop-name">Radius</td><td>8px</td></tr>
+  <tr><td class="prop-name">Clip content</td><td>Yes</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Dropdown (optional)</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">Greyscale/100</span></td></tr>
+  <tr><td class="prop-name">Border</td><td>1px <span class="tk">greyscale/border/default</span> (#C0CBD4)</td></tr>
+  <tr><td class="prop-name">Text</td><td>Inter Medium 14px, <span class="tk">Neutral/900</span> (#312E25)</td></tr>
+  <tr><td class="prop-name">Chevron</td><td>chevron-down 20px, <span class="tk">Neutral/900</span></td></tr>
+  <tr><td class="prop-name">Width</td><td>Hug contents</td></tr>
+  <tr><td class="prop-name">Padding</td><td>10px V, 20px L, 19px R</td></tr>
+  <tr><td class="prop-name">Gap</td><td><span class="tk">stack-gap-sm</span> (8px)</td></tr>
+  <tr><td class="prop-name">Radius</td><td>8px left only (rounded-bl, rounded-tl)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Text Input</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#EEF1F3"></span><span class="tk">Greyscale/50</span></td></tr>
+  <tr><td class="prop-name">Border</td><td>1px <span class="tk">greyscale/border/default</span> (#C0CBD4)</td></tr>
+  <tr><td class="prop-name">Value font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
+  <tr><td class="prop-name">Value weight</td><td><span class="tk">font/weight/roman</span></td></tr>
+  <tr><td class="prop-name">Value size</td><td><span class="tk">font/line-height/xs</span> (16px)</td></tr>
+  <tr><td class="prop-name">Value line height</td><td><span class="tk">font/line-height/xs</span> (16px)</td></tr>
+  <tr><td class="prop-name">Placeholder text</td><td>"Search..."</td></tr>
+  <tr><td class="prop-name">Placeholder color</td><td><span class="cd" style="background:#74808B"></span><span class="tk">Greyscale/500</span></td></tr>
+  <tr><td class="prop-name">Width</td><td>285px (input content area)</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">button-padding-y</span> V, <span class="tk">button-padding-x</span> H</td></tr>
+  <tr><td class="prop-name">Radius</td><td>8px (all corners, clipped by parent)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Submit Button</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFE800"></span><span class="tk">Yellow/500</span></td></tr>
+  <tr><td class="prop-name">Border</td><td>1px <span class="tk">Yellow/300</span> (#FFF2AC)</td></tr>
+  <tr><td class="prop-name">Size</td><td>42 x 42px</td></tr>
+  <tr><td class="prop-name">Icon</td><td>Search SVG, 20 x 20px</td></tr>
+  <tr><td class="prop-name">Icon color</td><td>dark stroke (#1D1B15)</td></tr>
+  <tr><td class="prop-name">Padding V</td><td>6px</td></tr>
+  <tr><td class="prop-name">Padding H</td><td><span class="tk">stack-gap-sm</span> (10px)</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=focus</th></tr></thead><tbody>
+  <tr><td class="prop-name">Focus ring</td><td>none</td><td class="changed">0 0 0 2px <span class="tk">Yellow/500</span></td></tr>
+  <tr><td class="prop-name">Placeholder</td><td>visible</td><td class="changed">hidden (replaced by user text)</td></tr>
+  <tr><td class="prop-name">Submit btn fill</td><td><span class="tk">DeepSeaBlue/500</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Input fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Boolean Property</th><th>true</th><th>false</th></tr></thead><tbody>
+  <tr><td class="prop-name">hasCategory</td><td>Category dropdown visible (left section with border-right)</td><td class="changed">Category dropdown hidden, input takes full width</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 4: Badge -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Card/Product/Badge</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:6px;flex-direction:column;align-items:stretch;padding:16px 40px">
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:9px;color:var(--cs-grey53);width:70px;flex-shrink:0">PROMOTION</span><div class="a-badge" style="background:var(--cs-azure33);flex:1">PROMOTION</div></div>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:9px;color:var(--cs-grey53);width:70px;flex-shrink:0">NEW</span><div class="a-badge" style="background:var(--cs-orange54);flex:1">NEW</div></div>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:9px;color:var(--cs-grey53);width:70px;flex-shrink:0">SALE</span><div class="a-badge" style="background:var(--cs-orange44);flex:1">SALE</div></div>
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:9px;color:var(--cs-grey53);width:70px;flex-shrink:0">OUT OF STOCK</span><div class="a-badge" style="background:var(--cs-grey53);flex:1">OUT OF STOCK</div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">type=promotion</th><th class="state-col">type=new</th><th class="state-col">type=sale</th><th class="state-col">type=out-of-stock</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#0069A8"></span><span class="tk">DeepSeaBlue/400</span></td><td class="changed"><span class="cd" style="background:#E5672E"></span><span class="tk">Red/500</span></td><td class="changed"><span class="cd" style="background:#E2A700"></span><span class="tk">Yellow/600</span></td><td class="changed"><span class="cd" style="background:#878787"></span><span class="tk">greyscale/text/disabled</span></td></tr>
+  <tr><td class="prop-name">Text content</td><td>"PROMOTION"</td><td class="changed">"NEW"</td><td class="changed">"SALE"</td><td class="changed">"OUT OF STOCK"</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/bold</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text size</td><td>10px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text align</td><td>center</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td>3px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding H</td><td>0px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Width</td><td>Fill container</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Height</td><td>Hug contents</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Radius</td><td>0 (inside card, clipped)</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center/center</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 5: Price Block -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>.price-block</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:32px;flex-wrap:wrap">
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">WITH DISCOUNT</div><div class="a-price"><span class="curr">R29.99</span><span class="was">R49.99</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">NO DISCOUNT</div><div class="a-price"><span class="curr">R39.99</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">OUT OF STOCK</div><div class="a-price"><span class="curr" style="color:var(--cs-grey53)">R44.99</span></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name" style="width:30%">Current Price Layer</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
+  <tr><td class="prop-name">Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
+  <tr><td class="prop-name">Size</td><td>12px</td></tr>
+  <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
+  <tr><td class="prop-name">Color (in stock)</td><td><span class="cd" style="background:#231F20"></span><span class="tk">greyscale/text/body</span></td></tr>
+  <tr><td class="prop-name">Color (out of stock)</td><td class="changed"><span class="cd" style="background:#878787"></span><span class="tk">greyscale/text/disabled</span></td></tr>
+  <tr><td class="prop-name">Text prop</td><td>price (expose as text property, e.g. "R29.99")</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Was Price Layer</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
+  <tr><td class="prop-name">Weight</td><td><span class="tk">font/weight/regular</span></td></tr>
+  <tr><td class="prop-name">Size</td><td>10px</td></tr>
+  <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
+  <tr><td class="prop-name">Color</td><td><span class="cd" style="background:#878787"></span><span class="tk">greyscale/text/disabled</span></td></tr>
+  <tr><td class="prop-name">Decoration</td><td>Strikethrough</td></tr>
+  <tr><td class="prop-name">Text prop</td><td>wasPrice (expose as text property, e.g. "R49.99")</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Container Frame</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center aligned</td></tr>
+  <tr><td class="prop-name">Gap</td><td>4px</td></tr>
+  <tr><td class="prop-name">Width</td><td>Hug contents</td></tr>
+  <tr><td class="prop-name">Padding</td><td>0 (parent card handles padding)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">discount=true</th><th class="state-col">discount=false</th></tr></thead><tbody>
+  <tr><td class="prop-name">Was price layer</td><td>visible</td><td class="changed">hidden</td></tr>
+  <tr><td class="prop-name">Gap</td><td>4px</td><td class="changed">0</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">stock=in-stock</th><th class="state-col">stock=out-of-stock</th></tr></thead><tbody>
+  <tr><td class="prop-name">Current price color</td><td><span class="tk">greyscale/text/body</span></td><td class="changed"><span class="tk">greyscale/text/disabled</span></td></tr>
+  <tr><td class="prop-name">Was price layer</td><td>visible (if discount=true)</td><td class="changed">hidden</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 6: Button -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Button</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:10px;flex-wrap:wrap;padding:16px 20px">
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">PRIMARY</div><button class="a-btn-p">Get Directions</button></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">SECONDARY</div><button class="a-btn-s">Call Store</button></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">GHOST</div><button class="a-btn-s" style="border-color:transparent;color:var(--cs-azure)">Learn More</button></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">DISABLED</div><button class="a-btn-p" style="opacity:.4;cursor:not-allowed">Disabled</button></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">type=primary</th><th class="state-col">type=secondary</th><th class="state-col">type=ghost</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#004B85"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Neutral/50</span></td><td class="changed">transparent</td></tr>
+  <tr><td class="prop-name">Border</td><td>none</td><td class="changed">2px <span class="tk">DeepSeaBlue/500</span></td><td class="changed">none</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Font</td><td>Inter 600</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Font size</td><td><span class="tk">font/size/md</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td><span class="tk">button-padding-y</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding H</td><td><span class="tk">button-padding-x</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center/center</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=pressed</th><th class="state-col">state=disabled</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill shift</td><td>base color</td><td class="changed">darken 10%</td><td class="changed">darken 20%</td><td>base color</td></tr>
+  <tr><td class="prop-name">Opacity</td><td><span class="tk">opacity/100</span></td><td class="same">same</td><td class="same">same</td><td class="changed">40%</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td><td class="changed">not-allowed</td></tr>
+  <tr><td class="prop-name">Shadow</td><td>none</td><td class="changed">0 2px 4px rgba(0,75,133,.15)</td><td>none</td><td>none</td></tr>
+  <tr><td class="prop-name">Transform</td><td>none</td><td class="changed">translateY(-1px)</td><td class="changed">translateY(0)</td><td>none</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">size=md</th><th class="state-col">size=sm</th></tr></thead><tbody>
+  <tr><td class="prop-name">Height</td><td><span class="tk">height/48</span> (48px)</td><td class="changed">36px</td></tr>
+  <tr><td class="prop-name">Font size</td><td><span class="tk">font/size/md</span></td><td class="changed">13px</td></tr>
+  <tr><td class="prop-name">Padding V</td><td><span class="tk">button-padding-y</span></td><td class="changed">8px</td></tr>
+  <tr><td class="prop-name">Padding H</td><td><span class="tk">button-padding-x</span></td><td class="changed"><span class="tk">button-padding-y</span></td></tr>
+  <tr><td class="prop-name">Icon size</td><td>16px</td><td class="changed">14px</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">icon=none</th><th class="state-col">icon=left</th><th class="state-col">icon=right</th><th class="state-col">icon=only</th></tr></thead><tbody>
+  <tr><td class="prop-name">Icon visible</td><td>hidden</td><td class="changed">visible, before label</td><td class="changed">visible, after label</td><td class="changed">visible, no label</td></tr>
+  <tr><td class="prop-name">Label visible</td><td>visible</td><td class="same">same</td><td class="same">same</td><td class="changed">hidden</td></tr>
+  <tr><td class="prop-name">Gap</td><td>0</td><td class="changed">8px</td><td class="changed">8px</td><td>0</td></tr>
+  <tr><td class="prop-name">Padding H</td><td><span class="tk">button-padding-x</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">button-padding-y</span></td></tr>
+</tbody></table></div>
+
+<!-- ATOM 7: Input -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Input/TextField</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:16px;flex-wrap:wrap;padding:16px 20px;align-items:flex-start">
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">DEFAULT</div><div class="a-input"><label>Email</label><input type="text" placeholder="you@example.com" readonly><span class="helper">Required field</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">FOCUS</div><div class="a-input"><label style="color:var(--cs-azure)">Email</label><input type="text" value="john@email.com" readonly style="border:2px solid var(--cs-azure);padding:7px 11px"><span class="helper">Required field</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">ERROR</div><div class="a-input"><label style="color:var(--cs-orange54)">Email</label><input type="text" value="invalid" readonly style="border:2px solid var(--cs-orange54);padding:7px 11px"><span class="helper" style="color:var(--cs-orange54)">Please enter a valid email</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">DISABLED</div><div class="a-input"><label style="color:var(--cs-grey80)">Email</label><input type="text" placeholder="Disabled" readonly style="background:var(--cs-grey98);color:var(--cs-grey80);cursor:not-allowed"><span class="helper" style="color:var(--cs-grey80)">Not editable</span></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=focus</th><th class="state-col">state=error</th><th class="state-col">state=disabled</th></tr></thead><tbody>
+  <tr><td class="prop-name">Input fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td></tr>
+  <tr><td class="prop-name">Border width</td><td><span class="tk">stroke weight/1</span></td><td class="changed">2px</td><td class="changed">2px</td><td><span class="tk">stroke weight/1</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E5E7EB"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004B85"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="cd" style="background:#E5672E"></span><span class="tk">Red/500</span></td><td><span class="tk">greyscale/border/default</span></td></tr>
+  <tr><td class="prop-name">Label color</td><td><span class="tk">greyscale/text/body</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Value color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Value font</td><td>Inter 400 <span class="tk">font/size/md</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Placeholder</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Helper color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Helper font</td><td>Inter 400 12px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Label font</td><td>Inter 500 14px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td>8px</td><td>7px (border offset)</td><td>7px (border offset)</td><td>8px</td></tr>
+  <tr><td class="prop-name">Padding H</td><td>12px</td><td>11px (border offset)</td><td>11px (border offset)</td><td>12px</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>text</td><td class="same">same</td><td class="same">same</td><td class="changed">not-allowed</td></tr>
+  <tr><td class="prop-name">Opacity</td><td>100%</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Vertical, gap 4px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Boolean Property</th><th>true</th><th>false</th></tr></thead><tbody>
+  <tr><td class="prop-name">hasLabel</td><td>Label layer visible (Inter 500 14px)</td><td class="changed">Label hidden, input starts at top</td></tr>
+  <tr><td class="prop-name">hasHelper</td><td>Helper text visible (Inter 400 12px)</td><td class="changed">Helper hidden, no space below input</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 8: Dropdown Trigger -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Menu/Dropdown/Trigger</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:16px;flex-wrap:wrap">
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">CLOSED</div><div class="a-dd-trigger">All Categories <span class="ch">&#9660;</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">OPEN</div><div class="a-dd-trigger" style="border:2px solid var(--cs-azure);padding:7px 11px">All Categories <span class="ch" style="transform:rotate(180deg);display:inline-block">&#9660;</span></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">DISABLED</div><div class="a-dd-trigger" style="background:var(--cs-grey98);color:var(--cs-grey80);cursor:not-allowed">Disabled <span class="ch" style="color:var(--cs-grey80)">&#9660;</span></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=closed</th><th class="state-col">state=open</th><th class="state-col">state=disabled</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td></tr>
+  <tr><td class="prop-name">Border width</td><td><span class="tk">stroke weight/1</span></td><td class="changed">2px</td><td><span class="tk">stroke weight/1</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E5E7EB"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004B85"></span><span class="tk">DeepSeaBlue/500</span></td><td><span class="tk">greyscale/border/default</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Text font</td><td>Inter 400 14px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Chevron rotation</td><td>0&deg; (&#9660;)</td><td class="changed">180&deg; (&#9650;)</td><td>0&deg; (&#9660;)</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td><span class="tk">stack-gap-sm</span></td><td>9px (border offset)</td><td><span class="tk">stack-gap-sm</span></td></tr>
+  <tr><td class="prop-name">Padding H</td><td>14px</td><td>13px (border offset)</td><td>14px</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="changed">not-allowed</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, space-between</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">type=nav-category</th><th class="state-col">type=filter</th><th class="state-col">type=sort</th></tr></thead><tbody>
+  <tr><td class="prop-name">Default label</td><td>"All Categories"</td><td class="changed">"Filter by"</td><td class="changed">"Sort by: Price"</td></tr>
+  <tr><td class="prop-name">Min width</td><td>170px</td><td class="changed">140px</td><td class="changed">160px</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 9: Dropdown Item -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Menu/Dropdown/Item</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="flex-direction:column;align-items:stretch;padding:0;gap:0">
+  <div class="m-dd-item" style="border-bottom:1px solid var(--cs-grey91)">All Categories</div>
+  <div class="m-dd-item" style="background:var(--cs-grey98);border-bottom:1px solid var(--cs-grey91)">Arts & Crafts <span style="font-size:9px;color:var(--cs-grey53);margin-left:auto;padding-right:8px">HOVER</span></div>
+  <div class="m-dd-item selected">Baby & Toddler <span style="font-size:9px;color:var(--cs-azure);margin-left:auto;padding-right:8px">SELECTED</span></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=selected</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td>transparent</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td><td class="changed">rgba(0,75,133,.03)</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Text font</td><td>Inter 400 14px</td><td class="same">same</td><td class="changed">Inter 600 14px (bold)</td></tr>
+  <tr><td class="prop-name">Checkmark</td><td>hidden</td><td>hidden</td><td class="changed">visible (&#10003; 12px, <span class="tk">DeepSeaBlue/500</span>)</td></tr>
+  <tr><td class="prop-name">Height</td><td>40px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding V</td><td><span class="tk">stack-gap-sm</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Padding H</td><td>14px</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Width</td><td>Fill container</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, space-between</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 10: Social Icon -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Nav/Footer/SocialIcon</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview azure-bg" style="gap:12px;flex-wrap:wrap">
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">DEFAULT</div><div class="a-social"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">HOVER</div><div class="a-social" style="background:rgba(255,255,255,.22)"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">FB</div><div class="a-social"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">X</div><div class="a-social"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5 0-.28-.03-.56-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">IG</div><div class="a-social"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name" style="width:30%">Frame</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Width</td><td>30px</td></tr>
+  <tr><td class="prop-name">Height</td><td>30px</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td></tr>
+  <tr><td class="prop-name">Auto layout</td><td>center/center (icon centered)</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Icon</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Type</td><td>SVG vector</td></tr>
+  <tr><td class="prop-name">Size</td><td>14 x 14px</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#fff"></span><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Stroke</td><td>none (filled icons)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td>rgba(255,255,255, 0.12)</td><td class="changed">rgba(255,255,255, 0.22)</td></tr>
+  <tr><td class="prop-name">Icon fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Transform</td><td>none</td><td class="changed">scale(1.05)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">platform</th><th>Icon</th></tr></thead><tbody>
+  <tr><td class="prop-name">fb</td><td>Facebook "f" logo SVG</td></tr>
+  <tr><td class="prop-name">X</td><td>X (formerly Twitter) logo SVG</td></tr>
+  <tr><td class="prop-name">ig</td><td>Instagram camera logo SVG</td></tr>
+  <tr><td class="prop-name">in</td><td>LinkedIn "in" logo SVG</td></tr>
+  <tr><td class="prop-name">tk</td><td>TikTok logo SVG</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 11: Footer Link Group -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Nav/Footer/LinkGroup</h4><span class="atom-type comp">Molecule</span></div>
+<div class="atom-preview azure-bg" style="gap:32px;align-items:flex-start">
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">DESKTOP</div><div class="a-link-group"><h4>Shop</h4><a href="#">Promotions</a><a href="#">New Arrivals</a><a href="#">Best Sellers</a><a href="#">Sale</a></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:6px">MOBILE (ACCORDION)</div><div style="color:#fff;font-size:12px;font-weight:700;display:flex;justify-content:space-between;width:160px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1)">Shop <span style="opacity:.5">&#9660;</span></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name" style="width:30%">Heading Layer</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
+  <tr><td class="prop-name">Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
+  <tr><td class="prop-name">Size</td><td><span class="tk">font/size/md</span> (16px)</td></tr>
+  <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
+  <tr><td class="prop-name">Color</td><td><span class="cd" style="background:#fff"></span><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Margin bottom</td><td>8px</td></tr>
+  <tr><td class="prop-name">Text prop</td><td>title (expose as Figma text property)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Link Items</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td></tr>
+  <tr><td class="prop-name">Weight</td><td><span class="tk">font/weight/regular</span></td></tr>
+  <tr><td class="prop-name">Size</td><td>14px</td></tr>
+  <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
+  <tr><td class="prop-name">Color</td><td>rgba(255,255,255, 0.65)</td></tr>
+  <tr><td class="prop-name">Hover color</td><td class="changed"><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Decoration</td><td>none (underline on hover optional)</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Container Frame</th><th>Value</th></tr></thead><tbody>
+  <tr><td class="prop-name">Auto layout</td><td>Vertical</td></tr>
+  <tr><td class="prop-name">Gap</td><td><span class="tk">space-0</span> (line-height handles spacing)</td></tr>
+  <tr><td class="prop-name">Width</td><td>Hug contents (or Fill in mobile)</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">device=desktop</th><th class="state-col">device=mobile</th></tr></thead><tbody>
+  <tr><td class="prop-name">Layout</td><td>Vertical, all links visible</td><td class="changed">Accordion: heading + chevron &#9660;, links collapsed</td></tr>
+  <tr><td class="prop-name">Width</td><td>Hug contents</td><td class="changed">Fill container</td></tr>
+  <tr><td class="prop-name">Heading</td><td>Static text</td><td class="changed">Tappable row with chevron</td></tr>
+  <tr><td class="prop-name">Chevron</td><td>none</td><td class="changed">&#9660; 10px, white 50%, right-aligned</td></tr>
+  <tr><td class="prop-name">Border bottom</td><td>none</td><td class="changed">1px rgba(255,255,255, 0.10)</td></tr>
+  <tr><td class="prop-name">Heading padding</td><td>0</td><td class="changed">8px V, 0 H</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 12: Indicator/Dot -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Indicator/Dot</h4><span class="atom-type prim">Atom</span></div>
+<div class="atom-preview white-bg" style="gap:16px">
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">INACTIVE</div><div class="a-dot-inactive"></div></div>
+  <div style="text-align:center"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">ACTIVE</div><div class="a-dot-active"></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=active</th><th class="state-col">state=inactive</th></tr></thead><tbody>
+  <tr><td class="prop-name">Width</td><td>10px</td><td class="changed">8px</td></tr>
+  <tr><td class="prop-name">Height</td><td>10px</td><td class="changed">8px</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#004B85"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="cd" style="background:#D1D5DC"></span><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Radius</td><td>full (9999px)</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Border</td><td>none</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Opacity</td><td>100%</td><td class="same">same</td></tr>
+</tbody></table></div>
+
+<!-- ATOM 13: Store Card -->
+<div class="atom-card">
+<div class="atom-card-header"><h4>Card/StoreLocation</h4><span class="atom-type comp">Molecule</span></div>
+<div class="atom-preview" style="background:var(--cs-grey98);gap:12px;align-items:stretch;flex-wrap:wrap">
+  <div style="text-align:center;flex:1;min-width:180px"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">DEFAULT</div><div class="a-store-card" style="border-left-color:transparent"><h5>Canal Walk</h5><p>Shop L127, Canal Walk Centre</p><div class="ph">021 555 0123</div></div></div>
+  <div style="text-align:center;flex:1;min-width:180px"><div style="font-size:9px;color:var(--cs-grey53);margin-bottom:6px">SELECTED</div><div class="a-store-card"><h5>Canal Walk</h5><p>Shop L127, Canal Walk Centre</p><div class="ph">021 555 0123</div></div></div>
+</div>
+<table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=selected</th></tr></thead><tbody>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">Neutral/50</span></td><td class="changed">#f7faff (tinted)</td></tr>
+  <tr><td class="prop-name">Border left</td><td>none (transparent)</td><td class="changed">4px <span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/4</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Shadow</td><td>none</td><td class="changed">0 2px 8px rgba(0,75,133,.08)</td></tr>
+  <tr><td class="prop-name">Cursor</td><td>pointer</td><td>default</td></tr>
+</tbody></table>
+<table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">layout=list</th><th class="state-col">layout=map-sidebar</th></tr></thead><tbody>
+  <tr><td class="prop-name">Width</td><td>Fill container</td><td class="changed">Fixed 280px</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">button-padding-x</span> (16px)</td><td class="changed"><span class="tk">button-padding-y</span> (12px)</td></tr>
+  <tr><td class="prop-name">Name font</td><td>Inter 700 <span class="tk">font/size/md</span></td><td class="changed">Inter 700 14px</td></tr>
+  <tr><td class="prop-name">Address font</td><td>Inter 400 14px</td><td class="changed">Inter 400 12px</td></tr>
+  <tr><td class="prop-name">CTA buttons</td><td>Both visible (Primary + Secondary)</td><td class="changed">Icon-only buttons (compact)</td></tr>
+</tbody></table>
+<div class="atom-props" style="margin-top:4px">
+  <div class="atom-prop"><span class="atom-prop-key">Name color</span><span class="atom-prop-val"><span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="atom-prop"><span class="atom-prop-key">Address color</span><span class="atom-prop-val"><span class="tk">greyscale/text/body</span></span></div>
+  <div class="atom-prop"><span class="atom-prop-key">Phone color</span><span class="atom-prop-val"><span class="tk">DeepSeaBlue/400</span></span></div>
+  <div class="atom-prop"><span class="atom-prop-key">Hours color</span><span class="atom-prop-val"><span class="tk">greyscale/text/disabled</span>, Inter 400 12px / <span class="tk">font/line-height/sm</span></span></div>
+  <div class="atom-prop"><span class="atom-prop-key">Auto layout</span><span class="atom-prop-val">Vertical, gap <span class="tk">button-padding-y</span></span></div>
+</div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 1. TOP NAVIGATION                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp open" data-comp="nav">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>1</span></div>
+  <div class="comp-info"><h2>Top Navigation</h2><p>Navbar + Mega Menu + Mobile — all states</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<!-- VISUAL: Desktop states -->
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">Desktop — All States</div>
+  <div class="state-tabs" data-target="nav-states">
+    <div class="state-tab active" data-state="default">Default</div>
+    <div class="state-tab" data-state="hover">Hover</div>
+    <div class="state-tab" data-state="active">Active</div>
+    <div class="state-tab" data-state="scrolled">Scrolled</div>
+  </div>
+  <div class="mock-frame" id="nav-states">
+    <!-- default -->
+    <div class="nav-state" data-state="default" style="display:block">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Desktop / Default / Guest</div>
+      <div class="m-nav">
+        <div class="logo"><img src="logo.svg" alt="Crazy Store"></div>
+        <div class="links">
+          <a href="#">Promotions <span class="chev">&#9660;</span></a>
+          <a href="#">Products <span class="chev">&#9654;</span></a>
+          <a href="#">Store Finder</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="search"><div class="scat">All categories <span class="chv">&#9660;</span></div><input type="text" placeholder="Search..." readonly><div class="sbtn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div></div>
+      </div>
+    </div>
+    <!-- hover -->
+    <div class="nav-state" data-state="hover" style="display:none">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--blue)"></span> Desktop / Hover State</div>
+      <div class="m-nav">
+        <div class="logo"><img src="logo.svg" alt="Crazy Store"></div>
+        <div class="links">
+          <a href="#" class="hov-demo">Promotions <span class="chev">&#9660;</span></a>
+          <a href="#">Products <span class="chev">&#9654;</span></a>
+          <a href="#">Store Finder</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="search"><div class="scat">All categories <span class="chv">&#9660;</span></div><input type="text" placeholder="Search..." readonly><div class="sbtn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div></div>
+      </div>
+    </div>
+    <!-- active (mega menu) -->
+    <div class="nav-state" data-state="active" style="display:none">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--orange)"></span> Desktop / Active — Mega Menu Open</div>
+      <div class="m-nav">
+        <div class="logo"><img src="logo.svg" alt="Crazy Store"></div>
+        <div class="links">
+          <a href="#" class="active">Promotions <span class="chev">&#9650;</span></a>
+          <a href="#">Products <span class="chev">&#9654;</span></a>
+          <a href="#">Store Finder</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="search"><div class="scat">All categories <span class="chv">&#9660;</span></div><input type="text" placeholder="Search..." readonly><div class="sbtn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div></div>
+      </div>
+      <div class="m-mega">
+        <a href="#">Arts & Crafts</a><a href="#">Baby & Toddler</a><a href="#">Books</a>
+        <a href="#">Clothing</a><a href="#">Educational</a><a href="#">Electronics</a>
+        <a href="#">Games & Puzzles</a><a href="#">Home & Garden</a><a href="#">Kitchen</a>
+        <a href="#">Outdoor Play</a><a href="#">Party Supplies</a><a href="#">Stationery</a>
+      </div>
+    </div>
+    <!-- scrolled -->
+    <div class="nav-state" data-state="scrolled" style="display:none">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--accent)"></span> Desktop / Scrolled — Compact</div>
+      <div class="m-nav scrolled">
+        <div class="logo"><img src="logo.svg" alt="CS" style="height:20px"></div>
+        <div class="links" style="gap:12px">
+          <a href="#" style="font-size:11px">Promotions <span class="chev">&#9660;</span></a>
+          <a href="#" style="font-size:11px">Products <span class="chev">&#9654;</span></a>
+          <a href="#" style="font-size:11px">Store Finder</a>
+          <a href="#" style="font-size:11px">Contact Us</a>
+        </div>
+        <div class="search" style="max-width:200px;height:24px"><div class="scat" style="font-size:8px;padding:0 6px">All <span class="chv">&#9660;</span></div><input type="text" placeholder="Search..." readonly style="font-size:9px"><div class="sbtn" style="padding:0 6px"><svg viewBox="0 0 24 24" style="width:10px;height:10px"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div></div>
+      </div>
+    </div>
+    <!-- logged-in removed -->
+  </div>
+</div>
+
+<!-- VISUAL: Mobile -->
+<div class="mock-section" style="padding:8px 24px 0">
+  <div class="mock-label">Mobile</div>
+  <div class="mock-row">
+    <div class="mock-frame mobile">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Mobile / Default</div>
+      <div class="m-nav-mobile">
+        <div class="hamburger"><span></span><span></span><span></span></div>
+        <div class="logo"><img src="logo.svg" alt="Crazy Store"></div>
+        <div class="search-ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+      </div>
+    </div>
+    <div class="mock-frame mobile">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--orange)"></span> Mobile / Menu Open</div>
+      <div class="m-nav-mobile">
+        <div style="display:flex;flex-direction:column;gap:2px;cursor:pointer"><span style="width:18px;height:2px;background:#fff;transform:rotate(45deg) translate(2px,2px)"></span><span style="width:18px;height:2px;background:#fff;opacity:0"></span><span style="width:18px;height:2px;background:#fff;transform:rotate(-45deg) translate(2px,-2px)"></span></div>
+        <div class="logo"><img src="logo.svg" alt="Crazy Store"></div>
+        <div class="search-ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></div>
+      </div>
+      <div style="background:var(--cs-azure);padding:0 16px 12px">
+        <div style="display:flex;flex-direction:column;gap:0">
+          <a href="#" style="color:#fff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);text-decoration:none">Promotions</a>
+          <a href="#" style="color:#fff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);text-decoration:none">Products</a>
+          <a href="#" style="color:#fff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);text-decoration:none">Store Finder</a>
+          <a href="#" style="color:#fff;font-size:13px;padding:10px 0;text-decoration:none">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Create the Nav/TopBar component frame</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Name</span><span class="spec-val">Nav/TopBar</span></div>
+  <div class="spec-row"><span class="spec-key">Width</span><span class="spec-val">Fill container</span></div>
+  <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val"><span class="tk">height/48</span> (48px)</span></div>
+  <div class="spec-row"><span class="spec-key">Fill</span><span class="spec-val"><span class="cd" style="background:#004B85"></span> <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Auto layout</span><span class="spec-val">Horizontal, center aligned</span></div>
+  <div class="spec-row"><span class="spec-key">Gap</span><span class="spec-val"><span class="tk">button-padding-x</span> (16px)</span></div>
+  <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">0 vertical, 24px horizontal</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Add .logo subcomponent</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Layer name</span><span class="spec-val">.logo</span></div>
+  <div class="spec-row"><span class="spec-key">Fill</span><span class="spec-val"><span class="cd" style="background:#FFEB00"></span> <span class="tk">Yellow/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val"><span class="tk">radius/4</span></span></div>
+  <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">4px V, 8px H</span></div>
+  <div class="spec-row"><span class="spec-key">Content</span><span class="spec-val">logo.svg — SVG asset, height 36px default, 24px compact</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Nav/TopBar/ActionItem subcomponent</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Auto layout</span><span class="spec-val">Horizontal, center, gap 4px</span></div>
+  <div class="spec-row"><span class="spec-key">Text</span><span class="spec-val">Inter 600 14px / <span class="tk">font/line-height/sm</span></span></div>
+  <div class="spec-row"><span class="spec-key">Color</span><span class="spec-val"><span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Icon</span><span class="spec-val">Chevron down 8px, white 60% opacity</span></div>
+</div>
+<div class="tip"><strong>Tip:</strong> Expose text as a component text property so you can override each nav item.</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Nav/SearchBar subcomponent</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Input bg</span><span class="spec-val"><span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Input text</span><span class="spec-val">Inter 400 13px, <span class="tk">greyscale/text/body</span></span></div>
+  <div class="spec-row"><span class="spec-key">Submit btn</span><span class="spec-val"><span class="tk">DeepSeaBlue/500</span>, search icon white</span></div>
+  <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val"><span class="tk">radius/4</span></span></div>
+  <div class="spec-row"><span class="spec-key">Width</span><span class="spec-val">Fill container (flex grow)</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Assemble full TopBar + set variants</div></div>
+<div class="step-body">
+<div class="tree"><span class="n">Nav/TopBar</span>
+├── <span class="n">.logo</span> <span class="d">— Hug, yellow bg</span>
+├── <span class="n">.nav-actions</span> <span class="d">— Hug, gap 20px</span>
+│   ├── <span class="n">ActionItem</span> <span class="d">"Promotions"</span>
+│   ├── <span class="n">ActionItem</span> <span class="d">"Products"</span>
+│   ├── <span class="n">ActionItem</span> <span class="d">"Store Finder"</span>
+│   └── <span class="n">ActionItem</span> <span class="d">"Contact Us"</span>
+└── <span class="n">Nav/SearchBar</span> <span class="d">— Fill, flex grow</span></div>
+<table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
+  <tr><td>device</td><td><span class="pill">desktop</span> <span class="pill">mobile</span></td></tr>
+  <tr><td>state</td><td><span class="pill">default</span> <span class="pill">hover</span> <span class="pill">active</span> <span class="pill">scrolled</span></td></tr>
+  <tr><td>search</td><td><span class="pill">visible</span> <span class="pill">hidden</span></td></tr>
+  <tr><td>auth</td><td><span class="pill">guest</span></td></tr>
+</tbody></table>
+<div class="warn"><strong>Don't</strong> build all 32 combinations. Build: desktop/default/visible/guest first, then scrolled, active, and mobile.</div>
+</div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build scrolled + active states</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Scrolled height</span><span class="spec-val">40px, logo collapses to "CS"</span></div>
+  <div class="spec-row"><span class="spec-key">Scrolled shadow</span><span class="spec-val">0, 2, 8, rgba(0,0,0,.2)</span></div>
+  <div class="spec-row"><span class="spec-key">Active</span><span class="spec-val">Shows Nav/MegaMenu below</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Nav/MegaMenu component</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Fill</span><span class="spec-val"><span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Border top</span><span class="spec-val">2px <span class="tk">Yellow/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Layout</span><span class="spec-val">Wrap, 3 columns, gap 4px V / 32px H</span></div>
+  <div class="spec-row"><span class="spec-key">Item text</span><span class="spec-val">Inter 500 14px, <span class="tk">greyscale/text/body</span></span></div>
+  <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">24px all sides</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build mobile variant</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Layout</span><span class="spec-val">Horizontal, space-between</span></div>
+  <div class="spec-row"><span class="spec-key">Left</span><span class="spec-val">Hamburger (3 lines, 22px, white)</span></div>
+  <div class="spec-row"><span class="spec-key">Center</span><span class="spec-val">.logo</span></div>
+  <div class="spec-row"><span class="spec-key">Right</span><span class="spec-val">Search icon 18px</span></div>
+</div></div></div>
+
+</div></div></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 2. FOOTER                                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp" data-comp="footer">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>2</span></div>
+  <div class="comp-info"><h2>Footer</h2><p>Desktop 4-column + Mobile stacked</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">Desktop vs Mobile</div>
+  <div class="mock-row">
+    <div class="mock-frame">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Desktop</div>
+      <div class="m-footer">
+        <div class="m-footer-inner">
+          <div><h4>Shop</h4><a href="#">Promotions</a><a href="#">New Arrivals</a><a href="#">Best Sellers</a><a href="#">Sale</a></div>
+          <div><h4>Help</h4><a href="#">Contact Us</a><a href="#">FAQs</a><a href="#">Shipping</a><a href="#">Returns</a></div>
+          <div><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Store Finder</a></div>
+          <div><h4>Follow Us</h4>
+            <div class="m-footer-social">
+              <div class="sic"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+              <div class="sic"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5 0-.28-.03-.56-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+              <div class="sic"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div>
+            </div>
+            <div class="m-footer-cta">Join the CRAZY CLUB</div>
+          </div>
+        </div>
+        <div class="m-footer-copyright">&copy; 2026 The Crazy Store. All rights reserved.</div>
+      </div>
+    </div>
+    <div class="mock-frame mobile">
+      <div class="mock-frame-label"><span class="dot" style="background:var(--blue)"></span> Mobile</div>
+      <div class="m-footer m-footer-mobile">
+        <div class="m-footer-inner">
+          <div><h4>Shop</h4><a href="#">Promotions</a><a href="#">New Arrivals</a><a href="#">Best Sellers</a></div>
+          <div><h4>Help</h4><a href="#">Contact Us</a><a href="#">FAQs</a><a href="#">Shipping</a></div>
+        </div>
+        <div class="m-footer-social" style="justify-content:center;margin-top:14px">
+          <div class="sic"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+          <div class="sic"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5 0-.28-.03-.56-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+          <div class="sic"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></div>
+        </div>
+        <div class="m-footer-cta" style="margin-top:12px">Join the CRAZY CLUB</div>
+        <div class="m-footer-copyright">&copy; 2026 The Crazy Store</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Create Nav/Footer frame</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Fill</span><span class="spec-val"><span class="cd" style="background:#004B85e5"></span> <span class="tk">DeepSeaBlue/500 90%</span></span></div>
+  <div class="spec-row"><span class="spec-key">Auto layout</span><span class="spec-val">Vertical, center aligned</span></div>
+  <div class="spec-row"><span class="spec-key">Max width</span><span class="spec-val"><span class="tk">width/1280</span></span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Nav/Footer/LinkGroup + SocialIcon</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Heading</span><span class="spec-val">Inter 700 <span class="tk">font/size/md</span>, <span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Links</span><span class="spec-val">Inter 400 14px, white 65% opacity</span></div>
+  <div class="spec-row"><span class="spec-key">Social bg</span><span class="spec-val"><span class="tk">DeepSeaBlue/500</span>, radius <span class="tk">radius/4</span></span></div>
+  <div class="spec-row"><span class="spec-key">Social variant</span><span class="spec-val">platform: fb / X / ig / in / tk</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Add CTA button + copyright bar</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">CTA fill</span><span class="spec-val"><span class="tk">DeepSeaBlue/500 80%</span></span></div>
+  <div class="spec-row"><span class="spec-key">CTA text</span><span class="spec-val"><span class="tk">font/family/sub-heading</span> 400 <span class="tk">font/size/lg</span>, underline</span></div>
+  <div class="spec-row"><span class="spec-key">Copyright</span><span class="spec-val">Inter 400 12px, white 40% opacity, center</span></div>
+</div></div></div>
+</div></div></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 3. PRODUCT CARDS                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp" data-comp="cards">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>3</span></div>
+  <div class="comp-info"><h2>Product Cards</h2><p>Grid + List + Badges + Hover + Out of Stock</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">Grid View — Badge Variants + States</div>
+  <div class="mock-frame">
+    <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Grid / All Badge Types</div>
+    <div class="m-card-grid" style="background:var(--cs-grey98)">
+      <div class="m-card"><div class="img"><div class="placeholder"></div></div><div class="badge-m promo">PROMOTION</div><div class="title-m">Bouncy Ball Set 12-Pack Fun Colors</div><div class="price-m">R29.99 <span class="was">R49.99</span></div></div>
+      <div class="m-card"><div class="img"><div class="placeholder"></div></div><div class="badge-m new">NEW</div><div class="title-m">Rainbow Slime Kit Magic Glitter</div><div class="price-m">R39.99</div></div>
+      <div class="m-card"><div class="img"><div class="placeholder"></div></div><div class="badge-m sale">SALE</div><div class="title-m">Crazy Foam Blaster Water Gun</div><div class="price-m">R59.99 <span class="was">R89.99</span></div></div>
+      <div class="m-card" style="box-shadow:0 8px 20px rgba(0,75,133,.12);transform:translateY(-2px)"><div class="img"><div class="placeholder"></div></div><div class="badge-m promo">PROMOTION</div><div class="title-m" style="font-weight:600">Hover State Example Card</div><div class="price-m">R19.99</div></div>
+      <div class="m-card oos"><div class="img"><div class="placeholder"></div></div><div class="badge-m oos-b">OUT OF STOCK</div><div class="title-m">Dinosaur Paint Set Educational</div><div class="price-m">R44.99</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="mock-section" style="padding:8px 24px 0">
+  <div class="mock-label">List View Layout</div>
+  <div class="mock-frame">
+    <div class="mock-frame-label"><span class="dot" style="background:var(--blue)"></span> List / Horizontal Cards</div>
+    <div class="m-card-list" style="background:var(--cs-grey98)">
+      <div class="m-card-h"><div class="badge-h" style="background:var(--cs-azure33)">PROMO</div><div class="img-h"><div class="ph"></div></div><div class="info-h"><div class="t">Bouncy Ball Set 12-Pack Fun Colors</div><div class="p">R29.99 <span style="text-decoration:line-through;color:var(--cs-grey53);font-weight:400;font-size:9px">R49.99</span></div></div></div>
+      <div class="m-card-h"><div class="badge-h" style="background:var(--cs-orange54)">NEW</div><div class="img-h"><div class="ph"></div></div><div class="info-h"><div class="t">Rainbow Slime Kit Magic Glitter</div><div class="p">R39.99</div></div></div>
+      <div class="m-card-h"><div class="img-h"><div class="ph"></div></div><div class="info-h"><div class="t">Standard Product — No Badge</div><div class="p">R24.99</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Card/Product/Badge atom</div></div>
+<div class="step-body">
+<table class="vtable"><thead><tr><th>type</th><th>Background</th></tr></thead><tbody>
+  <tr><td><span class="pill">promotion</span></td><td><span class="cd" style="background:#0069A8"></span> <span class="tk">DeepSeaBlue/400</span></td></tr>
+  <tr><td><span class="pill">new</span></td><td><span class="cd" style="background:#E5672E"></span> <span class="tk">Red/500</span></td></tr>
+  <tr><td><span class="pill">sale</span></td><td><span class="cd" style="background:#E2A700"></span> <span class="tk">Yellow/600</span></td></tr>
+  <tr><td><span class="pill">out-of-stock</span></td><td><span class="cd" style="background:#878787"></span> <span class="tk">greyscale/text/disabled</span></td></tr>
+</tbody></table>
+<div class="spec">
+  <div class="spec-row"><span class="spec-key">Text</span><span class="spec-val">Inter 700 10px, <span class="tk">Neutral/50</span>, center</span></div>
+  <div class="spec-row"><span class="spec-key">Width</span><span class="spec-val">Fill container</span></div>
+  <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">3px vertical</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build .image-container + .price-block</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Image</span><span class="spec-val">1:1 aspect ratio, Fill width, clip content</span></div>
+  <div class="spec-row"><span class="spec-key">Price</span><span class="spec-val">Inter 700 12px, <span class="tk">greyscale/text/body</span></span></div>
+  <div class="spec-row"><span class="spec-key">Was price</span><span class="spec-val">Inter 400 10px, <span class="tk">greyscale/text/disabled</span>, strikethrough</span></div>
+</div>
+<div class="warn"><strong>Critical:</strong> Never set image to "Hug". Fixed aspect ratio prevents jagged card grids.</div>
+</div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Assemble Card/Product + set all variants</div></div>
+<div class="step-body">
+<div class="tree"><span class="n">Card/Product</span>
+├── <span class="n">.image-container</span> <span class="d">— Fill, 1:1</span>
+├── <span class="n">.badge</span> <span class="d">— Fill width</span>
+├── <span class="n">.title</span> <span class="d">— Inter 400 11px, center, 2-line max</span>
+└── <span class="n">.price-block</span> <span class="d">— pad: 0 8px 10px</span></div>
+<table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
+  <tr><td>layout</td><td><span class="pill">grid</span> <span class="pill">list</span></td></tr>
+  <tr><td>badge</td><td><span class="pill">promotion</span> <span class="pill">new</span> <span class="pill">sale</span> <span class="pill">none</span></td></tr>
+  <tr><td>stock</td><td><span class="pill">in-stock</span> <span class="pill">out-of-stock</span></td></tr>
+  <tr><td>state</td><td><span class="pill">default</span> <span class="pill">hover</span></td></tr>
+</tbody></table>
+<div class="spec">
+  <div class="spec-row"><span class="spec-key">Hover</span><span class="spec-val">Shadow: 0, 8, 20, rgba(0,75,133,.12)</span></div>
+  <div class="spec-row"><span class="spec-key">Out of stock</span><span class="spec-val">Image overlay: #000 50%</span></div>
+  <div class="spec-row"><span class="spec-key">List layout</span><span class="spec-val">Horizontal. Image: 70px fixed. Content: fill.</span></div>
+</div></div></div>
+
+</div></div></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 4. DROPDOWN MENUS                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp" data-comp="dropdown">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>4</span></div>
+  <div class="comp-info"><h2>Dropdown Menus</h2><p>Trigger + Menu + All item states</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">All Dropdown States</div>
+  <div class="mock-frame">
+    <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Closed / Open / Selected</div>
+    <div class="m-dd-wrap" style="background:#fff">
+      <div class="m-dd">
+        <div style="font-size:9px;color:var(--cs-grey53);margin-bottom:4px;font-weight:600">CLOSED</div>
+        <div class="m-dd-trigger">All Categories <span class="chev">&#9660;</span></div>
+      </div>
+      <div class="m-dd">
+        <div style="font-size:9px;color:var(--cs-grey53);margin-bottom:4px;font-weight:600">OPEN</div>
+        <div class="m-dd-trigger open">All Categories <span class="chev">&#9660;</span></div>
+        <div class="m-dd-menu show" style="position:relative;top:4px">
+          <div class="m-dd-item">All Categories</div>
+          <div class="m-dd-item" style="background:var(--cs-grey98)">Arts & Crafts</div>
+          <div class="m-dd-item selected">Baby & Toddler</div>
+          <div class="m-dd-item">Books</div>
+          <div class="m-dd-item">Clothing</div>
+        </div>
+      </div>
+      <div class="m-dd">
+        <div style="font-size:9px;color:var(--cs-grey53);margin-bottom:4px;font-weight:600">FILTER TYPE</div>
+        <div class="m-dd-trigger">Sort by: Price <span class="chev">&#9660;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Menu/Dropdown/Item subcomponent</div></div>
+<div class="step-body">
+<table class="vtable"><thead><tr><th>State</th><th>Background</th><th>Text</th><th>Extra</th></tr></thead><tbody>
+  <tr><td><span class="pill">default</span></td><td>transparent</td><td><span class="tk">greyscale/text/body</span></td><td>—</td></tr>
+  <tr><td><span class="pill">hover</span></td><td><span class="tk">greyscale/surface/subtle</span></td><td><span class="tk">greyscale/text/body</span></td><td>—</td></tr>
+  <tr><td><span class="pill">selected</span></td><td>azure/26 at 3%</td><td><span class="tk">DeepSeaBlue/500</span> bold</td><td>&#10003;</td></tr>
+</tbody></table></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build trigger + menu container</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Closed border</span><span class="spec-val"><span class="tk">stroke weight/1</span> <span class="tk">greyscale/border/default</span></span></div>
+  <div class="spec-row"><span class="spec-key">Open border</span><span class="spec-val">2px <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Menu shadow</span><span class="spec-val">0, 4, 16, rgba(0,0,0,.12)</span></div>
+  <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val"><span class="tk">radius/4</span></span></div>
+</div>
+<table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
+  <tr><td>state</td><td><span class="pill">closed</span> <span class="pill">open</span></td></tr>
+  <tr><td>type</td><td><span class="pill">nav-category</span> <span class="pill">filter</span> <span class="pill">sort</span></td></tr>
+</tbody></table></div></div>
+</div></div></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 5. STORE LOCATION                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp" data-comp="store">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>5</span></div>
+  <div class="comp-info"><h2>Store Location Cards</h2><p>List + Map sidebar + Selected state</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">List View + Map + Selected State</div>
+  <div class="mock-frame">
+    <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Map + List Sidebar</div>
+    <div style="display:flex;background:var(--cs-grey98);gap:0">
+      <div style="width:55%;padding:12px;display:flex;flex-direction:column;gap:8px">
+        <div class="m-store selected">
+          <h5>Canal Walk</h5>
+          <div class="addr">Shop L127, Canal Walk Shopping Centre, Century City</div>
+          <div class="phone">021 555 0123</div>
+          <div class="hours">Mon-Sat: 09:00 - 18:00</div>
+          <div class="btns"><button class="btn-p">Get Directions</button><button class="btn-s">Call Store</button></div>
+        </div>
+        <div class="m-store">
+          <h5>V&A Waterfront</h5>
+          <div class="addr">Shop 6172, Victoria Wharf, V&A Waterfront</div>
+          <div class="phone">021 555 0456</div>
+          <div class="hours">Mon-Sun: 09:00 - 21:00</div>
+          <div class="btns"><button class="btn-p">Get Directions</button><button class="btn-s">Call Store</button></div>
+        </div>
+      </div>
+      <div class="m-map">MAP VIEW</div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Card/StoreLocation component</div></div>
+<div class="step-body">
+<div class="tree"><span class="n">Card/StoreLocation</span>
+├── <span class="n">.store-name</span> <span class="d">— Inter 700 16/24, DeepSeaBlue/500</span>
+├── <span class="n">.address</span> <span class="d">— Inter 400 14/24, greyscale/text/body</span>
+├── <span class="n">.phone</span> <span class="d">— Inter 400 14/24, DeepSeaBlue/400</span>
+├── <span class="n">.hours</span> <span class="d">— Inter 400 12/20, greyscale/text/disabled</span>
+└── <span class="n">.cta-row</span> <span class="d">— Horizontal, gap 8</span>
+    ├── <span class="n">Button/Primary</span>
+    └── <span class="n">Button/Secondary</span></div>
+<div class="spec">
+  <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val"><span class="tk">button-padding-x</span> all sides</span></div>
+  <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val"><span class="tk">radius/4</span></span></div>
+  <div class="spec-row"><span class="spec-key">Selected</span><span class="spec-val">border-left: 4px <span class="tk">DeepSeaBlue/500</span></span></div>
+</div>
+<table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
+  <tr><td>layout</td><td><span class="pill">list</span> <span class="pill">map-sidebar</span></td></tr>
+  <tr><td>state</td><td><span class="pill">default</span> <span class="pill">selected</span></td></tr>
+</tbody></table>
+</div></div>
+</div></div></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 6. CAROUSEL INDICATORS                             -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="comp" data-comp="carousel">
+<div class="comp-header" onclick="toggleComp(this)">
+  <div class="comp-num"><span>6</span></div>
+  <div class="comp-info"><h2>Carousel Indicators</h2><p>Dots + Progress + Pagination</p></div>
+  <span class="comp-tag component">Component</span>
+  <span class="comp-chevron">&#9654;</span>
+</div>
+<div class="comp-body">
+
+<div class="mock-section" style="padding:16px 24px 0">
+  <div class="mock-label">All 3 Indicator Types</div>
+  <div class="mock-frame">
+    <div class="mock-frame-label"><span class="dot" style="background:var(--green)"></span> Dots / Progress / Pagination</div>
+    <div class="m-carousel-wrap" style="background:#fff">
+      <div>
+        <div style="font-size:9px;color:var(--cs-grey53);font-weight:600;margin-bottom:8px;text-align:center">DOTS</div>
+        <div class="m-dots"><div class="m-dot"></div><div class="m-dot active"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot"></div></div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--cs-grey53);font-weight:600;margin-bottom:8px;text-align:center">PROGRESS BAR</div>
+        <div class="m-progress">
+          <div class="m-pbar"><div class="m-pbar-fill"></div></div>
+          <div class="m-pbar-label">2 of 5</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--cs-grey53);font-weight:600;margin-bottom:8px;text-align:center">PAGINATION</div>
+        <div class="m-pagination">
+          <div class="m-pg-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="m-pg-text">Page 2 of 5</div>
+          <div class="m-pg-btn"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="steps">
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Indicator/Dot atom</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Active</span><span class="spec-val">10px, radius full, <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Inactive</span><span class="spec-val">8px, radius full, <span class="tk">Greyscale/200</span></span></div>
+  <div class="spec-row"><span class="spec-key">Variant</span><span class="spec-val">state: active / inactive</span></div>
+</div></div></div>
+
+<div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Indicator/Carousel container (3 types)</div></div>
+<div class="step-body"><div class="spec">
+  <div class="spec-row"><span class="spec-key">Dots</span><span class="spec-val">Horizontal, center, gap 8px</span></div>
+  <div class="spec-row"><span class="spec-key">Progress</span><span class="spec-val">200px x 4px, radius full, track <span class="tk">Greyscale/200</span>, fill <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Pagination</span><span class="spec-val">30x30 icon btns + "Page X of Y" text</span></div>
+</div>
+<table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
+  <tr><td>type</td><td><span class="pill">dots</span> <span class="pill">progress</span> <span class="pill">pagination</span></td></tr>
+</tbody></table>
+</div></div>
+</div></div></div>
+
+<div style="height:80px"></div>
+</div>
+
+<script>
+function toggleComp(el){el.closest('.comp').classList.toggle('open')}
+function toggleStep(el){el.closest('.step').classList.toggle('done');updateProgress();saveState()}
+function updateProgress(){
+  const t=document.querySelectorAll('[data-step]').length,d=document.querySelectorAll('.step.done').length,p=Math.round((d/t)*100);
+  document.getElementById('pf').style.width=p+'%';
+  document.getElementById('pcount').textContent=d+' / '+t+' steps';
+  document.getElementById('ppct').textContent=p+'%';
+  document.querySelectorAll('.comp').forEach(c=>{
+    const s=c.querySelectorAll('[data-step]').length,ds=c.querySelectorAll('.step.done').length;
+    if(ds===s&&s>0)c.querySelector('.comp-num').classList.add('done');else c.querySelector('.comp-num').classList.remove('done');
+  });
+}
+function saveState(){const s=[];document.querySelectorAll('[data-step]').forEach((e,i)=>{if(e.classList.contains('done'))s.push(i)});localStorage.setItem('cs-guide',JSON.stringify(s))}
+function loadState(){const s=JSON.parse(localStorage.getItem('cs-guide')||'[]');document.querySelectorAll('[data-step]').forEach((e,i)=>{if(s.includes(i))e.classList.add('done')});updateProgress()}
+
+// State tabs
+document.querySelectorAll('.state-tabs').forEach(tabs=>{
+  tabs.querySelectorAll('.state-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const target=document.getElementById(tabs.dataset.target);
+      tabs.querySelectorAll('.state-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      target.querySelectorAll('.nav-state').forEach(s=>s.style.display='none');
+      target.querySelector(`[data-state="${tab.dataset.state}"]`).style.display='block';
+    });
+  });
+});
+
+loadState();
+</script>
+</body>
+</html>
