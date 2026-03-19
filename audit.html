@@ -146,7 +146,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <tr><td><span class="tk">Greyscale/50</span></td><td><span class="cd" style="background:#EEF1F3"></span>#EEF1F3</td><td><span class="tag ok">good</span></td><td>Light background, input fill <em style="color:var(--text3)">(was color/grey/98 #F9FAFB)</em></td></tr>
 <tr><td><span class="tk">Neutral/50</span></td><td><span class="cd" style="background:#FFFFFF;border-color:#ddd"></span>#FFFFFF</td><td><span class="tag ok">good</span></td><td>Card backgrounds, nav text <em style="color:var(--text3)">(was color/white/solid)</em></td></tr>
 <tr><td><span class="tk">color/black/solid</span></td><td><span class="cd" style="background:#000000"></span>#000000</td><td><span class="tag ok">good</span></td><td>Pure black (no equivalent in Primitive Colours)</td></tr>
-<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="cd" style="background:#00000080"></span>#00000080</td><td><span class="tag err">bad name</span></td><td>Space before "50%". From MCP data, not export.json. Should be <code>color/black/50%</code></td></tr>
+<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="cd" style="background:#00000080"></span>#00000080</td><td><span class="tag err">bad name</span></td><td>Space before "50%". Should be <code>color/black/50%</code></td></tr>
 </tbody>
 </table>
 
@@ -236,7 +236,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>Semantic Token</th><th>→ Aliases</th><th>Hex</th><th>Status</th></tr></thead>
 <tbody>
 <tr><td><span class="tk">greyscale/surface/default</span></td><td>→ Neutral/200</td><td>#FDFCF9</td><td><span class="tag ok">good</span></td></tr>
-<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/100</td><td>#FDFCF9</td><td><span class="tag warn">same hex</span></td></tr>
+<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/300</td><td>#FBF9F4</td><td><span class="tag ok">fixed</span></td></tr>
 <tr><td><span class="tk">greyscale/surface/disabled</span></td><td>→ Greyscale/100</td><td>#E1E6EA</td><td><span class="tag ok">good</span></td></tr>
 <tr><td><span class="tk">greyscale/border/default</span></td><td>→ Greyscale/200</td><td>#C0CBD4</td><td><span class="tag ok">good</span></td></tr>
 <tr><td><span class="tk">greyscale/border/disabled</span></td><td>→ Greyscale/100</td><td>#E1E6EA</td><td><span class="tag ok">good</span></td></tr>
@@ -245,8 +245,8 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <tr><td><span class="tk">greyscale/text/body</span></td><td>→ DarkMidnightBlue/700</td><td>#002244</td><td><span class="tag ok">good</span></td></tr>
 <tr><td><span class="tk">greyscale/text/subtitle</span></td><td>→ DarkMidnightBlue/400</td><td>#00589F</td><td><span class="tag ok">good</span></td></tr>
 <tr><td><span class="tk">greyscale/text/caption</span></td><td>→ DeepSeaBlue/600</td><td>#003F70</td><td><span class="tag ok">good</span></td></tr>
-<tr><td><span class="tk">greyscale/text/negative v1</span></td><td>→ Neutral/200</td><td>#FDFCF9</td><td><span class="tag err">naming</span></td></tr>
-<tr><td><span class="tk">greyscale/text/negative v2</span></td><td>→ Yellow/500</td><td>#FFE800</td><td><span class="tag err">naming</span></td></tr>
+<tr><td><span class="tk">greyscale/text/inverse</span></td><td>→ Neutral/200</td><td>#FDFCF9</td><td><span class="tag ok">fixed</span></td></tr>
+<tr><td><span class="tk">greyscale/text/highlight</span></td><td>→ Yellow/500</td><td>#FFE800</td><td><span class="tag ok">fixed</span></td></tr>
 <tr><td><span class="tk">greyscale/text/disabled</span></td><td>→ Greyscale/400</td><td>#8A98A4</td><td><span class="tag ok">good</span></td></tr>
 </tbody>
 </table>
@@ -254,18 +254,18 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <h3>Issues Found</h3>
 
 <div class="warn-box">
-<strong>🔴 Critical Issues (5)</strong><br>
+<strong>🔴 Critical Issues (5) — 3 FIXED</strong><br>
 1. <strong><code>color/black/ 50%</code></strong> — has a rogue space. Rename to <code>color/black/50%</code><br>
 2. <strong><code>item spacing/0</code></strong> — value is 2.84e-14 (float rounding), not 0. Reset to exactly 0<br>
 3. <strong><code>item spacing/s</code></strong> — named "s" while all others use numbers. Map to <code>stack-gap-md</code> (= space-12)<br>
-4. <strong><code>greyscale/text/negative v1</code></strong> — "negative v1" is unclear. Rename to <code>greyscale/text/inverse</code><br>
-5. <strong><code>greyscale/text/negative v2</code></strong> — "negative v2" is unclear. Rename to <code>greyscale/text/highlight</code>
+4. <s><strong><code>greyscale/text/negative v1</code></strong> — renamed to <code>greyscale/text/inverse</code></s> <span class="tag ok">FIXED</span><br>
+5. <s><strong><code>greyscale/text/negative v2</code></strong> — renamed to <code>greyscale/text/highlight</code></s> <span class="tag ok">FIXED</span>
 </div>
 
 <div style="background:rgba(226,167,0,.04);border:1px solid rgba(226,167,0,.12);border-radius:4px;padding:12px 14px;margin:10px 0;font-size:12px;color:#9E7A00;line-height:1.6">
 <strong>⚠️ Warnings (4)</strong><br>
 1. <strong><code>Greyscale/200</code></strong> (#C0CBD4) overlaps with <strong><code>Greyscale/100</code></strong> (#E1E6EA) — both used as borders. Pick one per context.<br>
-2. <strong><code>greyscale/surface/subtle</code></strong> resolves to same hex as <code>greyscale/surface/default</code> — they're visually identical<br>
+2. <s><strong><code>greyscale/surface/subtle</code></strong> now aliases Neutral/300 (#FBF9F4) — no longer identical to /default</s> <span class="tag ok">FIXED</span><br>
 3. <strong>12 floating-point spacings</strong> (34.27, 70.66, etc.) appear auto-extracted from layouts, not intentional tokens. Clean up or move to a "layout" collection.<br>
 4. <strong>Font size scale jumps from 18→36</strong> — missing intermediate sizes for subheadings
 </div>
@@ -295,8 +295,8 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <tbody>
 <tr><td><span class="tk">color/black/ 50%</span></td><td><span class="tk">color/black/50%</span></td><td>Remove rogue space</td></tr>
 <tr><td><span class="tk">item spacing/s</span></td><td><span class="tk">stack-gap-md</span> (= space-12)</td><td>Map to _spacing system</td></tr>
-<tr><td><span class="tk">greyscale/text/negative v1</span></td><td><span class="tk">greyscale/text/inverse</span></td><td>"negative v1" is confusing — this is light text on dark bg</td></tr>
-<tr><td><span class="tk">greyscale/text/negative v2</span></td><td><span class="tk">greyscale/text/highlight</span></td><td>Yellow text for emphasis on dark backgrounds</td></tr>
+<tr><td><span class="tk">greyscale/text/negative v1</span></td><td><span class="tk">greyscale/text/inverse</span></td><td><span class="tag ok">DONE</span> Renamed in Figma</td></tr>
+<tr><td><span class="tk">greyscale/text/negative v2</span></td><td><span class="tk">greyscale/text/highlight</span></td><td><span class="tag ok">DONE</span> Renamed in Figma</td></tr>
 </tbody>
 </table>
 
@@ -305,7 +305,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>Variable</th><th>Current</th><th>Fix To</th><th>Reason</th></tr></thead>
 <tbody>
 <tr><td><span class="tk">item spacing/0</span></td><td>2.84e-14</td><td>0</td><td>Floating point artifact</td></tr>
-<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/100 (#FDFCF9)</td><td>→ Neutral/300 (#FBF9F4)</td><td>Currently identical to /default. Needs visible difference.</td></tr>
+<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/100 (#FDFCF9)</td><td>→ Neutral/300 (#FBF9F4)</td><td><span class="tag ok">DONE</span> Now aliases Neutral/300</td></tr>
 </tbody>
 </table>
 
@@ -313,21 +313,23 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <table class="at">
 <thead><tr><th>Variable</th><th>Type</th><th>Value</th><th>Why Needed</th><th>Used Where</th></tr></thead>
 <tbody>
-<tr><td><span class="tk">font weight/500</span></td><td>Number</td><td>500</td><td>Nav items, dropdown text, badge text use medium weight — currently no variable for it</td><td>Nav/ActionItem, SearchBar category text, form labels</td></tr>
-<tr><td><span class="tk">font weight/600</span></td><td>Number</td><td>600</td><td>Semi-bold used in card titles, section headers — currently falls back to 700 (too heavy)</td><td>Product card title, section headers, dropdown selected</td></tr>
-<tr><td><span class="tk">font size/12</span></td><td>Number</td><td>12</td><td>Caption, badge text, small labels — used everywhere but no variable</td><td>Badges, price "was" text, copyright, timestamps</td></tr>
-<tr><td><span class="tk">font size/14</span></td><td>Number</td><td>14</td><td>Nav items, dropdown items, card body — most common text size after 16</td><td>Nav links, dropdown menu items, card descriptions</td></tr>
-<tr><td><span class="tk">font size/24</span></td><td>Number</td><td>24</td><td>Section headings (e.g., "Promotions") — currently no variable between 18 and 36</td><td>Page section titles, modal headings</td></tr>
-<tr><td><span class="tk">line height/16</span></td><td>Number</td><td>16</td><td>Tight line height for badges and small labels</td><td>Badge text, small captions</td></tr>
-<tr><td><span class="tk">line height/32</span></td><td>Number</td><td>32</td><td>Section heading line height (for font size/24)</td><td>Section titles</td></tr>
-<tr><td><span class="tk">item spacing/4</span></td><td>Number</td><td>4</td><td>Tight gaps — icon-to-text in badges, price blocks</td><td>Badge icon gap, price "was" vs "now" gap</td></tr>
-<tr><td><span class="tk">item spacing/8</span></td><td>Number</td><td>8</td><td>Standard small gap — used between badge and title, icon and label</td><td>Card internals, button icon gap, nav chevron gap</td></tr>
-<tr><td><span class="tk">item spacing/24</span></td><td>Number</td><td>24</td><td>Medium section padding — used in card padding, mega menu padding</td><td>Card content padding, mega menu, footer link groups</td></tr>
-<tr><td><span class="tk">item spacing/32</span></td><td>Number</td><td>32</td><td>Section gaps between component groups</td><td>Between card grid rows, footer columns</td></tr>
-<tr><td><span class="tk">radius/8</span></td><td>Number</td><td>8</td><td>Search bar, dropdown menus, modals — the 4→12 jump is too big</td><td>SearchBar outer, dropdown panel, modal corners</td></tr>
-<tr><td><span class="tk">radius/full</span></td><td>Number</td><td>9999</td><td>Circular elements — carousel dots, avatar, pill badges</td><td>Carousel dots, social icons (circle), pill tags</td></tr>
-<tr><td><span class="tk">greyscale/surface/hover</span></td><td>Color</td><td>→ Greyscale/50 (#EEF1F3)</td><td>No hover surface exists. Components need a visible hover background.</td><td>Dropdown item hover, card hover, nav item hover</td></tr>
-<tr><td><span class="tk">greyscale/border/focus</span></td><td>Color</td><td>→ DeepSeaBlue/500 (#004D87)</td><td>No focus border token. Inputs and dropdowns need it.</td><td>Search input focus, dropdown open border</td></tr>
+<tr><td><span class="tk">font/weight/medium</span></td><td>Number</td><td>500</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Nav/ActionItem, SearchBar category text, form labels</td></tr>
+<tr><td><span class="tk">font/weight/semibold</span></td><td>Number</td><td>600</td><td>Semi-bold used in card titles, section headers — currently falls back to 700 (too heavy)</td><td>Product card title, section headers, dropdown selected</td></tr>
+<tr><td><span class="tk">font/size/xs</span></td><td>Number</td><td>12</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Badges, price "was" text, copyright, timestamps</td></tr>
+<tr><td><span class="tk">font/size/sm</span></td><td>Number</td><td>14</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Nav links, dropdown menu items, card descriptions</td></tr>
+<tr><td><span class="tk">font/size/2xl</span></td><td>Number</td><td>24</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Page section titles, modal headings</td></tr>
+<tr><td><span class="tk">font/line-height/xs</span></td><td>Number</td><td>16</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Badge text, small captions</td></tr>
+<tr><td><span class="tk">font/line-height/md</span></td><td>Number</td><td>32</td><td><span class="tag ok">EXISTS</span> Already in Typography collection</td><td>Section titles</td></tr>
+<tr><td><span class="tk">space-4</span></td><td>Number</td><td>4</td><td><span class="tag ok">EXISTS</span> Already in _spacing collection</td><td>Badge icon gap, price "was" vs "now" gap</td></tr>
+<tr><td><span class="tk">space-8</span></td><td>Number</td><td>8</td><td><span class="tag ok">EXISTS</span> Already in _spacing collection</td><td>Card internals, button icon gap, nav chevron gap</td></tr>
+<tr><td><span class="tk">space-24</span></td><td>Number</td><td>24</td><td><span class="tag ok">EXISTS</span> Already in _spacing collection</td><td>Card content padding, mega menu, footer link groups</td></tr>
+<tr><td><span class="tk">space-32</span></td><td>Number</td><td>32</td><td><span class="tag ok">EXISTS</span> Already in _spacing collection</td><td>Between card grid rows, footer columns</td></tr>
+<tr><td><span class="tk">r-8</span></td><td>Number</td><td>8</td><td><span class="tag ok">EXISTS</span> Already in _radius collection</td><td>SearchBar outer, dropdown panel, modal corners</td></tr>
+<tr><td><span class="tk">r-full</span></td><td>Number</td><td>9999</td><td><span class="tag ok">EXISTS</span> Already in _radius collection</td><td>Carousel dots, social icons (circle), pill tags</td></tr>
+<tr><td><span class="tk">greyscale/surface/hover</span></td><td>Color</td><td>→ Greyscale/50 (#EEF1F3)</td><td><span class="tag ok">EXISTS</span> Already created in Figma</td><td>Dropdown item hover, card hover, nav item hover</td></tr>
+<tr><td><span class="tk">greyscale/surface/active</span></td><td>Color</td><td>→ Greyscale/100 (#E1E6EA)</td><td><span class="tag ok">EXISTS</span> Already created in Figma</td><td>Active/pressed surface state</td></tr>
+<tr><td><span class="tk">greyscale/border/focus</span></td><td>Color</td><td>→ DeepSeaBlue/500 (#004D87)</td><td><span class="tag ok">EXISTS</span> Already created in Figma</td><td>Search input focus, dropdown open border</td></tr>
+<tr><td><span class="tk">greyscale/border/hover</span></td><td>Color</td><td>→ Greyscale/300 (#A3B3C1)</td><td><span class="tag ok">EXISTS</span> Already created in Figma</td><td>Hover border state</td></tr>
 </tbody>
 </table>
 
@@ -416,7 +418,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <h3>Phase 1: Fix existing variables (15 min)</h3>
 <ul class="check">
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>color/black/ 50%</code> → <code>color/black/50%</code> (remove space)</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>item spacing/s</code> → <code>item spacing/16</code></span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Map <code>item spacing/s</code> → <code>stack-gap-md</code> (= space-12)</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Fix <code>item spacing/0</code> value from ~0 to exactly 0</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v1</code> → <code>greyscale/text/inverse</code></span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v2</code> → <code>greyscale/text/highlight</code></span></li>
@@ -425,21 +427,21 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 
 <h3>Phase 2: Add missing font variables (10 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font weight/500</code> = 500 in existing font weight group</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font weight/600</code> = 600 in existing font weight group</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/12</code> = 12</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/14</code> = 14</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/24</code> = 24</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/weight/medium</code> = 500 in Typography collection</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/weight/semibold</code> = 600 in Typography collection</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/xs</code> = 12</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/sm</code> = 14</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/xl</code> = 24</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/16</code> = 16</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/32</code> = 32</span></li>
 </ul>
 
 <h3>Phase 3: Add missing spacing variables (5 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/4</code> = 4</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/8</code> = 8</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/24</code> = 24</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/32</code> = 32</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-4</code> exists in _spacing collection (= 4)</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-8</code> exists in _spacing collection (= 8)</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-24</code> exists in _spacing collection (= 24)</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-32</code> exists in _spacing collection (= 32)</span></li>
 </ul>
 
 <h3>Phase 4: Add missing radius variables (2 min)</h3>
@@ -456,9 +458,9 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 
 <h3>Phase 6: Clean up junk spacings (optional, 10 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Review usage of <code>item spacing/34.27</code>, <code>70.66</code>, <code>102.36</code>, etc.</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Review usage of legacy junk spacings (34.27, 70.66, 102.36, etc.)</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>If unused in any component, delete them</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>If used, replace with nearest clean value (e.g., 70.66 → <code>item spacing/72</code>)</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>If used, replace with nearest _spacing primitive (e.g., 70.66 → <code>space-72</code>)</span></li>
 </ul>
 
 </div></div>
@@ -489,10 +491,10 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>When</th><th>Add</th><th>Why</th></tr></thead>
 <tbody>
 <tr><td>Dark mode</td><td>Mode 2 in semantic collection</td><td>Swap surface/text/border values without touching primitives</td></tr>
-<tr><td>More pages</td><td><code>font size/20</code>, <code>font size/28</code>, <code>font size/32</code></td><td>Subheading variety as content pages increase</td></tr>
+<tr><td>More pages</td><td><code>font/size/2xl</code> (20), <code>font/size/3xl</code> (28), <code>font/size/4xl</code> (32)</td><td>Subheading variety as content pages increase</td></tr>
 <tr><td>Form components</td><td><code>greyscale/surface/input</code>, <code>greyscale/border/error</code>, <code>greyscale/text/error</code></td><td>Semantic tokens for form states</td></tr>
 <tr><td>More badges</td><td><code>color/green/50</code> (semantic: success)</td><td>"In stock", "Free shipping" type badges</td></tr>
-<tr><td>Responsive</td><td><code>item spacing/48</code>, <code>item spacing/64</code>, <code>item spacing/80</code></td><td>Larger section padding for tablet/desktop breakpoints</td></tr>
+<tr><td>Responsive</td><td><code>space-48</code>, <code>space-64</code>, <code>space-80</code></td><td>Larger section padding for tablet/desktop breakpoints</td></tr>
 <tr><td>Animation</td><td><code>duration/fast</code> (150ms), <code>duration/normal</code> (250ms), <code>duration/slow</code> (400ms)</td><td>Consistent motion across hover/transitions</td></tr>
 </tbody>
 </table>
