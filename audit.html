@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variable Audit — The Crazy Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FDFCF9;--surface:#FFFFFF;--surface2:#F5F3EE;--surface3:#EEF1F3;
+  --border:#C0CBD4;--border2:#E1E6EA;
+  --text:#002244;--text2:#003F70;--text3:#8A98A4;
+  --blue:#004D87;--blue2:#003462;--blue3:#00589F;
+  --yellow:#FFE800;--yellow2:#FFF2AC;
+  --green:#43E436;--red:#E5672E;--orange:#E2A700;
+  --font:'Inter',system-ui,sans-serif;
+  --r:8px;--r-sm:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--yellow);color:var(--text)}
+
+.app{max-width:900px;margin:0 auto;padding:24px}
+
+/* Header */
+.hdr{text-align:center;padding:40px 0 32px;border-bottom:2px solid var(--border2)}
+.hdr h1{font-size:28px;font-weight:800;color:var(--blue2);letter-spacing:-.03em}
+.hdr h1 span{color:var(--blue)}
+.hdr p{font-size:13px;color:var(--text3);margin-top:4px;max-width:500px;margin-left:auto;margin-right:auto}
+.badge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Section */
+.section{margin:32px 0;border:1px solid var(--border2);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.section-hdr{padding:16px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;background:var(--surface2)}
+.section-hdr h2{font-size:15px;font-weight:700;color:var(--blue2)}
+.section-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;letter-spacing:.5px}
+.section-badge.a{background:rgba(0,77,135,.08);color:var(--blue)}
+.section-badge.b{background:rgba(67,228,54,.1);color:#2B9E20}
+.section-badge.c{background:rgba(255,232,0,.15);color:#9E8D00}
+.section-badge.d{background:rgba(229,103,46,.1);color:var(--red)}
+.section-badge.e{background:rgba(0,77,135,.08);color:var(--blue)}
+.section-body{padding:20px}
+
+/* Tables */
+.at{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.at th{text-align:left;padding:8px 10px;background:var(--surface2);font-size:10px;font-weight:600;color:var(--text3);border-bottom:1px solid var(--border2);text-transform:uppercase;letter-spacing:.5px}
+.at td{padding:8px 10px;border-bottom:1px solid var(--border2);vertical-align:top}
+.at tr:last-child td{border-bottom:none}
+
+/* Token pill */
+.tk{display:inline-block;font-size:10px;font-family:'SF Mono','Fira Code',monospace;background:rgba(0,77,135,.06);color:var(--blue);padding:2px 7px;border-radius:4px;border:1px solid rgba(0,77,135,.1);white-space:nowrap}
+
+/* Color dot */
+.cd{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:5px;border:1px solid rgba(0,0,0,.08)}
+
+/* Status tags */
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.3px}
+.tag.ok{background:rgba(67,228,54,.1);color:#2B9E20}
+.tag.warn{background:rgba(226,167,0,.1);color:#9E7A00}
+.tag.err{background:rgba(229,103,46,.1);color:var(--red)}
+.tag.miss{background:rgba(0,77,135,.06);color:var(--blue)}
+.tag.dup{background:rgba(138,152,164,.1);color:var(--text3)}
+
+/* Tip/warn boxes */
+.tip{background:rgba(0,77,135,.04);border:1px solid rgba(0,77,135,.1);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;font-size:12px;color:var(--blue);line-height:1.6}
+.tip strong{color:var(--blue2)}
+.warn-box{background:rgba(229,103,46,.04);border:1px solid rgba(229,103,46,.12);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;font-size:12px;color:var(--red);line-height:1.6}
+.good-box{background:rgba(67,228,54,.04);border:1px solid rgba(67,228,54,.12);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;font-size:12px;color:#2B9E20;line-height:1.6}
+
+/* Checklist */
+.check{list-style:none;padding:0}
+.check li{padding:8px 0;border-bottom:1px solid var(--border2);font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.check li:last-child{border-bottom:none}
+.check .box{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.check li.done .box{background:var(--green);border-color:var(--green)}
+.check li.done .box::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.check li.done span{text-decoration:line-through;color:var(--text3)}
+
+/* Color swatch row */
+.swatch-row{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin:4px 0}
+.swatch{width:28px;height:28px;border-radius:4px;border:1px solid rgba(0,0,0,.08);position:relative}
+.swatch-label{font-size:9px;color:var(--text3);margin-top:2px;text-align:center;width:28px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.swatch-group{display:flex;flex-direction:column;align-items:center;gap:2px}
+
+/* Arrow */
+.arrow{color:var(--text3);font-size:16px;margin:0 8px}
+
+/* Mapping row */
+.map-row{display:flex;align-items:center;gap:4px;padding:6px 0;flex-wrap:wrap}
+.map-from{background:var(--surface2);padding:3px 8px;border-radius:4px;font-size:11px;font-family:monospace;color:var(--text3)}
+.map-to{background:rgba(0,77,135,.06);padding:3px 8px;border-radius:4px;font-size:11px;font-family:monospace;color:var(--blue)}
+
+h3{font-size:14px;font-weight:700;color:var(--blue2);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border2)}
+h3:first-child{margin-top:0}
+p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
+.tab-nav{position:sticky;top:0;z-index:200;background:#FDFCF9;border-bottom:1px solid #C0CBD4;padding:8px 0;display:flex;justify-content:center;gap:4px}
+.tab-nav a{font-size:13px;font-weight:600;color:#74808b;text-decoration:none;padding:8px 20px;border-radius:8px;transition:all .15s}
+.tab-nav a:hover{color:#004D87;background:rgba(0,77,135,.04)}
+.tab-nav a.active{color:#004D87;background:rgba(0,77,135,.08)}
+.tab-nav .dot{width:6px;height:6px;border-radius:50%;background:#FFE800;display:inline-block;margin-left:4px;vertical-align:middle}
+</style>
+</head>
+<body>
+<nav class="tab-nav">
+  <a href="guide.html">Build Guide</a>
+  <a href="system.html">System Map</a>
+  <a href="audit.html" class="active">Audit<span class="dot"></span></a>
+</nav>
+<div class="app">
+
+<div class="hdr">
+  <div class="badge">Variable System Audit</div>
+  <h1>The <span>Crazy Store</span> — Design System Audit</h1>
+  <p>Current variables mapped, issues flagged, minimum fixes proposed, execution checklist ready.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION A — CURRENT VARIABLE AUDIT                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">
+<div class="section-hdr"><h2>Section A — Current Variable Audit</h2><span class="section-badge a">Audit</span></div>
+<div class="section-body">
+
+<h3>Collection 1: Original File Variables (Primitives)</h3>
+<p class="desc">These are the variables directly in your Figma file. They use a flat <code>color/type/value</code> naming.</p>
+
+<table class="at">
+<thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">color/azure/26</span></td><td><span class="cd" style="background:#004B85"></span>#004B85</td><td><span class="tag ok">good</span></td><td>Primary brand blue. Used in navbar, footer, links.</td></tr>
+<tr><td><span class="tk">color/azure/26 80%</span></td><td><span class="cd" style="background:#004D87cc"></span>#004D87cc</td><td><span class="tag ok">good</span></td><td>Footer CTA background</td></tr>
+<tr><td><span class="tk">color/azure/26 90%</span></td><td><span class="cd" style="background:#004B85e5"></span>#004B85e5</td><td><span class="tag ok">good</span></td><td>Footer background</td></tr>
+<tr><td><span class="tk">color/azure/33</span></td><td><span class="cd" style="background:#0069A8"></span>#0069A8</td><td><span class="tag ok">good</span></td><td>"On Promotion" badge, secondary blue</td></tr>
+<tr><td><span class="tk">color/azure/44</span></td><td><span class="cd" style="background:#0075E2"></span>#0075E2</td><td><span class="tag warn">unused?</span></td><td>Not clearly used in current mocks. Verify usage.</td></tr>
+<tr><td><span class="tk">color/azure/84</span></td><td><span class="cd" style="background:#D1D5DC"></span>#D1D5DC</td><td><span class="tag warn">overlap</span></td><td>Close to <span class="tk">color/grey/91</span> (#E5E7EB). Creates confusion.</td></tr>
+<tr><td><span class="tk">color/cyan/63</span></td><td><span class="cd" style="background:#42D5FE"></span>#42D5FE</td><td><span class="tag warn">unused?</span></td><td>Sky/decoration color. Not in component specs.</td></tr>
+<tr><td><span class="tk">color/yellow/50</span></td><td><span class="cd" style="background:#FFEB00"></span>#FFEB00</td><td><span class="tag ok">good</span></td><td>Primary accent. CTA buttons, search submit, focus ring.</td></tr>
+<tr><td><span class="tk">color/yellow/56</span></td><td><span class="cd" style="background:#FFDF20"></span>#FFDF20</td><td><span class="tag ok">good</span></td><td>Yellow border on buttons</td></tr>
+<tr><td><span class="tk">color/orange/54</span></td><td><span class="cd" style="background:#E5672E"></span>#E5672E</td><td><span class="tag ok">good</span></td><td>"New" badge</td></tr>
+<tr><td><span class="tk">color/orange/44</span></td><td><span class="cd" style="background:#E2A700"></span>#E2A700</td><td><span class="tag ok">good</span></td><td>"Sale" badge</td></tr>
+<tr><td><span class="tk">color/grey/13</span></td><td><span class="cd" style="background:#231F20"></span>#231F20</td><td><span class="tag ok">good</span></td><td>Primary text dark</td></tr>
+<tr><td><span class="tk">color/grey/53</span></td><td><span class="cd" style="background:#878787"></span>#878787</td><td><span class="tag ok">good</span></td><td>Secondary text, "out of stock" badge</td></tr>
+<tr><td><span class="tk">color/grey/80</span></td><td><span class="cd" style="background:#CCCCCC"></span>#CCCCCC</td><td><span class="tag ok">good</span></td><td>Subtle borders</td></tr>
+<tr><td><span class="tk">color/grey/91</span></td><td><span class="cd" style="background:#E5E7EB"></span>#E5E7EB</td><td><span class="tag warn">overlap</span></td><td>Overlaps with <span class="tk">color/azure/84</span>. Use one for borders.</td></tr>
+<tr><td><span class="tk">color/grey/98</span></td><td><span class="cd" style="background:#F9FAFB"></span>#F9FAFB</td><td><span class="tag ok">good</span></td><td>Light background, input fill</td></tr>
+<tr><td><span class="tk">color/white/solid</span></td><td><span class="cd" style="background:#FFFFFF;border-color:#ddd"></span>#FFFFFF</td><td><span class="tag ok">good</span></td><td>Card backgrounds, nav text</td></tr>
+<tr><td><span class="tk">color/black/solid</span></td><td><span class="cd" style="background:#000000"></span>#000000</td><td><span class="tag ok">good</span></td><td>Pure black</td></tr>
+<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="cd" style="background:#00000080"></span>#00000080</td><td><span class="tag err">bad name</span></td><td>Space before "50%". Should be <code>color/black/50%</code></td></tr>
+</tbody>
+</table>
+
+<table class="at" style="margin-top:16px">
+<thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">font family/Font 1</span></td><td>Inter</td><td><span class="tag ok">good</span></td><td>Primary body font</td></tr>
+<tr><td><span class="tk">font family/Font 2</span></td><td>Helvetica</td><td><span class="tag ok">good</span></td><td>Footer CTA / accent text</td></tr>
+<tr><td><span class="tk">font family/Font 3</span></td><td>Dimbo</td><td><span class="tag ok">good</span></td><td>Display/promo headings</td></tr>
+<tr><td><span class="tk">font weight/400</span></td><td>400</td><td><span class="tag ok">good</span></td><td>Regular</td></tr>
+<tr><td><span class="tk">font weight/700</span></td><td>700</td><td><span class="tag miss">missing 500/600</span></td><td>No Medium (500) or SemiBold (600) — needed for nav items, badges</td></tr>
+<tr><td><span class="tk">font size/16</span></td><td>16</td><td><span class="tag ok">good</span></td><td>Base body size</td></tr>
+<tr><td><span class="tk">font size/18</span></td><td>18</td><td><span class="tag ok">good</span></td><td>Footer CTA</td></tr>
+<tr><td><span class="tk">font size/36</span></td><td>36</td><td><span class="tag miss">gap</span></td><td>Jump from 18→36 is huge. Missing 24, 28, 32.</td></tr>
+<tr><td><span class="tk">font size/48</span></td><td>48</td><td><span class="tag miss">gap</span></td><td>Only for hero. OK but scale is incomplete.</td></tr>
+<tr><td><span class="tk">line height/20</span></td><td>20</td><td><span class="tag ok">good</span></td><td>Small text line height</td></tr>
+<tr><td><span class="tk">line height/24</span></td><td>24</td><td><span class="tag ok">good</span></td><td>Body line height</td></tr>
+<tr><td><span class="tk">line height/28</span></td><td>28</td><td><span class="tag ok">good</span></td><td>Subtitle</td></tr>
+<tr><td><span class="tk">line height/40</span></td><td>40</td><td><span class="tag ok">good</span></td><td>Display</td></tr>
+</tbody>
+</table>
+
+<table class="at" style="margin-top:16px">
+<thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">item spacing/0</span></td><td>≈0</td><td><span class="tag err">float</span></td><td>Value is 2.84e-14, not clean 0. Should be exactly 0.</td></tr>
+<tr><td><span class="tk">item spacing/10</span></td><td>10</td><td><span class="tag ok">good</span></td><td>Small gaps</td></tr>
+<tr><td><span class="tk">item spacing/12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Medium-small gaps</td></tr>
+<tr><td><span class="tk">item spacing/s</span></td><td>16</td><td><span class="tag err">naming</span></td><td>Inconsistent — uses "s" label while others use numbers. Should be <code>item spacing/16</code></td></tr>
+<tr><td><span class="tk">item spacing/20</span></td><td>20</td><td><span class="tag ok">good</span></td><td>Navigation item gaps</td></tr>
+<tr><td><span class="tk">item spacing/40</span></td><td>40</td><td><span class="tag ok">good</span></td><td>Section spacing</td></tr>
+<tr><td><span class="tk">item spacing/150</span></td><td>150</td><td><span class="tag warn">one-off</span></td><td>Very specific value. Verify usage.</td></tr>
+<tr><td colspan="4" style="color:var(--text3);font-style:italic">+ 12 other odd spacings (34.27, 70.66, 102.36, 111.5, 114.05, 125.12, 157.69, 164.67, 164.81) — all appear auto-generated from layout measurements, not design tokens.</td></tr>
+<tr><td><span class="tk">radius/4</span></td><td>4</td><td><span class="tag ok">good</span></td><td>Default radius (cards, badges, buttons)</td></tr>
+<tr><td><span class="tk">radius/12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Larger radius (search bar, modals)</td></tr>
+<tr><td><span class="tk">height/48</span></td><td>48</td><td><span class="tag ok">good</span></td><td>Navbar height</td></tr>
+<tr><td><span class="tk">stroke weight/1</span></td><td>1</td><td><span class="tag ok">good</span></td><td>Default border</td></tr>
+<tr><td><span class="tk">width/1280</span></td><td>1280</td><td><span class="tag ok">good</span></td><td>Desktop container</td></tr>
+<tr><td><span class="tk">width/1920</span></td><td>1920</td><td><span class="tag ok">good</span></td><td>Full HD width</td></tr>
+</tbody>
+</table>
+
+<h3>Collection 2: Primitive Colours (Referenced by Semantics)</h3>
+<p class="desc">These exist in a separate "Primitive Colours" collection. The semantic tokens alias to these.</p>
+
+<div style="display:flex;flex-wrap:wrap;gap:20px;margin:12px 0">
+  <div>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);margin-bottom:6px">Neutral</div>
+    <div class="swatch-row">
+      <div class="swatch-group"><div class="swatch" style="background:#FFFFFF"></div><div class="swatch-label">50</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#FDFCF9"></div><div class="swatch-label">100</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#FDFCF9"></div><div class="swatch-label">200</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#FBF9F4"></div><div class="swatch-label">300</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#F9F6EE"></div><div class="swatch-label">400</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#F8F5EB"></div><div class="swatch-label">500</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#C7BE9F"></div><div class="swatch-label">600</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#928B74"></div><div class="swatch-label">700</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#605C4C"></div><div class="swatch-label">800</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#312E25"></div><div class="swatch-label">900</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#1D1B15"></div><div class="swatch-label">950</div></div>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);margin-bottom:6px">Greyscale</div>
+    <div class="swatch-row">
+      <div class="swatch-group"><div class="swatch" style="background:#EEF1F3"></div><div class="swatch-label">50</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#E1E6EA"></div><div class="swatch-label">100</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#C0CBD4"></div><div class="swatch-label">200</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#8A98A4"></div><div class="swatch-label">400</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#74808B"></div><div class="swatch-label">500</div></div>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:10px;font-weight:700;color:var(--text3);margin-bottom:6px">Green</div>
+    <div class="swatch-row">
+      <div class="swatch-group"><div class="swatch" style="background:#CAFEC8"></div><div class="swatch-label">50</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#7FFD7A"></div><div class="swatch-label">100</div></div>
+      <div class="swatch-group"><div class="swatch" style="background:#43E436"></div><div class="swatch-label">200</div></div>
+    </div>
+  </div>
+</div>
+
+<h3>Collection 3: Semantic Tokens (Mode 1)</h3>
+<p class="desc">These alias primitive values into purpose-driven names. This is the layer your components should reference.</p>
+
+<table class="at">
+<thead><tr><th>Semantic Token</th><th>→ Aliases</th><th>Hex</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">greyscale/surface/default</span></td><td>→ Neutral/200</td><td>#FDFCF9</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/100</td><td>#FDFCF9</td><td><span class="tag warn">same hex</span></td></tr>
+<tr><td><span class="tk">greyscale/surface/disabled</span></td><td>→ Greyscale/100</td><td>#E1E6EA</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/border/default</span></td><td>→ Greyscale/200</td><td>#C0CBD4</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/border/disabled</span></td><td>→ Greyscale/100</td><td>#E1E6EA</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/border/darker</span></td><td>→ Greyscale/400</td><td>#8A98A4</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/text/title</span></td><td>→ DarkMidnightBlue/500</td><td>#003462</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/text/body</span></td><td>→ DarkMidnightBlue/700</td><td>#002244</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/text/subtitle</span></td><td>→ DarkMidnightBlue/400</td><td>#00589F</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/text/caption</span></td><td>→ DeepSeaBlue/600</td><td>#003F70</td><td><span class="tag ok">good</span></td></tr>
+<tr><td><span class="tk">greyscale/text/negative v1</span></td><td>→ Neutral/200</td><td>#FDFCF9</td><td><span class="tag err">naming</span></td></tr>
+<tr><td><span class="tk">greyscale/text/negative v2</span></td><td>→ Yellow/500</td><td>#FFE800</td><td><span class="tag err">naming</span></td></tr>
+<tr><td><span class="tk">greyscale/text/disabled</span></td><td>→ Greyscale/400</td><td>#8A98A4</td><td><span class="tag ok">good</span></td></tr>
+</tbody>
+</table>
+
+<h3>Issues Found</h3>
+
+<div class="warn-box">
+<strong>🔴 Critical Issues (5)</strong><br>
+1. <strong><code>color/black/ 50%</code></strong> — has a rogue space. Rename to <code>color/black/50%</code><br>
+2. <strong><code>item spacing/0</code></strong> — value is 2.84e-14 (float rounding), not 0. Reset to exactly 0<br>
+3. <strong><code>item spacing/s</code></strong> — named "s" while all others use numbers. Rename to <code>item spacing/16</code><br>
+4. <strong><code>greyscale/text/negative v1</code></strong> — "negative v1" is unclear. Rename to <code>greyscale/text/inverse</code><br>
+5. <strong><code>greyscale/text/negative v2</code></strong> — "negative v2" is unclear. Rename to <code>greyscale/text/highlight</code>
+</div>
+
+<div style="background:rgba(226,167,0,.04);border:1px solid rgba(226,167,0,.12);border-radius:4px;padding:12px 14px;margin:10px 0;font-size:12px;color:#9E7A00;line-height:1.6">
+<strong>⚠️ Warnings (4)</strong><br>
+1. <strong><code>color/azure/84</code></strong> (#D1D5DC) overlaps with <strong><code>color/grey/91</code></strong> (#E5E7EB) — both used as borders. Pick one per context.<br>
+2. <strong><code>greyscale/surface/subtle</code></strong> resolves to same hex as <code>greyscale/surface/default</code> — they're visually identical<br>
+3. <strong>12 floating-point spacings</strong> (34.27, 70.66, etc.) appear auto-extracted from layouts, not intentional tokens. Clean up or move to a "layout" collection.<br>
+4. <strong>Font size scale jumps from 18→36</strong> — missing intermediate sizes for subheadings
+</div>
+
+<div class="good-box">
+<strong>✅ What works well (keep as-is)</strong><br>
+• Color naming convention <code>color/{hue}/{lightness}</code> is clear and consistent<br>
+• Semantic collection structure (surface, border, text) is well-organized<br>
+• Primitive → Semantic aliasing pattern is correct<br>
+• Radius, stroke, height, width tokens are clean<br>
+• Font family and weight tokens are functional<br>
+• Line height scale is complete for current needs
+</div>
+
+</div></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION B — MINIMAL FIX PLAN                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">
+<div class="section-hdr"><h2>Section B — Minimal Fix Plan</h2><span class="section-badge b">Fixes</span></div>
+<div class="section-body">
+
+<h3>Renames (keep values, fix names only)</h3>
+<table class="at">
+<thead><tr><th>Current Name</th><th>→ Rename To</th><th>Reason</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="tk">color/black/50%</span></td><td>Remove rogue space</td></tr>
+<tr><td><span class="tk">item spacing/s</span></td><td><span class="tk">item spacing/16</span></td><td>Consistent with numeric naming pattern</td></tr>
+<tr><td><span class="tk">greyscale/text/negative v1</span></td><td><span class="tk">greyscale/text/inverse</span></td><td>"negative v1" is confusing — this is light text on dark bg</td></tr>
+<tr><td><span class="tk">greyscale/text/negative v2</span></td><td><span class="tk">greyscale/text/highlight</span></td><td>Yellow text for emphasis on dark backgrounds</td></tr>
+</tbody>
+</table>
+
+<h3>Value Fixes (keep names, fix values)</h3>
+<table class="at">
+<thead><tr><th>Variable</th><th>Current</th><th>Fix To</th><th>Reason</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">item spacing/0</span></td><td>2.84e-14</td><td>0</td><td>Floating point artifact</td></tr>
+<tr><td><span class="tk">greyscale/surface/subtle</span></td><td>→ Neutral/100 (#FDFCF9)</td><td>→ Neutral/300 (#FBF9F4)</td><td>Currently identical to /default. Needs visible difference.</td></tr>
+</tbody>
+</table>
+
+<h3>New Variables Needed (minimum additions)</h3>
+<table class="at">
+<thead><tr><th>Variable</th><th>Type</th><th>Value</th><th>Why Needed</th><th>Used Where</th></tr></thead>
+<tbody>
+<tr><td><span class="tk">font weight/500</span></td><td>Number</td><td>500</td><td>Nav items, dropdown text, badge text use medium weight — currently no variable for it</td><td>Nav/ActionItem, SearchBar category text, form labels</td></tr>
+<tr><td><span class="tk">font weight/600</span></td><td>Number</td><td>600</td><td>Semi-bold used in card titles, section headers — currently falls back to 700 (too heavy)</td><td>Product card title, section headers, dropdown selected</td></tr>
+<tr><td><span class="tk">font size/12</span></td><td>Number</td><td>12</td><td>Caption, badge text, small labels — used everywhere but no variable</td><td>Badges, price "was" text, copyright, timestamps</td></tr>
+<tr><td><span class="tk">font size/14</span></td><td>Number</td><td>14</td><td>Nav items, dropdown items, card body — most common text size after 16</td><td>Nav links, dropdown menu items, card descriptions</td></tr>
+<tr><td><span class="tk">font size/24</span></td><td>Number</td><td>24</td><td>Section headings (e.g., "Promotions") — currently no variable between 18 and 36</td><td>Page section titles, modal headings</td></tr>
+<tr><td><span class="tk">line height/16</span></td><td>Number</td><td>16</td><td>Tight line height for badges and small labels</td><td>Badge text, small captions</td></tr>
+<tr><td><span class="tk">line height/32</span></td><td>Number</td><td>32</td><td>Section heading line height (for font size/24)</td><td>Section titles</td></tr>
+<tr><td><span class="tk">item spacing/4</span></td><td>Number</td><td>4</td><td>Tight gaps — icon-to-text in badges, price blocks</td><td>Badge icon gap, price "was" vs "now" gap</td></tr>
+<tr><td><span class="tk">item spacing/8</span></td><td>Number</td><td>8</td><td>Standard small gap — used between badge and title, icon and label</td><td>Card internals, button icon gap, nav chevron gap</td></tr>
+<tr><td><span class="tk">item spacing/24</span></td><td>Number</td><td>24</td><td>Medium section padding — used in card padding, mega menu padding</td><td>Card content padding, mega menu, footer link groups</td></tr>
+<tr><td><span class="tk">item spacing/32</span></td><td>Number</td><td>32</td><td>Section gaps between component groups</td><td>Between card grid rows, footer columns</td></tr>
+<tr><td><span class="tk">radius/8</span></td><td>Number</td><td>8</td><td>Search bar, dropdown menus, modals — the 4→12 jump is too big</td><td>SearchBar outer, dropdown panel, modal corners</td></tr>
+<tr><td><span class="tk">radius/full</span></td><td>Number</td><td>9999</td><td>Circular elements — carousel dots, avatar, pill badges</td><td>Carousel dots, social icons (circle), pill tags</td></tr>
+<tr><td><span class="tk">greyscale/surface/hover</span></td><td>Color</td><td>→ Greyscale/50 (#EEF1F3)</td><td>No hover surface exists. Components need a visible hover background.</td><td>Dropdown item hover, card hover, nav item hover</td></tr>
+<tr><td><span class="tk">greyscale/border/focus</span></td><td>Color</td><td>→ DeepSeaBlue/500 (#004D87)</td><td>No focus border token. Inputs and dropdowns need it.</td><td>Search input focus, dropdown open border</td></tr>
+</tbody>
+</table>
+
+<div class="tip"><strong>Total changes:</strong> 4 renames + 2 value fixes + 15 new variables. This is the minimum needed to build all 6 components properly. No restructuring required.</div>
+
+</div></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION C — HOW VARIABLES MAP TO COMPONENTS             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">
+<div class="section-hdr"><h2>Section C — Variable → Component Mapping</h2><span class="section-badge c">Visual</span></div>
+<div class="section-body">
+
+<h3>Top Navigation</h3>
+<table class="at">
+<thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
+<tbody>
+<tr><td>Navbar bg</td><td>Fill</td><td><span class="tk">color/azure/26</span></td></tr>
+<tr><td>Navbar height</td><td>Height</td><td><span class="tk">height/48</span></td></tr>
+<tr><td>Nav item text</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
+<tr><td>Nav item text</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
+<tr><td>Nav item text</td><td>Size</td><td><span class="tk">font size/14</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Nav item gap</td><td>Gap</td><td><span class="tk">item spacing/20</span></td></tr>
+<tr><td>Logo bg</td><td>Fill</td><td><span class="tk">color/yellow/50</span></td></tr>
+<tr><td>Logo radius</td><td>Radius</td><td><span class="tk">radius/4</span></td></tr>
+<tr><td>Search category bg</td><td>Fill</td><td><span class="tk">color/grey/91</span></td></tr>
+<tr><td>Search category text</td><td>Weight</td><td><span class="tk">font weight/500</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Search input bg</td><td>Fill</td><td><span class="tk">color/grey/98</span></td></tr>
+<tr><td>Search input border</td><td>Stroke</td><td><span class="tk">stroke weight/1</span> + <span class="tk">color/grey/91</span></td></tr>
+<tr><td>Search submit bg</td><td>Fill</td><td><span class="tk">color/yellow/50</span></td></tr>
+<tr><td>Search bar radius</td><td>Radius</td><td><span class="tk">radius/8</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Focus ring</td><td>Shadow</td><td>0 0 0 2px <span class="tk">color/yellow/50</span></td></tr>
+</tbody>
+</table>
+
+<h3>Product Card</h3>
+<table class="at">
+<thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
+<tbody>
+<tr><td>Card bg</td><td>Fill</td><td><span class="tk">color/white/solid</span></td></tr>
+<tr><td>Card radius</td><td>Radius</td><td><span class="tk">radius/4</span></td></tr>
+<tr><td>Card title</td><td>Size</td><td><span class="tk">font size/14</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Card title</td><td>Weight</td><td><span class="tk">font weight/400</span></td></tr>
+<tr><td>Card title</td><td>Color</td><td><span class="tk">color/grey/13</span></td></tr>
+<tr><td>Price current</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
+<tr><td>Price current</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Price was</td><td>Color</td><td><span class="tk">color/grey/53</span></td></tr>
+<tr><td>Badge "Promotion"</td><td>Fill</td><td><span class="tk">color/azure/33</span></td></tr>
+<tr><td>Badge "New"</td><td>Fill</td><td><span class="tk">color/orange/54</span></td></tr>
+<tr><td>Badge "Sale"</td><td>Fill</td><td><span class="tk">color/orange/44</span></td></tr>
+<tr><td>Badge "Out of Stock"</td><td>Fill</td><td><span class="tk">color/grey/53</span></td></tr>
+<tr><td>Badge text</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Badge text</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
+<tr><td>Grid gap</td><td>Gap</td><td><span class="tk">item spacing/16</span> (renamed from /s)</td></tr>
+<tr><td>Card hover shadow</td><td>Effect</td><td>0 8 20 rgba(0,75,133,.12)</td></tr>
+<tr><td>Out of stock overlay</td><td>Fill</td><td><span class="tk">color/black/50%</span> (renamed)</td></tr>
+</tbody>
+</table>
+
+<h3>Footer</h3>
+<table class="at">
+<thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
+<tbody>
+<tr><td>Footer bg</td><td>Fill</td><td><span class="tk">color/azure/26 90%</span></td></tr>
+<tr><td>Section heading</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
+<tr><td>Section heading</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
+<tr><td>Link text</td><td>Color</td><td><span class="tk">color/white/solid</span> at 65% opacity</td></tr>
+<tr><td>CTA bg</td><td>Fill</td><td><span class="tk">color/azure/26 80%</span></td></tr>
+<tr><td>CTA font</td><td>Family</td><td><span class="tk">font family/Font 2</span> (Helvetica)</td></tr>
+<tr><td>CTA size</td><td>Size</td><td><span class="tk">font size/18</span></td></tr>
+<tr><td>Column gap</td><td>Gap</td><td><span class="tk">item spacing/40</span></td></tr>
+<tr><td>Copyright text</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
+</tbody>
+</table>
+
+</div></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION D — EXECUTION CHECKLIST                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">
+<div class="section-hdr"><h2>Section D — Step-by-Step Execution Checklist</h2><span class="section-badge d">Execute</span></div>
+<div class="section-body">
+
+<h3>Phase 1: Fix existing variables (15 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>color/black/ 50%</code> → <code>color/black/50%</code> (remove space)</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>item spacing/s</code> → <code>item spacing/16</code></span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Fix <code>item spacing/0</code> value from ~0 to exactly 0</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v1</code> → <code>greyscale/text/inverse</code></span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v2</code> → <code>greyscale/text/highlight</code></span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Update <code>greyscale/surface/subtle</code> alias from Neutral/100 → Neutral/300</span></li>
+</ul>
+
+<h3>Phase 2: Add missing font variables (10 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font weight/500</code> = 500 in existing font weight group</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font weight/600</code> = 600 in existing font weight group</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/12</code> = 12</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/14</code> = 14</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font size/24</code> = 24</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/16</code> = 16</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/32</code> = 32</span></li>
+</ul>
+
+<h3>Phase 3: Add missing spacing variables (5 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/4</code> = 4</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/8</code> = 8</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/24</code> = 24</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>item spacing/32</code> = 32</span></li>
+</ul>
+
+<h3>Phase 4: Add missing radius variables (2 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>radius/8</code> = 8</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>radius/full</code> = 9999</span></li>
+</ul>
+
+<h3>Phase 5: Add missing semantic tokens (5 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>greyscale/surface/hover</code> → alias Greyscale/50</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>greyscale/border/focus</code> → alias DeepSeaBlue/500</span></li>
+</ul>
+
+<h3>Phase 6: Clean up junk spacings (optional, 10 min)</h3>
+<ul class="check">
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Review usage of <code>item spacing/34.27</code>, <code>70.66</code>, <code>102.36</code>, etc.</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>If unused in any component, delete them</span></li>
+  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>If used, replace with nearest clean value (e.g., 70.66 → <code>item spacing/72</code>)</span></li>
+</ul>
+
+</div></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION E — FINAL SYSTEM NOTE                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">
+<div class="section-hdr"><h2>Section E — Final System Note</h2><span class="section-badge e">Status</span></div>
+<div class="section-body">
+
+<h3>Current System Readiness</h3>
+<table class="at">
+<thead><tr><th>Area</th><th>Status</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Color primitives</td><td><span class="tag ok">production ready</span></td><td>After 2 renames, fully usable</td></tr>
+<tr><td>Color semantics</td><td><span class="tag warn">nearly ready</span></td><td>After 2 renames + 2 additions, good to go</td></tr>
+<tr><td>Typography</td><td><span class="tag warn">fragile</span></td><td>Font family/weight OK. Sizes have gaps — add 12, 14, 24 minimum</td></tr>
+<tr><td>Spacing</td><td><span class="tag err">needs cleanup</span></td><td>Core values OK. Junk floats pollute the system. Add 4, 8, 24, 32.</td></tr>
+<tr><td>Radius</td><td><span class="tag warn">nearly ready</span></td><td>Add radius/8 and radius/full to complete the scale</td></tr>
+<tr><td>Sizing (height/width)</td><td><span class="tag ok">production ready</span></td><td>Clean and minimal</td></tr>
+<tr><td>Stroke</td><td><span class="tag warn">noisy</span></td><td>stroke weight/1 is good. The 0.02–1.67 values are noise — verify or remove.</td></tr>
+</tbody>
+</table>
+
+<h3>Future Variables (when the system grows)</h3>
+<table class="at">
+<thead><tr><th>When</th><th>Add</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Dark mode</td><td>Mode 2 in semantic collection</td><td>Swap surface/text/border values without touching primitives</td></tr>
+<tr><td>More pages</td><td><code>font size/20</code>, <code>font size/28</code>, <code>font size/32</code></td><td>Subheading variety as content pages increase</td></tr>
+<tr><td>Form components</td><td><code>greyscale/surface/input</code>, <code>greyscale/border/error</code>, <code>greyscale/text/error</code></td><td>Semantic tokens for form states</td></tr>
+<tr><td>More badges</td><td><code>color/green/50</code> (semantic: success)</td><td>"In stock", "Free shipping" type badges</td></tr>
+<tr><td>Responsive</td><td><code>item spacing/48</code>, <code>item spacing/64</code>, <code>item spacing/80</code></td><td>Larger section padding for tablet/desktop breakpoints</td></tr>
+<tr><td>Animation</td><td><code>duration/fast</code> (150ms), <code>duration/normal</code> (250ms), <code>duration/slow</code> (400ms)</td><td>Consistent motion across hover/transitions</td></tr>
+</tbody>
+</table>
+
+<div class="good-box" style="margin-top:16px">
+<strong>Bottom line:</strong> Your system is 80% there. The structure is correct — primitives → semantics → components. You just need the 4 renames, 2 value fixes, and 15 new tokens listed above. That's roughly 30 minutes of work in Figma, then you can start building components with full variable coverage.
+</div>
+
+</div></div>
+
+<div style="height:40px"></div>
+</div>
+</body>
+</html>

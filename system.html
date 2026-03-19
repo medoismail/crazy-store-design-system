@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crazy Store Design System Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FDFCF9;
+    --bg-subtle: #FBF9F4;
+    --blue: #004D87;
+    --blue-light: #00589F;
+    --blue-dark: #003462;
+    --yellow: #FFE800;
+    --yellow-soft: #FFF4C0;
+    --red: #ED1D24;
+    --green: #258B1D;
+    --grey-border: #C0CBD4;
+    --grey-light: #E1E6EA;
+    --grey-text: #8A98A4;
+    --text-body: #002244;
+    --text-title: #003462;
+    --text-caption: #003F70;
+    --neutral-600: #C7BE9F;
+    --radius: 12px;
+    --radius-sm: 4px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--grey-border);
+    margin-bottom: 64px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--blue-dark);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-title);
+    letter-spacing: -0.8px;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-caption);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* Nav */
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 64px;
+  }
+  .toc a {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 1px solid var(--grey-border);
+    border-radius: 100px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .toc a:hover {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 64px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--yellow);
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-title);
+    letter-spacing: -0.4px;
+  }
+
+  /* Subsection */
+  .subsection {
+    margin-bottom: 40px;
+  }
+  .subsection h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection h3 .collection-badge {
+    font-size: 11px;
+    background: var(--yellow-soft);
+    color: var(--blue-dark);
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Pills */
+  .pill {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    padding: 2px 10px;
+    border-radius: 6px;
+    color: var(--text-body);
+    white-space: nowrap;
+  }
+  .pill-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--grey-text);
+  }
+
+  /* Color Swatch Grid */
+  .color-scale {
+    margin-bottom: 32px;
+  }
+  .color-scale-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-title);
+    margin-bottom: 12px;
+  }
+  .color-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .color-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 88px;
+  }
+  .color-dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .color-chip .step {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-body);
+  }
+  .color-chip .hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--grey-text);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  table th:first-child { border-radius: var(--radius) 0 0 0; }
+  table th:last-child { border-radius: 0 var(--radius) 0 0; }
+  table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--grey-light);
+    vertical-align: middle;
+  }
+  table tr:last-child td { border-bottom: none; }
+  table tr:hover td { background: rgba(0,77,135,0.02); }
+  .table-wrap {
+    border: 1px solid var(--grey-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+  }
+
+  /* Spacing visual */
+  .spacing-bar {
+    height: 12px;
+    background: var(--blue);
+    border-radius: 3px;
+    opacity: 0.7;
+    min-width: 2px;
+  }
+
+  /* Arrow connector */
+  .arrow {
+    display: inline-block;
+    color: var(--neutral-600);
+    font-size: 16px;
+    margin: 0 4px;
+  }
+
+  /* Discrepancy cards */
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+  .issue-card {
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    border-left: 4px solid var(--red);
+  }
+  .issue-card.warning {
+    border-left-color: #E2A700;
+  }
+  .issue-card.info {
+    border-left-color: var(--blue);
+  }
+  .issue-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-title);
+    margin-bottom: 8px;
+  }
+  .issue-card p {
+    font-size: 13px;
+    color: var(--text-caption);
+    line-height: 1.5;
+  }
+  .issue-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .issue-tag.conflict { background: #FEEDED; color: var(--red); }
+  .issue-tag.duplicate { background: #FFF4C0; color: #5F5600; }
+  .issue-tag.naming { background: #DFE8FF; color: var(--blue-dark); }
+
+  /* Missing/Recommendation cards */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .rec-card {
+    background: #fff;
+    border: 1px dashed var(--grey-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+  }
+  .rec-card::before {
+    content: 'NEW';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 9px;
+    font-weight: 700;
+    background: var(--yellow);
+    color: var(--blue-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .rec-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-title);
+    margin-bottom: 8px;
+  }
+  .rec-card p {
+    font-size: 13px;
+    color: var(--text-caption);
+  }
+  .rec-card .pill {
+    margin-top: 8px;
+    background: var(--bg-subtle);
+  }
+
+  /* Architecture diagram */
+  .arch-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .arch-layer {
+    padding: 28px 32px;
+    border: 2px solid;
+    text-align: center;
+    position: relative;
+  }
+  .arch-layer:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+  .arch-layer:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+  .arch-layer.l3 {
+    background: #fff;
+    border-color: var(--blue);
+  }
+  .arch-layer.l2 {
+    background: var(--yellow-soft);
+    border-color: var(--yellow);
+    border-top: none;
+  }
+  .arch-layer.l1 {
+    background: var(--bg-subtle);
+    border-color: var(--neutral-600);
+    border-top: none;
+  }
+  .arch-layer .layer-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .arch-layer h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-title);
+    margin-bottom: 4px;
+  }
+  .arch-layer p {
+    font-size: 13px;
+    color: var(--text-caption);
+  }
+  .arch-arrow {
+    text-align: center;
+    font-size: 20px;
+    color: var(--grey-text);
+    padding: 4px 0;
+  }
+  .arch-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  /* Checklist */
+  .checklist-phase {
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg-subtle);
+    border-bottom: 1px solid var(--grey-light);
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-header:hover { background: var(--yellow-soft); }
+  .phase-num {
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--blue);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .phase-header h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-title);
+  }
+  .phase-progress {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--grey-text);
+  }
+  .checklist-items {
+    padding: 8px 20px 16px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--blue);
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+  .check-item label {
+    font-size: 14px;
+    color: var(--text-body);
+    cursor: pointer;
+    line-height: 1.5;
+  }
+  .check-item.done label {
+    text-decoration: line-through;
+    color: var(--grey-text);
+  }
+
+  /* Inline color dot */
+  .inline-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 24px; }
+    .hero h1 { font-size: 32px; }
+    .issue-grid, .rec-grid { grid-template-columns: 1fr; }
+    .color-chip { width: 72px; }
+    .color-dot { width: 40px; height: 40px; }
+  }
+
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  /* Print */
+  @media print {
+    .toc, .check-item input { display: none; }
+    section { page-break-inside: avoid; }
+  }
+.tab-nav{position:sticky;top:0;z-index:200;background:#FDFCF9;border-bottom:1px solid #C0CBD4;padding:8px 0;display:flex;justify-content:center;gap:4px}
+.tab-nav a{font-size:13px;font-weight:600;color:#74808b;text-decoration:none;padding:8px 20px;border-radius:8px;transition:all .15s}
+.tab-nav a:hover{color:#004D87;background:rgba(0,77,135,.04)}
+.tab-nav a.active{color:#004D87;background:rgba(0,77,135,.08)}
+.tab-nav .dot{width:6px;height:6px;border-radius:50%;background:#FFE800;display:inline-block;margin-left:4px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<nav class="tab-nav">
+  <a href="guide.html">Build Guide</a>
+  <a href="system.html" class="active">System Map<span class="dot"></span></a>
+  <a href="audit.html">Audit</a>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Design System Audit</div>
+    <h1>Crazy Store Design System</h1>
+    <p>Complete variable map, cross-reference audit, discrepancy report, and execution plan. Built from verified Figma token exports.</p>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="toc">
+    <a href="#variables">1. Variable Map</a>
+    <a href="#crossref">2. Cross-Reference</a>
+    <a href="#discrepancies">3. Discrepancies</a>
+    <a href="#missing">4. What's Missing</a>
+    <a href="#architecture">5. Architecture</a>
+    <a href="#checklist">6. Checklist</a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: COMPLETE VARIABLE MAP -->
+  <!-- ============================================================ -->
+  <section id="variables">
+    <div class="section-header">
+      <span class="section-num">1</span>
+      <h2>Complete Variable Map</h2>
+    </div>
+
+    <!-- Collection A: _spacing (primitive) -->
+    <div class="subsection">
+      <h3>_spacing (Primitive) <span class="collection-badge">Collection 1</span></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th><th>Visual</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">space-0</span></td><td class="pill-value">0</td><td><div class="spacing-bar" style="width:0px"></div></td></tr>
+            <tr><td><span class="pill">space-4</span></td><td class="pill-value">4</td><td><div class="spacing-bar" style="width:4px"></div></td></tr>
+            <tr><td><span class="pill">space-8</span></td><td class="pill-value">8</td><td><div class="spacing-bar" style="width:8px"></div></td></tr>
+            <tr><td><span class="pill">space-12</span></td><td class="pill-value">12</td><td><div class="spacing-bar" style="width:12px"></div></td></tr>
+            <tr><td><span class="pill">space-16</span></td><td class="pill-value">16</td><td><div class="spacing-bar" style="width:16px"></div></td></tr>
+            <tr><td><span class="pill">space-20</span></td><td class="pill-value">20</td><td><div class="spacing-bar" style="width:20px"></div></td></tr>
+            <tr><td><span class="pill">space-24</span></td><td class="pill-value">24</td><td><div class="spacing-bar" style="width:24px"></div></td></tr>
+            <tr><td><span class="pill">space-32</span></td><td class="pill-value">32</td><td><div class="spacing-bar" style="width:32px"></div></td></tr>
+            <tr><td><span class="pill">space-40</span></td><td class="pill-value">40</td><td><div class="spacing-bar" style="width:40px"></div></td></tr>
+            <tr><td><span class="pill">space-48</span></td><td class="pill-value">48</td><td><div class="spacing-bar" style="width:48px"></div></td></tr>
+            <tr><td><span class="pill">space-64</span></td><td class="pill-value">64</td><td><div class="spacing-bar" style="width:64px"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Collection B: Semantic Spacing -->
+    <div class="subsection">
+      <h3>Semantic Spacing <span class="collection-badge">Collection 2</span></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th><th>Aliases</th><th>Visual</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">space-container-padding</span></td><td class="pill-value">48</td><td><span class="pill">space-48</span></td><td><div class="spacing-bar" style="width:48px"></div></td></tr>
+            <tr><td><span class="pill">card-padding</span></td><td class="pill-value">24</td><td><span class="pill">space-24</span></td><td><div class="spacing-bar" style="width:24px"></div></td></tr>
+            <tr><td><span class="pill">section-gap</span></td><td class="pill-value">32</td><td><span class="pill">space-32</span></td><td><div class="spacing-bar" style="width:32px"></div></td></tr>
+            <tr><td><span class="pill">grid-gap</span></td><td class="pill-value">24</td><td><span class="pill">space-24</span></td><td><div class="spacing-bar" style="width:24px"></div></td></tr>
+            <tr><td><span class="pill">button-padding-x</span></td><td class="pill-value">16</td><td><span class="pill">space-16</span></td><td><div class="spacing-bar" style="width:16px"></div></td></tr>
+            <tr><td><span class="pill">button-padding-y</span></td><td class="pill-value">12</td><td><span class="pill">space-12</span></td><td><div class="spacing-bar" style="width:12px"></div></td></tr>
+            <tr><td><span class="pill">input-padding-x</span></td><td class="pill-value">16</td><td><span class="pill">space-16</span></td><td><div class="spacing-bar" style="width:16px"></div></td></tr>
+            <tr><td><span class="pill">input-padding-y</span></td><td class="pill-value">12</td><td><span class="pill">space-12</span></td><td><div class="spacing-bar" style="width:12px"></div></td></tr>
+            <tr><td><span class="pill">stack-gap-xs</span></td><td class="pill-value">4</td><td><span class="pill">space-4</span></td><td><div class="spacing-bar" style="width:4px"></div></td></tr>
+            <tr style="background:#FEEDED"><td><span class="pill">stack-gap-sm</span></td><td class="pill-value">12 <em style="color:#ED1D24">/ 8</em></td><td><span class="pill">space-12</span> <em style="color:#ED1D24">/ space-8</em></td><td><div class="spacing-bar" style="width:12px;background:#ED1D24"></div></td></tr>
+            <tr style="background:#FEEDED"><td><span class="pill">stack-gap-md</span></td><td class="pill-value">16 <em style="color:#ED1D24">/ 12</em></td><td><span class="pill">space-16</span> <em style="color:#ED1D24">/ space-12</em></td><td><div class="spacing-bar" style="width:16px;background:#ED1D24"></div></td></tr>
+            <tr><td><span class="pill">stack-gap-lg</span></td><td class="pill-value">24</td><td><span class="pill">space-24</span></td><td><div class="spacing-bar" style="width:24px"></div></td></tr>
+            <tr><td><span class="pill">stack-gap-xlg</span></td><td class="pill-value">64</td><td><span class="pill">space-64</span></td><td><div class="spacing-bar" style="width:64px"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Collection C: Primitive Colours -->
+    <div class="subsection">
+      <h3>Primitive Colours <span class="collection-badge">Collection 3</span></h3>
+
+      <!-- Neutral -->
+      <div class="color-scale">
+        <div class="color-scale-name">Neutral</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#FFFFFF"></div><span class="step">50</span><span class="hex">#FFFFFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FDFCF9"></div><span class="step">100</span><span class="hex">#FDFCF9</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FDFCF9"></div><span class="step">200</span><span class="hex">#FDFCF9</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FBF9F4"></div><span class="step">300</span><span class="hex">#FBF9F4</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#F9F6EE"></div><span class="step">400</span><span class="hex">#F9F6EE</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#F8F5EB"></div><span class="step">500</span><span class="hex">#F8F5EB</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#C7BE9F"></div><span class="step">600</span><span class="hex">#C7BE9F</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#928B74"></div><span class="step">700</span><span class="hex">#928B74</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#605C4C"></div><span class="step">800</span><span class="hex">#605C4C</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#312E25"></div><span class="step">900</span><span class="hex">#312E25</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#1D1B15"></div><span class="step">950</span><span class="hex">#1D1B15</span></div>
+        </div>
+      </div>
+
+      <!-- Green -->
+      <div class="color-scale">
+        <div class="color-scale-name">Green</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#CAFEC8"></div><span class="step">50</span><span class="hex">#CAFEC8</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#7FFD7A"></div><span class="step">100</span><span class="hex">#7FFD7A</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#43E436"></div><span class="step">200</span><span class="hex">#43E436</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#38C52D"></div><span class="step">300</span><span class="hex">#38C52D</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#2EA625"></div><span class="step">400</span><span class="hex">#2EA625</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#258B1D"></div><span class="step">500</span><span class="hex">#258B1D</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#1B6D15"></div><span class="step">600</span><span class="hex">#1B6D15</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#12520D"></div><span class="step">700</span><span class="hex">#12520D</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#0A3906"></div><span class="step">800</span><span class="hex">#0A3906</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#042102"></div><span class="step">900</span><span class="hex">#042102</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#021501"></div><span class="step">950</span><span class="hex">#021501</span></div>
+        </div>
+      </div>
+
+      <!-- Red -->
+      <div class="color-scale">
+        <div class="color-scale-name">Red</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#FEEDED"></div><span class="step">50</span><span class="hex">#FEEDED</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FDDADB"></div><span class="step">100</span><span class="hex">#FDDADB</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FCB4B5"></div><span class="step">200</span><span class="hex">#FCB4B5</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FA8B8C"></div><span class="step">300</span><span class="hex">#FA8B8C</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FA5F61"></div><span class="step">400</span><span class="hex">#FA5F61</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#ED1D24"></div><span class="step">500</span><span class="hex">#ED1D24</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#C0151B"></div><span class="step">600</span><span class="hex">#C0151B</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#900D11"></div><span class="step">700</span><span class="hex">#900D11</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#660609"></div><span class="step">800</span><span class="hex">#660609</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#3F0203"></div><span class="step">900</span><span class="hex">#3F0203</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#2B0102"></div><span class="step">950</span><span class="hex">#2B0102</span></div>
+        </div>
+      </div>
+
+      <!-- DarkMidnightBlue -->
+      <div class="color-scale">
+        <div class="color-scale-name">DarkMidnightBlue</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#DFE8FF"></div><span class="step">50</span><span class="hex">#DFE8FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#BCD2FF"></div><span class="step">100</span><span class="hex">#BCD2FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#71AAFF"></div><span class="step">200</span><span class="hex">#71AAFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#0080E3"></div><span class="step">300</span><span class="hex">#0080E3</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#00589F"></div><span class="step">400</span><span class="hex">#00589F</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#003462"></div><span class="step">500</span><span class="hex">#003462</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#002B52"></div><span class="step">600</span><span class="hex">#002B52</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#002244"></div><span class="step">700</span><span class="hex">#002244</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#001A36"></div><span class="step">800</span><span class="hex">#001A36</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#000E22"></div><span class="step">900</span><span class="hex">#000E22</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#000816"></div><span class="step">950</span><span class="hex">#000816</span></div>
+        </div>
+      </div>
+
+      <!-- DeepSeaBlue -->
+      <div class="color-scale">
+        <div class="color-scale-name">DeepSeaBlue</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#E2EBFF"></div><span class="step">50</span><span class="hex">#E2EBFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#C3D8FF"></div><span class="step">100</span><span class="hex">#C3D8FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#83B5FF"></div><span class="step">200</span><span class="hex">#83B5FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#0091F7"></div><span class="step">300</span><span class="hex">#0091F7</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#0070C0"></div><span class="step">400</span><span class="hex">#0070C0</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#004D87"></div><span class="step">500</span><span class="hex">#004D87</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#003F70"></div><span class="step">600</span><span class="hex">#003F70</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#002F57"></div><span class="step">700</span><span class="hex">#002F57</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#002341"></div><span class="step">800</span><span class="hex">#002341</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#00142A"></div><span class="step">900</span><span class="hex">#00142A</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#000B1C"></div><span class="step">950</span><span class="hex">#000B1C</span></div>
+        </div>
+      </div>
+
+      <!-- BrightCerulean -->
+      <div class="color-scale">
+        <div class="color-scale-name">BrightCerulean</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#F0F7FF"></div><span class="step">50</span><span class="hex">#F0F7FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#DBEDFF"></div><span class="step">100</span><span class="hex">#DBEDFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#B8DFFF"></div><span class="step">200</span><span class="hex">#B8DFFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#89CEFF"></div><span class="step">300</span><span class="hex">#89CEFF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#4EC0FF"></div><span class="step">400</span><span class="hex">#4EC0FF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#00AEEF"></div><span class="step">500</span><span class="hex">#00AEEF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#008ABF"></div><span class="step">600</span><span class="hex">#008ABF</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#00658D"></div><span class="step">700</span><span class="hex">#00658D</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#004561"></div><span class="step">800</span><span class="hex">#004561</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#002536"></div><span class="step">900</span><span class="hex">#002536</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#001825"></div><span class="step">950</span><span class="hex">#001825</span></div>
+        </div>
+      </div>
+
+      <!-- Yellow -->
+      <div class="color-scale">
+        <div class="color-scale-name">Yellow</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#FFFCF1"></div><span class="step">50</span><span class="hex">#FFFCF1</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FFFAE2"></div><span class="step">100</span><span class="hex">#FFFAE2</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FFF4C0"></div><span class="step">200</span><span class="hex">#FFF4C0</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FFF2AC"></div><span class="step">300</span><span class="hex">#FFF2AC</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FFED79"></div><span class="step">400</span><span class="hex">#FFED79</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#FFE800"></div><span class="step">500</span><span class="hex">#FFE800</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#C7B500"></div><span class="step">600</span><span class="hex">#C7B500</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#938500"></div><span class="step">700</span><span class="hex">#938500</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#5F5600"></div><span class="step">800</span><span class="hex">#5F5600</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#322D00"></div><span class="step">900</span><span class="hex">#322D00</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#1E1A00"></div><span class="step">950</span><span class="hex">#1E1A00</span></div>
+        </div>
+      </div>
+
+      <!-- Greyscale -->
+      <div class="color-scale">
+        <div class="color-scale-name">Greyscale</div>
+        <div class="color-row">
+          <div class="color-chip"><div class="color-dot" style="background:#EEF1F3"></div><span class="step">50</span><span class="hex">#EEF1F3</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#E1E6EA"></div><span class="step">100</span><span class="hex">#E1E6EA</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#C0CBD4"></div><span class="step">200</span><span class="hex">#C0CBD4</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#A3B3C1"></div><span class="step">300</span><span class="hex">#A3B3C1</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#8A98A4"></div><span class="step">400</span><span class="hex">#8A98A4</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#74808B"></div><span class="step">500</span><span class="hex">#74808B</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#5D6770"></div><span class="step">600</span><span class="hex">#5D6770</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#454C53"></div><span class="step">700</span><span class="hex">#454C53</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#30353B"></div><span class="step">800</span><span class="hex">#30353B</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#1A1E21"></div><span class="step">900</span><span class="hex">#1A1E21</span></div>
+          <div class="color-chip"><div class="color-dot" style="background:#0F1114"></div><span class="step">950</span><span class="hex">#0F1114</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collection D: Semantic Colours -->
+    <div class="subsection">
+      <h3>Semantic Colours <span class="collection-badge">Collection 4</span></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Semantic Token</th><th>Primitive Alias</th><th>Hex</th><th>Swatch</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">greyscale/surface/default</span></td><td><span class="pill">Neutral/200</span></td><td class="pill-value">#FDFCF9</td><td><span class="inline-dot" style="background:#FDFCF9"></span></td></tr>
+            <tr><td><span class="pill">greyscale/surface/subtle</span></td><td><span class="pill">Neutral/100</span></td><td class="pill-value">#FDFCF9</td><td><span class="inline-dot" style="background:#FDFCF9"></span></td></tr>
+            <tr><td><span class="pill">greyscale/surface/disabled</span></td><td><span class="pill">Greyscale/100</span></td><td class="pill-value">#E1E6EA</td><td><span class="inline-dot" style="background:#E1E6EA"></span></td></tr>
+            <tr><td><span class="pill">greyscale/border/default</span></td><td><span class="pill">Greyscale/200</span></td><td class="pill-value">#C0CBD4</td><td><span class="inline-dot" style="background:#C0CBD4"></span></td></tr>
+            <tr><td><span class="pill">greyscale/border/disabled</span></td><td><span class="pill">Greyscale/100</span></td><td class="pill-value">#E1E6EA</td><td><span class="inline-dot" style="background:#E1E6EA"></span></td></tr>
+            <tr><td><span class="pill">greyscale/border/darker</span></td><td><span class="pill">Greyscale/400</span></td><td class="pill-value">#8A98A4</td><td><span class="inline-dot" style="background:#8A98A4"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/title</span></td><td><span class="pill">DarkMidnightBlue/500</span></td><td class="pill-value">#003462</td><td><span class="inline-dot" style="background:#003462"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/body</span></td><td><span class="pill">DarkMidnightBlue/700</span></td><td class="pill-value">#002244</td><td><span class="inline-dot" style="background:#002244"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/subtitle</span></td><td><span class="pill">DarkMidnightBlue/400</span></td><td class="pill-value">#00589F</td><td><span class="inline-dot" style="background:#00589F"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/caption</span></td><td><span class="pill">DeepSeaBlue/600</span></td><td class="pill-value">#003F70</td><td><span class="inline-dot" style="background:#003F70"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/negative v1</span></td><td><span class="pill">Neutral/200</span></td><td class="pill-value">#FDFCF9</td><td><span class="inline-dot" style="background:#FDFCF9"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/negative v2</span></td><td><span class="pill">Yellow/500</span></td><td class="pill-value">#FFE800</td><td><span class="inline-dot" style="background:#FFE800"></span></td></tr>
+            <tr><td><span class="pill">greyscale/text/disabled</span></td><td><span class="pill">Greyscale/400</span></td><td class="pill-value">#8A98A4</td><td><span class="inline-dot" style="background:#8A98A4"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Collection E: Original File Variables (Figma) -->
+    <div class="subsection">
+      <h3>Original File Variables (Figma) <span class="collection-badge">Collection 5</span></h3>
+
+      <h3 style="font-size:15px;margin-top:24px">Colors</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th><th>Swatch</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">color/azure/26</span></td><td class="pill-value">#004B85</td><td><span class="inline-dot" style="background:#004B85"></span></td></tr>
+            <tr><td><span class="pill">color/azure/26 80%</span></td><td class="pill-value">#004D87cc</td><td><span class="inline-dot" style="background:#004D87cc"></span></td></tr>
+            <tr><td><span class="pill">color/azure/26 90%</span></td><td class="pill-value">#004B85e5</td><td><span class="inline-dot" style="background:#004B85e5"></span></td></tr>
+            <tr><td><span class="pill">color/azure/33</span></td><td class="pill-value">#0069A8</td><td><span class="inline-dot" style="background:#0069A8"></span></td></tr>
+            <tr><td><span class="pill">color/azure/44</span></td><td class="pill-value">#0075E2</td><td><span class="inline-dot" style="background:#0075E2"></span></td></tr>
+            <tr><td><span class="pill">color/azure/84</span></td><td class="pill-value">#D1D5DC</td><td><span class="inline-dot" style="background:#D1D5DC"></span></td></tr>
+            <tr><td><span class="pill">color/cyan/63</span></td><td class="pill-value">#42D5FE</td><td><span class="inline-dot" style="background:#42D5FE"></span></td></tr>
+            <tr><td><span class="pill">color/yellow/50</span></td><td class="pill-value">#FFEB00</td><td><span class="inline-dot" style="background:#FFEB00"></span></td></tr>
+            <tr><td><span class="pill">color/yellow/56</span></td><td class="pill-value">#FFDF20</td><td><span class="inline-dot" style="background:#FFDF20"></span></td></tr>
+            <tr><td><span class="pill">color/orange/54</span></td><td class="pill-value">#E5672E</td><td><span class="inline-dot" style="background:#E5672E"></span></td></tr>
+            <tr><td><span class="pill">color/orange/44</span></td><td class="pill-value">#E2A700</td><td><span class="inline-dot" style="background:#E2A700"></span></td></tr>
+            <tr><td><span class="pill">color/grey/13</span></td><td class="pill-value">#231F20</td><td><span class="inline-dot" style="background:#231F20"></span></td></tr>
+            <tr><td><span class="pill">color/grey/53</span></td><td class="pill-value">#878787</td><td><span class="inline-dot" style="background:#878787"></span></td></tr>
+            <tr><td><span class="pill">color/grey/80</span></td><td class="pill-value">#CCCCCC</td><td><span class="inline-dot" style="background:#CCCCCC"></span></td></tr>
+            <tr><td><span class="pill">color/grey/91</span></td><td class="pill-value">#E5E7EB</td><td><span class="inline-dot" style="background:#E5E7EB"></span></td></tr>
+            <tr><td><span class="pill">color/grey/98</span></td><td class="pill-value">#F9FAFB</td><td><span class="inline-dot" style="background:#F9FAFB"></span></td></tr>
+            <tr><td><span class="pill">color/white/solid</span></td><td class="pill-value">#FFFFFF</td><td><span class="inline-dot" style="background:#FFFFFF"></span></td></tr>
+            <tr><td><span class="pill">color/black/solid</span></td><td class="pill-value">#000000</td><td><span class="inline-dot" style="background:#000000"></span></td></tr>
+            <tr><td><span class="pill">color/black/ 50%</span></td><td class="pill-value">#00000080</td><td><span class="inline-dot" style="background:#00000080"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:15px;margin-top:24px">Typography</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">font family/Font 1</span></td><td class="pill-value">Inter</td></tr>
+            <tr><td><span class="pill">font family/Font 2</span></td><td class="pill-value">Helvetica</td></tr>
+            <tr><td><span class="pill">font family/Font 3</span></td><td class="pill-value">Dimbo</td></tr>
+            <tr><td><span class="pill">font weight/400</span></td><td class="pill-value">400</td></tr>
+            <tr><td><span class="pill">font weight/700</span></td><td class="pill-value">700</td></tr>
+            <tr><td><span class="pill">font size/16</span></td><td class="pill-value">16</td></tr>
+            <tr><td><span class="pill">font size/18</span></td><td class="pill-value">18</td></tr>
+            <tr><td><span class="pill">font size/36</span></td><td class="pill-value">36</td></tr>
+            <tr><td><span class="pill">line height/20</span></td><td class="pill-value">20</td></tr>
+            <tr><td><span class="pill">line height/24</span></td><td class="pill-value">24</td></tr>
+            <tr><td><span class="pill">line height/28</span></td><td class="pill-value">28</td></tr>
+            <tr><td><span class="pill">line height/40</span></td><td class="pill-value">40</td></tr>
+            <tr><td><span class="pill">letter spacing/-0_8</span></td><td class="pill-value">-0.8</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:15px;margin-top:24px">Layout &amp; Sizing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">height/48</span></td><td class="pill-value">48</td></tr>
+            <tr><td><span class="pill">width/1280</span></td><td class="pill-value">1280</td></tr>
+            <tr><td><span class="pill">width/1920</span></td><td class="pill-value">1920</td></tr>
+            <tr><td><span class="pill">radius/4</span></td><td class="pill-value">4</td></tr>
+            <tr><td><span class="pill">radius/12</span></td><td class="pill-value">12</td></tr>
+            <tr><td><span class="pill">stroke weight/1</span></td><td class="pill-value">1</td></tr>
+            <tr><td><span class="pill">opacity/100</span></td><td class="pill-value">100</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:15px;margin-top:24px">Item Spacing (Original File)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Value</th><th>Visual</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFF4C0"><td><span class="pill">item spacing/0</span></td><td class="pill-value">~0</td><td><div class="spacing-bar" style="width:1px;background:#E2A700"></div></td></tr>
+            <tr><td><span class="pill">item spacing/10</span></td><td class="pill-value">10</td><td><div class="spacing-bar" style="width:10px"></div></td></tr>
+            <tr><td><span class="pill">item spacing/12</span></td><td class="pill-value">12</td><td><div class="spacing-bar" style="width:12px"></div></td></tr>
+            <tr style="background:#FFF4C0"><td><span class="pill">item spacing/s</span></td><td class="pill-value">16</td><td><div class="spacing-bar" style="width:16px;background:#E2A700"></div></td></tr>
+            <tr><td><span class="pill">item spacing/20</span></td><td class="pill-value">20</td><td><div class="spacing-bar" style="width:20px"></div></td></tr>
+            <tr><td><span class="pill">item spacing/40</span></td><td class="pill-value">40</td><td><div class="spacing-bar" style="width:40px"></div></td></tr>
+            <tr><td><span class="pill">item spacing/150</span></td><td class="pill-value">150</td><td><div class="spacing-bar" style="width:150px"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: CROSS-REFERENCE MAP -->
+  <!-- ============================================================ -->
+  <section id="crossref">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <h2>Cross-Reference Map</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Semantic Colours to Primitives</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Semantic Token</th><th></th><th>Primitive</th><th></th><th>Resolved Value</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">greyscale/surface/default</span></td><td class="arrow">&rarr;</td><td><span class="pill">Neutral/200</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#FDFCF9"></span> <span class="pill-value">#FDFCF9</span></td></tr>
+            <tr><td><span class="pill">greyscale/surface/subtle</span></td><td class="arrow">&rarr;</td><td><span class="pill">Neutral/100</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#FDFCF9"></span> <span class="pill-value">#FDFCF9</span></td></tr>
+            <tr><td><span class="pill">greyscale/surface/disabled</span></td><td class="arrow">&rarr;</td><td><span class="pill">Greyscale/100</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#E1E6EA"></span> <span class="pill-value">#E1E6EA</span></td></tr>
+            <tr><td><span class="pill">greyscale/border/default</span></td><td class="arrow">&rarr;</td><td><span class="pill">Greyscale/200</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#C0CBD4"></span> <span class="pill-value">#C0CBD4</span></td></tr>
+            <tr><td><span class="pill">greyscale/border/disabled</span></td><td class="arrow">&rarr;</td><td><span class="pill">Greyscale/100</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#E1E6EA"></span> <span class="pill-value">#E1E6EA</span></td></tr>
+            <tr><td><span class="pill">greyscale/border/darker</span></td><td class="arrow">&rarr;</td><td><span class="pill">Greyscale/400</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#8A98A4"></span> <span class="pill-value">#8A98A4</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/title</span></td><td class="arrow">&rarr;</td><td><span class="pill">DarkMidnightBlue/500</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#003462"></span> <span class="pill-value">#003462</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/body</span></td><td class="arrow">&rarr;</td><td><span class="pill">DarkMidnightBlue/700</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#002244"></span> <span class="pill-value">#002244</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/subtitle</span></td><td class="arrow">&rarr;</td><td><span class="pill">DarkMidnightBlue/400</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#00589F"></span> <span class="pill-value">#00589F</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/caption</span></td><td class="arrow">&rarr;</td><td><span class="pill">DeepSeaBlue/600</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#003F70"></span> <span class="pill-value">#003F70</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/negative v1</span></td><td class="arrow">&rarr;</td><td><span class="pill">Neutral/200</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#FDFCF9"></span> <span class="pill-value">#FDFCF9</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/negative v2</span></td><td class="arrow">&rarr;</td><td><span class="pill">Yellow/500</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#FFE800"></span> <span class="pill-value">#FFE800</span></td></tr>
+            <tr><td><span class="pill">greyscale/text/disabled</span></td><td class="arrow">&rarr;</td><td><span class="pill">Greyscale/400</span></td><td class="arrow">&rarr;</td><td><span class="inline-dot" style="background:#8A98A4"></span> <span class="pill-value">#8A98A4</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Semantic Spacing to Primitives</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Semantic Token</th><th></th><th>Primitive</th><th></th><th>Resolved Value</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill">space-container-padding</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-48</span></td><td class="arrow">&rarr;</td><td class="pill-value">48px</td></tr>
+            <tr><td><span class="pill">card-padding</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-24</span></td><td class="arrow">&rarr;</td><td class="pill-value">24px</td></tr>
+            <tr><td><span class="pill">section-gap</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-32</span></td><td class="arrow">&rarr;</td><td class="pill-value">32px</td></tr>
+            <tr><td><span class="pill">grid-gap</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-24</span></td><td class="arrow">&rarr;</td><td class="pill-value">24px</td></tr>
+            <tr><td><span class="pill">button-padding-x</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-16</span></td><td class="arrow">&rarr;</td><td class="pill-value">16px</td></tr>
+            <tr><td><span class="pill">button-padding-y</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-12</span></td><td class="arrow">&rarr;</td><td class="pill-value">12px</td></tr>
+            <tr><td><span class="pill">input-padding-x</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-16</span></td><td class="arrow">&rarr;</td><td class="pill-value">16px</td></tr>
+            <tr><td><span class="pill">input-padding-y</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-12</span></td><td class="arrow">&rarr;</td><td class="pill-value">12px</td></tr>
+            <tr><td><span class="pill">stack-gap-xs</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-4</span></td><td class="arrow">&rarr;</td><td class="pill-value">4px</td></tr>
+            <tr style="background:#FEEDED"><td><span class="pill">stack-gap-sm</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-12</span> / <span class="pill" style="border-color:#ED1D24">space-8</span></td><td class="arrow">&rarr;</td><td class="pill-value">12px / <span style="color:#ED1D24">8px</span></td></tr>
+            <tr style="background:#FEEDED"><td><span class="pill">stack-gap-md</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-16</span> / <span class="pill" style="border-color:#ED1D24">space-12</span></td><td class="arrow">&rarr;</td><td class="pill-value">16px / <span style="color:#ED1D24">12px</span></td></tr>
+            <tr><td><span class="pill">stack-gap-lg</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-24</span></td><td class="arrow">&rarr;</td><td class="pill-value">24px</td></tr>
+            <tr><td><span class="pill">stack-gap-xlg</span></td><td class="arrow">&rarr;</td><td><span class="pill">space-64</span></td><td class="arrow">&rarr;</td><td class="pill-value">64px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: DISCREPANCIES FOUND -->
+  <!-- ============================================================ -->
+  <section id="discrepancies">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <h2>Discrepancies Found</h2>
+    </div>
+
+    <div class="issue-grid">
+
+      <div class="issue-card">
+        <span class="issue-tag conflict">Conflict</span>
+        <h4><span class="pill">stack-gap-sm</span> value mismatch</h4>
+        <p><strong>tokens.json:</strong> 12 (aliases <span class="pill">space-12</span>)<br>
+        <strong>tokens 4.json:</strong> 8 (aliases <span class="pill">space-8</span>)<br>
+        Two files define different values for the same semantic token. One must be chosen as source of truth.</p>
+      </div>
+
+      <div class="issue-card">
+        <span class="issue-tag conflict">Conflict</span>
+        <h4><span class="pill">stack-gap-md</span> value mismatch</h4>
+        <p><strong>tokens.json:</strong> 16 (aliases <span class="pill">space-16</span>)<br>
+        <strong>tokens 4.json:</strong> 12 (aliases <span class="pill">space-12</span>)<br>
+        Same conflict pattern. Likely one file is an older version.</p>
+      </div>
+
+      <div class="issue-card warning">
+        <span class="issue-tag duplicate">Duplicate</span>
+        <h4><span class="pill">Neutral/100</span> and <span class="pill">Neutral/200</span> are identical</h4>
+        <p>Both resolve to <span class="inline-dot" style="background:#FDFCF9"></span> <strong>#FDFCF9</strong>. This makes <span class="pill">greyscale/surface/default</span> and <span class="pill">greyscale/surface/subtle</span> visually indistinguishable.</p>
+      </div>
+
+      <div class="issue-card warning">
+        <span class="issue-tag duplicate">Duplicate</span>
+        <h4><span class="pill">greyscale/surface/subtle</span> = <span class="pill">greyscale/surface/default</span></h4>
+        <p>Both resolve to #FDFCF9. Subtle should be visually distinct from default to provide meaningful hierarchy. Consider using <span class="pill">Neutral/300</span> (#FBF9F4) for subtle.</p>
+      </div>
+
+      <div class="issue-card">
+        <span class="issue-tag naming">Naming</span>
+        <h4><span class="pill">color/black/ 50%</span> has rogue space</h4>
+        <p>Variable name contains a space before "50%". Should be <span class="pill">color/black/50%</span>. This can cause lookup failures in code.</p>
+      </div>
+
+      <div class="issue-card warning">
+        <span class="issue-tag naming">Naming</span>
+        <h4><span class="pill">item spacing/0</span> is not exactly 0</h4>
+        <p>Value is approximately 0 (~0) instead of exactly 0. This can cause sub-pixel rendering issues and unexpected gaps in layouts.</p>
+      </div>
+
+      <div class="issue-card warning">
+        <span class="issue-tag naming">Naming</span>
+        <h4><span class="pill">item spacing/s</span> uses letter instead of number</h4>
+        <p>All other item spacing variables use numeric names (0, 10, 12, 20, 40, 150) but "s" breaks the pattern. Value is 16. Should be <span class="pill">item spacing/16</span>.</p>
+      </div>
+
+      <div class="issue-card">
+        <span class="issue-tag duplicate">Duplicate System</span>
+        <h4>Two parallel spacing systems exist</h4>
+        <p>The <strong>_spacing primitive collection</strong> (space-0 through space-64) and the <strong>original file's item spacing/*</strong> variables both define spacing values. This creates ambiguity about which system is canonical. They also use different scales: _spacing uses a 4px grid; item spacing includes 10 and 150 which are off-grid.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: WHAT'S MISSING -->
+  <!-- ============================================================ -->
+  <section id="missing">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <h2>What's Missing</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-caption);margin-bottom:24px">These are recommendations only. Each item is labeled <strong>NEW</strong> to indicate it does not currently exist in the system.</p>
+
+    <div class="rec-grid">
+
+      <div class="rec-card">
+        <h4>Font Weights</h4>
+        <p>Only 400 and 700 exist. Medium (500) and SemiBold (600) are needed for subtitle emphasis and UI labels.</p>
+        <span class="pill">font weight/500</span> <span class="pill">font weight/600</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Font Sizes</h4>
+        <p>Missing sizes for small text (captions, labels) and mid-range headings.</p>
+        <span class="pill">font size/12</span> <span class="pill">font size/14</span> <span class="pill">font size/24</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Line Heights</h4>
+        <p>Small and large line heights for tight UI and spacious content blocks.</p>
+        <span class="pill">line height/16</span> <span class="pill">line height/32</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Border Radius</h4>
+        <p>Only 4 and 12 exist. A mid-size radius and a pill/circle radius are essential.</p>
+        <span class="pill">radius/8</span> <span class="pill">radius/full</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Hover State Colors</h4>
+        <p>No semantic tokens for interactive hover states. Components need predictable hover colors.</p>
+        <span class="pill">greyscale/surface/hover</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Focus State Colors</h4>
+        <p>No focus ring or border-focus token for accessibility compliance.</p>
+        <span class="pill">greyscale/border/focus</span>
+      </div>
+
+      <div class="rec-card">
+        <h4>Semantic Hover/Focus Colors</h4>
+        <p>The semantic colour collection only covers default, subtle, and disabled states. Active, hover, and focus are missing across surface, border, and text groups.</p>
+        <span class="pill">greyscale/surface/active</span> <span class="pill">greyscale/border/active</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: RECOMMENDED ARCHITECTURE -->
+  <!-- ============================================================ -->
+  <section id="architecture">
+    <div class="section-header">
+      <span class="section-num">5</span>
+      <h2>Recommended Architecture</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-caption);margin-bottom:32px">A 3-layer token architecture ensures consistency, maintainability, and theme-ability. Components should never reference primitives directly.</p>
+
+    <div class="arch-layers">
+
+      <div class="arch-layer l3">
+        <div class="layer-label" style="color:var(--blue)">Layer 3 &mdash; Components</div>
+        <h4>Component Tokens</h4>
+        <p>Use semantic tokens only. Never reference primitives directly.</p>
+        <div class="arch-examples">
+          <span class="pill">Button.background = greyscale/surface/default</span>
+          <span class="pill">Card.padding = card-padding</span>
+          <span class="pill">Input.border = greyscale/border/default</span>
+        </div>
+      </div>
+
+      <div class="arch-layer l2">
+        <div class="layer-label" style="color:#5F5600">Layer 2 &mdash; Semantics</div>
+        <h4>Purpose-Driven Aliases</h4>
+        <p>Named by intent (surface, text, gap, padding). Alias to primitives. Enable theming.</p>
+        <div class="arch-examples">
+          <span class="pill">greyscale/surface/default</span>
+          <span class="pill">greyscale/text/title</span>
+          <span class="pill">card-padding</span>
+          <span class="pill">stack-gap-sm</span>
+        </div>
+      </div>
+
+      <div class="arch-layer l1">
+        <div class="layer-label" style="color:var(--neutral-600)">Layer 1 &mdash; Primitives</div>
+        <h4>Raw Values</h4>
+        <p>Scale-based, context-free values. Colors by hue/step, spacing by size.</p>
+        <div class="arch-examples">
+          <span class="pill">Neutral/200 = #FDFCF9</span>
+          <span class="pill">DarkMidnightBlue/500 = #003462</span>
+          <span class="pill">space-24 = 24</span>
+          <span class="pill">space-48 = 48</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="max-width:720px;margin:32px auto 0;padding:24px;background:#fff;border:1px solid var(--grey-border);border-radius:var(--radius)">
+      <h4 style="font-size:15px;color:var(--text-title);margin-bottom:12px">Key Rules</h4>
+      <ul style="font-size:14px;color:var(--text-body);padding-left:20px;line-height:2">
+        <li>Components reference <strong>Layer 2</strong> (semantics), never Layer 1 (primitives)</li>
+        <li>Semantics alias <strong>Layer 1</strong> (primitives), never raw hex values</li>
+        <li>Primitives are the <strong>single source of truth</strong> for raw values</li>
+        <li>Theming works by swapping <strong>Layer 1</strong> values (e.g., dark mode swaps Neutral scale)</li>
+        <li>Consolidate <span class="pill">item spacing/*</span> into <span class="pill">_spacing</span> primitives to eliminate the duplicate system</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: EXECUTION CHECKLIST -->
+  <!-- ============================================================ -->
+  <section id="checklist">
+    <div class="section-header">
+      <span class="section-num">6</span>
+      <h2>Execution Checklist</h2>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="checklist-phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-num">1</span>
+        <h4>Resolve Conflicts</h4>
+        <span class="phase-progress" data-phase="1"></span>
+      </div>
+      <div class="checklist-items">
+        <div class="check-item"><input type="checkbox" id="c1-1" onchange="saveChecklist()"><label for="c1-1">Decide canonical value for <span class="pill">stack-gap-sm</span> (12 or 8)</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-2" onchange="saveChecklist()"><label for="c1-2">Decide canonical value for <span class="pill">stack-gap-md</span> (16 or 12)</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-3" onchange="saveChecklist()"><label for="c1-3">Update the non-canonical JSON file to match</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-4" onchange="saveChecklist()"><label for="c1-4">Fix <span class="pill">Neutral/100</span> or <span class="pill">Neutral/200</span> so they are distinct hex values</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-5" onchange="saveChecklist()"><label for="c1-5">Fix <span class="pill">color/black/ 50%</span> naming (remove rogue space)</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-6" onchange="saveChecklist()"><label for="c1-6">Fix <span class="pill">item spacing/0</span> to be exactly 0</label></div>
+        <div class="check-item"><input type="checkbox" id="c1-7" onchange="saveChecklist()"><label for="c1-7">Rename <span class="pill">item spacing/s</span> to <span class="pill">item spacing/16</span></label></div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="checklist-phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-num">2</span>
+        <h4>Consolidate Spacing Systems</h4>
+        <span class="phase-progress" data-phase="2"></span>
+      </div>
+      <div class="checklist-items">
+        <div class="check-item"><input type="checkbox" id="c2-1" onchange="saveChecklist()"><label for="c2-1">Audit which <span class="pill">item spacing/*</span> values are used in the file</label></div>
+        <div class="check-item"><input type="checkbox" id="c2-2" onchange="saveChecklist()"><label for="c2-2">Map each <span class="pill">item spacing/*</span> usage to the nearest <span class="pill">_spacing</span> primitive</label></div>
+        <div class="check-item"><input type="checkbox" id="c2-3" onchange="saveChecklist()"><label for="c2-3">Add missing primitives if needed (e.g., space-10 if item spacing/10 is widely used)</label></div>
+        <div class="check-item"><input type="checkbox" id="c2-4" onchange="saveChecklist()"><label for="c2-4">Migrate all <span class="pill">item spacing/*</span> references to <span class="pill">_spacing</span> primitives</label></div>
+        <div class="check-item"><input type="checkbox" id="c2-5" onchange="saveChecklist()"><label for="c2-5">Deprecate and remove <span class="pill">item spacing/*</span> collection</label></div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="checklist-phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-num">3</span>
+        <h4>Add Missing Tokens</h4>
+        <span class="phase-progress" data-phase="3"></span>
+      </div>
+      <div class="checklist-items">
+        <div class="check-item"><input type="checkbox" id="c3-1" onchange="saveChecklist()"><label for="c3-1">Add <span class="pill">font weight/500</span> and <span class="pill">font weight/600</span></label></div>
+        <div class="check-item"><input type="checkbox" id="c3-2" onchange="saveChecklist()"><label for="c3-2">Add <span class="pill">font size/12</span>, <span class="pill">font size/14</span>, <span class="pill">font size/24</span></label></div>
+        <div class="check-item"><input type="checkbox" id="c3-3" onchange="saveChecklist()"><label for="c3-3">Add <span class="pill">line height/16</span> and <span class="pill">line height/32</span></label></div>
+        <div class="check-item"><input type="checkbox" id="c3-4" onchange="saveChecklist()"><label for="c3-4">Add <span class="pill">radius/8</span> and <span class="pill">radius/full</span></label></div>
+        <div class="check-item"><input type="checkbox" id="c3-5" onchange="saveChecklist()"><label for="c3-5">Add <span class="pill">greyscale/surface/hover</span> semantic token</label></div>
+        <div class="check-item"><input type="checkbox" id="c3-6" onchange="saveChecklist()"><label for="c3-6">Add <span class="pill">greyscale/border/focus</span> semantic token</label></div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="checklist-phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-num">4</span>
+        <h4>Enforce Architecture</h4>
+        <span class="phase-progress" data-phase="4"></span>
+      </div>
+      <div class="checklist-items">
+        <div class="check-item"><input type="checkbox" id="c4-1" onchange="saveChecklist()"><label for="c4-1">Ensure all components reference semantic tokens (Layer 2), not primitives</label></div>
+        <div class="check-item"><input type="checkbox" id="c4-2" onchange="saveChecklist()"><label for="c4-2">Ensure all semantic tokens alias primitives (Layer 1), not raw hex values</label></div>
+        <div class="check-item"><input type="checkbox" id="c4-3" onchange="saveChecklist()"><label for="c4-3">Document the 3-layer architecture rule for the team</label></div>
+        <div class="check-item"><input type="checkbox" id="c4-4" onchange="saveChecklist()"><label for="c4-4">Set up Figma linting or review process to prevent direct primitive use in components</label></div>
+        <div class="check-item"><input type="checkbox" id="c4-5" onchange="saveChecklist()"><label for="c4-5">Export final token JSON files for developer handoff</label></div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+// Checklist persistence with localStorage
+const STORAGE_KEY = 'crazy-store-ds-audit-checklist';
+
+function saveChecklist() {
+  const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+  const state = {};
+  checkboxes.forEach(cb => {
+    state[cb.id] = cb.checked;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  updateAllProgress();
+  updateItemStyles();
+}
+
+function loadChecklist() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) return;
+  try {
+    const state = JSON.parse(saved);
+    Object.keys(state).forEach(id => {
+      const cb = document.getElementById(id);
+      if (cb) cb.checked = state[id];
+    });
+  } catch (e) {}
+  updateAllProgress();
+  updateItemStyles();
+}
+
+function updateItemStyles() {
+  document.querySelectorAll('.check-item').forEach(item => {
+    const cb = item.querySelector('input[type="checkbox"]');
+    if (cb.checked) {
+      item.classList.add('done');
+    } else {
+      item.classList.remove('done');
+    }
+  });
+}
+
+function updateAllProgress() {
+  document.querySelectorAll('.checklist-phase').forEach(phase => {
+    const checkboxes = phase.querySelectorAll('input[type="checkbox"]');
+    const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const total = checkboxes.length;
+    const progressEl = phase.querySelector('.phase-progress');
+    if (progressEl) {
+      progressEl.textContent = checked + '/' + total;
+      if (checked === total && total > 0) {
+        progressEl.style.color = '#258B1D';
+        progressEl.style.fontWeight = '700';
+      } else {
+        progressEl.style.color = '';
+        progressEl.style.fontWeight = '';
+      }
+    }
+  });
+}
+
+function togglePhase(header) {
+  const items = header.nextElementSibling;
+  if (items.style.display === 'none') {
+    items.style.display = '';
+  } else {
+    items.style.display = 'none';
+  }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadChecklist();
+});
+</script>
+
+</body>
+</html>
