@@ -157,7 +157,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <tr><td><span class="tk">font family/Font 2</span></td><td>Helvetica</td><td><span class="tag ok">good</span></td><td>Footer CTA / accent text (Helvetica, not in Typography collection)</td></tr>
 <tr><td><span class="tk">font/family/title</span></td><td>Dimbo</td><td><span class="tag ok">good</span></td><td>Display/promo headings <em style="color:var(--text3)">(was font family/Font 3)</em></td></tr>
 <tr><td><span class="tk">font/weight/regular</span></td><td>400</td><td><span class="tag ok">good</span></td><td>Regular <em style="color:var(--text3)">(was font weight/400)</em></td></tr>
-<tr><td><span class="tk">font/weight/bold</span></td><td>700</td><td><span class="tag miss">missing 500/600</span></td><td>No Medium (500) or SemiBold (600) — needed for nav items, badges <em style="color:var(--text3)">(was font weight/700)</em></td></tr>
+<tr><td><span class="tk">font/weight/bold</span></td><td>700</td><td><span class="tag warn">missing 600</span></td><td>Medium (500) now exists. Still no SemiBold (600) — needed for card titles, section headers <em style="color:var(--text3)">(was font weight/700)</em></td></tr>
 <tr><td><span class="tk">font/size/md</span></td><td>16</td><td><span class="tag ok">good</span></td><td>Base body size <em style="color:var(--text3)">(was font size/16)</em></td></tr>
 <tr><td><span class="tk">font/size/lg</span></td><td>18</td><td><span class="tag ok">good</span></td><td>Footer CTA <em style="color:var(--text3)">(was font size/18)</em></td></tr>
 <tr><td><span class="tk">font size/36</span></td><td>36</td><td><span class="tag miss">gap</span></td><td>Jump from 18→36 is huge. Missing 24, 28, 32.</td></tr>
@@ -333,7 +333,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 </tbody>
 </table>
 
-<div class="tip"><strong>Total changes:</strong> 4 renames + 2 value fixes + 15 new variables. This is the minimum needed to build all 6 components properly. No restructuring required.</div>
+<div class="good-box"><strong>Progress update:</strong> 2 renames DONE + 1 value fix DONE + 4 new semantic tokens ALREADY CREATED + 10 variables ALREADY EXIST in export.json. Remaining: 2 renames + 1 value fix + 2 new variables (font/weight/semibold, border-width tokens). Most work is complete.</div>
 
 </div></div>
 
@@ -357,7 +357,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <tr><td>Logo bg</td><td>Fill</td><td><span class="tk">Yellow/500</span></td></tr>
 <tr><td>Logo radius</td><td>Radius</td><td><span class="tk">radius/button</span> / <span class="tk">r-4</span></td></tr>
 <tr><td>Search category bg</td><td>Fill</td><td><span class="tk">Greyscale/100</span></td></tr>
-<tr><td>Search category text</td><td>Weight</td><td><span class="tk">font weight/500</span> <span class="tag miss">new</span></td></tr>
+<tr><td>Search category text</td><td>Weight</td><td><span class="tk">font/weight/medium</span> <span class="tag ok">exists</span></td></tr>
 <tr><td>Search input bg</td><td>Fill</td><td><span class="tk">Greyscale/50</span></td></tr>
 <tr><td>Search input border</td><td>Stroke</td><td><span class="tk">stroke weight/1</span> + <span class="tk">Greyscale/100</span></td></tr>
 <tr><td>Search submit bg</td><td>Fill</td><td><span class="tk">Yellow/500</span></td></tr>
@@ -420,40 +420,42 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>color/black/ 50%</code> → <code>color/black/50%</code> (remove space)</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Map <code>item spacing/s</code> → <code>stack-gap-md</code> (= space-12)</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Fix <code>item spacing/0</code> value from ~0 to exactly 0</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v1</code> → <code>greyscale/text/inverse</code></span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Rename <code>greyscale/text/negative v2</code> → <code>greyscale/text/highlight</code></span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Update <code>greyscale/surface/subtle</code> alias from Neutral/100 → Neutral/300</span></li>
+  <li class="done"><div class="box"></div><span>Rename <code>greyscale/text/negative v1</code> → <code>greyscale/text/inverse</code></span></li>
+  <li class="done"><div class="box"></div><span>Rename <code>greyscale/text/negative v2</code> → <code>greyscale/text/highlight</code></span></li>
+  <li class="done"><div class="box"></div><span>Update <code>greyscale/surface/subtle</code> alias from Neutral/100 → Neutral/300</span></li>
 </ul>
 
 <h3>Phase 2: Add missing font variables (10 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/weight/medium</code> = 500 in Typography collection</span></li>
+  <li class="done"><div class="box"></div><span><code>font/weight/medium</code> = 500 — EXISTS in Typography</span></li>
   <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/weight/semibold</code> = 600 in Typography collection</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/xs</code> = 12</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/sm</code> = 14</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>font/size/xl</code> = 24</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/16</code> = 16</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>line height/32</code> = 32</span></li>
+  <li class="done"><div class="box"></div><span><code>font/size/xs</code> = 12 — EXISTS in Typography</span></li>
+  <li class="done"><div class="box"></div><span><code>font/size/sm</code> = 14 — EXISTS in Typography</span></li>
+  <li class="done"><div class="box"></div><span><code>font/size/2xl</code> = 24 — EXISTS in Typography</span></li>
+  <li class="done"><div class="box"></div><span><code>font/line-height/xs</code> = 16 — EXISTS in Typography</span></li>
+  <li class="done"><div class="box"></div><span><code>font/line-height/md</code> = 32 — EXISTS in Typography</span></li>
 </ul>
 
 <h3>Phase 3: Add missing spacing variables (5 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-4</code> exists in _spacing collection (= 4)</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-8</code> exists in _spacing collection (= 8)</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-24</code> exists in _spacing collection (= 24)</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Verify <code>space-32</code> exists in _spacing collection (= 32)</span></li>
+  <li class="done"><div class="box"></div><span><code>space-4</code> = 4 — EXISTS in _spacing</span></li>
+  <li class="done"><div class="box"></div><span><code>space-8</code> = 8 — EXISTS in _spacing</span></li>
+  <li class="done"><div class="box"></div><span><code>space-24</code> = 24 — EXISTS in _spacing</span></li>
+  <li class="done"><div class="box"></div><span><code>space-32</code> = 32 — EXISTS in _spacing</span></li>
 </ul>
 
 <h3>Phase 4: Add missing radius variables (2 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>radius/8</code> = 8</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>radius/full</code> = 9999</span></li>
+  <li class="done"><div class="box"></div><span><code>r-8</code> = 8 — EXISTS in _radius</span></li>
+  <li class="done"><div class="box"></div><span><code>r-full</code> = 9999 — EXISTS in _radius</span></li>
 </ul>
 
 <h3>Phase 5: Add missing semantic tokens (5 min)</h3>
 <ul class="check">
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>greyscale/surface/hover</code> → alias Greyscale/50</span></li>
-  <li onclick="this.classList.toggle('done')"><div class="box"></div><span>Create <code>greyscale/border/focus</code> → alias DeepSeaBlue/500</span></li>
+  <li class="done"><div class="box"></div><span><code>greyscale/surface/hover</code> → Greyscale/50 — EXISTS in Figma</span></li>
+  <li class="done"><div class="box"></div><span><code>greyscale/surface/active</code> → Greyscale/100 — EXISTS in Figma</span></li>
+  <li class="done"><div class="box"></div><span><code>greyscale/border/focus</code> → DeepSeaBlue/500 — EXISTS in Figma</span></li>
+  <li class="done"><div class="box"></div><span><code>greyscale/border/hover</code> → Greyscale/300 — EXISTS in Figma</span></li>
 </ul>
 
 <h3>Phase 6: Clean up junk spacings (optional, 10 min)</h3>
@@ -477,10 +479,10 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>Area</th><th>Status</th><th>Notes</th></tr></thead>
 <tbody>
 <tr><td>Color primitives</td><td><span class="tag ok">production ready</span></td><td>After 2 renames, fully usable</td></tr>
-<tr><td>Color semantics</td><td><span class="tag warn">nearly ready</span></td><td>After 2 renames + 2 additions, good to go</td></tr>
-<tr><td>Typography</td><td><span class="tag warn">fragile</span></td><td>Font family/weight OK. Sizes have gaps — add 12, 14, 24 minimum</td></tr>
-<tr><td>Spacing</td><td><span class="tag err">needs cleanup</span></td><td>Core values OK. Junk floats pollute the system. Add 4, 8, 24, 32.</td></tr>
-<tr><td>Radius</td><td><span class="tag warn">nearly ready</span></td><td>Add radius/8 and radius/full to complete the scale</td></tr>
+<tr><td>Color semantics</td><td><span class="tag ok">production ready</span></td><td>Renames done. hover/active/focus/border-hover tokens all exist.</td></tr>
+<tr><td>Typography</td><td><span class="tag warn">nearly ready</span></td><td>font/weight/medium, size/xs, size/sm, size/2xl, line-height/xs, line-height/md all exist. Still need font/weight/semibold (600).</td></tr>
+<tr><td>Spacing</td><td><span class="tag warn">nearly ready</span></td><td>space-4, 8, 24, 32 all exist. border-width/thin (1), default (1.5), thick (2) added. Junk floats still need cleanup.</td></tr>
+<tr><td>Radius</td><td><span class="tag ok">production ready</span></td><td>r-8 and r-full already exist in _radius collection.</td></tr>
 <tr><td>Sizing (height/width)</td><td><span class="tag ok">production ready</span></td><td>Clean and minimal</td></tr>
 <tr><td>Stroke</td><td><span class="tag warn">noisy</span></td><td>stroke weight/1 is good. The 0.02–1.67 values are noise — verify or remove.</td></tr>
 </tbody>
@@ -500,7 +502,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 </table>
 
 <div class="good-box" style="margin-top:16px">
-<strong>Bottom line:</strong> Your system is 80% there. The structure is correct — primitives → semantics → components. You just need the 4 renames, 2 value fixes, and 15 new tokens listed above. That's roughly 30 minutes of work in Figma, then you can start building components with full variable coverage.
+<strong>Bottom line:</strong> Your system is now ~95% there. Renames (negative v1/v2) and surface/subtle fix are DONE. Most "new" variables already existed in the export.json (spacing, radius, typography, semantic tokens). Remaining work: 2 renames (color/black space, item spacing/s), 1 value fix (item spacing/0), and 1 new variable (font/weight/semibold). That is roughly 10 minutes of work in Figma.
 </div>
 
 </div></div>
