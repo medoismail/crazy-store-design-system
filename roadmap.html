@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Roadmap — The Crazy Store Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FDFCF9;
+  --blue: #004D87;
+  --blue-dark: #003462;
+  --blue-light: #00589F;
+  --yellow: #FFE800;
+  --yellow-light: #FFF8CC;
+  --text: #002244;
+  --text-secondary: #003F70;
+  --text-muted: #74808B;
+  --border: #C0CBD4;
+  --border-light: #E1E6EA;
+  --surface: #FFFFFF;
+  --surface-alt: #EEF1F3;
+  --green: #2B9E20;
+  --green-bg: #E8F9E6;
+  --green-border: #B8E8B4;
+  --red: #C0392B;
+  --red-bg: #FDECEB;
+  --red-border: #F5C6C0;
+  --orange: #D4820A;
+  --orange-bg: #FFF4E0;
+  --orange-border: #F5D89A;
+  --blue-bg: #E8F0F8;
+  --blue-border: #B0CCE4;
+  --font: 'Inter', system-ui, sans-serif;
+  --r: 8px;
+  --r-lg: 12px;
+  --r-sm: 4px;
+  --shadow-sm: 0 1px 3px rgba(0,34,68,.06);
+  --shadow-md: 0 4px 12px rgba(0,34,68,.08);
+  --shadow-lg: 0 8px 24px rgba(0,34,68,.10);
+  --transition: all .2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--yellow); color: var(--text); }
+
+/* ========== TAB NAV (preserved) ========== */
+.tab-nav { position: sticky; top: 0; z-index: 200; background: #FDFCF9; border-bottom: 1px solid #C0CBD4; padding: 8px 0; display: flex; justify-content: center; gap: 4px; }
+.tab-nav a { font-size: 13px; font-weight: 600; color: #74808b; text-decoration: none; padding: 8px 20px; border-radius: 8px; transition: all .15s; }
+.tab-nav a:hover { color: #004D87; background: rgba(0,77,135,.04); }
+.tab-nav a.active { color: #004D87; background: rgba(0,77,135,.08); }
+.tab-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: #FFE800; display: inline-block; margin-left: 4px; vertical-align: middle; }
+
+/* ========== LAYOUT ========== */
+.app { max-width: 960px; margin: 0 auto; padding: 24px 24px 80px; }
+
+/* ========== HEADER ========== */
+.page-header { text-align: center; padding: 48px 0 40px; }
+.page-header .label { display: inline-block; background: var(--blue); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; }
+.page-header h1 { font-size: 32px; font-weight: 800; color: var(--blue-dark); letter-spacing: -.03em; margin-bottom: 8px; }
+.page-header h1 span { color: var(--blue); }
+.page-header p { font-size: 14px; color: var(--text-muted); max-width: 540px; margin: 0 auto; }
+
+/* ========== SECTION TITLES ========== */
+.section-title { font-size: 20px; font-weight: 800; color: var(--blue-dark); margin: 48px 0 4px; letter-spacing: -.02em; padding-bottom: 0; display: flex; align-items: center; gap: 10px; }
+.section-title .num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; border-radius: 50%; flex-shrink: 0; }
+.section-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; margin-left: 38px; }
+
+/* ========== HEALTH SCORE ========== */
+.health-dashboard { display: grid; grid-template-columns: 200px 1fr; gap: 24px; margin-bottom: 32px; }
+.health-score { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: 28px; text-align: center; box-shadow: var(--shadow-sm); }
+.score-ring { width: 120px; height: 120px; margin: 0 auto 12px; position: relative; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .score-value { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; font-weight: 800; color: var(--blue-dark); }
+.score-ring .score-value small { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+.score-label { font-size: 13px; font-weight: 700; color: var(--blue-dark); margin-bottom: 2px; }
+.score-sublabel { font-size: 11px; color: var(--text-muted); }
+.health-right { display: flex; flex-direction: column; gap: 12px; }
+
+/* ========== RISK CARDS ========== */
+.risk-card { background: var(--surface); border-radius: var(--r); padding: 16px 20px; box-shadow: var(--shadow-sm); display: flex; align-items: flex-start; gap: 12px; transition: var(--transition); }
+.risk-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.risk-card.critical { border-left: 4px solid var(--red); }
+.risk-card.warning { border-left: 4px solid var(--orange); }
+.risk-card .risk-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.risk-card.critical .risk-icon { background: var(--red-bg); }
+.risk-card.warning .risk-icon { background: var(--orange-bg); }
+.risk-card .risk-text strong { font-size: 13px; font-weight: 700; color: var(--text); display: block; margin-bottom: 2px; }
+.risk-card .risk-text p { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* ========== CRITICAL / QUICK WIN ROWS ========== */
+.card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.mini-card { background: var(--surface); border-radius: var(--r); padding: 14px 16px; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.mini-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.mini-card.red { border-top: 3px solid var(--red); }
+.mini-card.green { border-top: 3px solid var(--green); }
+.mini-card .mc-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.mini-card.red .mc-label { color: var(--red); }
+.mini-card.green .mc-label { color: var(--green); }
+.mini-card .mc-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.mini-card .mc-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+/* ========== ISSUE CARDS ========== */
+.issue-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-lg); margin-bottom: 16px; overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.issue-card:hover { box-shadow: var(--shadow-md); }
+.issue-header { padding: 16px 20px 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.issue-header .issue-num { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.issue-body { padding: 0 20px 16px; }
+.issue-body .problem { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.issue-body .why { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; padding-left: 12px; border-left: 2px solid var(--border-light); }
+.issue-body .fix-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.issue-body .fix-text { font-size: 12px; color: var(--text); margin-bottom: 10px; line-height: 1.6; }
+.issue-impl { background: var(--surface-alt); border-top: 1px solid var(--border-light); padding: 12px 20px; }
+.issue-impl .impl-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.impl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.impl-item { font-size: 11px; }
+.impl-item .impl-label { font-weight: 600; color: var(--text-muted); font-size: 10px; }
+.impl-item .impl-value { color: var(--text); }
+.impl-item code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; background: rgba(0,77,135,.06); color: var(--blue); padding: 1px 5px; border-radius: 3px; }
+
+/* ========== BADGES ========== */
+.badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: .4px; }
+.badge.high { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.badge.med { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
+.badge.low { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge.now { background: var(--red); color: #fff; }
+.badge.next { background: var(--orange); color: #fff; }
+.badge.later { background: var(--blue); color: #fff; }
+
+/* ========== PHASE PLAN ========== */
+.phase { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-lg); margin-bottom: 20px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.phase-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); }
+.phase-header-left { display: flex; align-items: center; gap: 12px; }
+.phase-header .phase-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+.phase.p1 .phase-num { background: var(--red-bg); color: var(--red); }
+.phase.p2 .phase-num { background: var(--orange-bg); color: var(--orange); }
+.phase.p3 .phase-num { background: var(--blue-bg); color: var(--blue); }
+.phase-header h3 { font-size: 16px; font-weight: 700; color: var(--text); }
+.phase-header .phase-time { font-size: 11px; color: var(--text-muted); font-weight: 600; background: var(--surface-alt); padding: 4px 12px; border-radius: 20px; }
+.phase-meta { padding: 12px 24px; background: var(--surface-alt); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid var(--border-light); font-size: 12px; }
+.phase-meta dt { font-weight: 600; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .4px; }
+.phase-meta dd { color: var(--text); margin-top: 2px; }
+.phase-body { padding: 16px 24px; }
+.phase-progress { height: 4px; background: var(--border-light); border-radius: 2px; margin: 0 24px 16px; overflow: hidden; }
+.phase-progress-bar { height: 100%; border-radius: 2px; transition: width .4s ease; }
+.phase.p1 .phase-progress-bar { background: var(--red); }
+.phase.p2 .phase-progress-bar { background: var(--orange); }
+.phase.p3 .phase-progress-bar { background: var(--blue); }
+.phase-progress-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-align: right; padding: 0 24px 8px; }
+
+/* ========== CHECKLIST ========== */
+.checklist { list-style: none; }
+.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-light); font-size: 13px; line-height: 1.5; cursor: pointer; transition: var(--transition); }
+.checklist li:last-child { border-bottom: none; }
+.checklist li:hover { background: rgba(0,77,135,.02); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 4px; }
+.checklist .cbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.checklist li.done .cbox { background: var(--green); border-color: var(--green); }
+.checklist li.done .cbox::after { content: '\2713'; color: #fff; font-size: 12px; font-weight: 700; }
+.checklist li.done .ctext { text-decoration: line-through; color: var(--text-muted); }
+.ctext code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; background: rgba(0,77,135,.06); color: var(--blue); padding: 1px 5px; border-radius: 3px; }
+
+/* ========== TABLE ========== */
+.inv-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 0; background: var(--surface); border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); }
+.inv-table thead th { text-align: left; padding: 10px 14px; background: var(--surface-alt); font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border-light); }
+.inv-table tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.inv-table tbody tr:last-child td { border-bottom: none; }
+.inv-table tbody tr:hover { background: rgba(0,77,135,.02); }
+.inv-table code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; background: rgba(0,77,135,.06); color: var(--blue); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+.inv-table .cat-row td { background: var(--surface-alt); font-weight: 700; font-size: 11px; color: var(--blue-dark); padding-top: 12px; padding-bottom: 8px; }
+
+/* ========== NAMING CONVENTION ========== */
+.naming-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.naming-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r); padding: 16px; box-shadow: var(--shadow-sm); }
+.naming-card .nc-type { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.naming-card .nc-pattern { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--blue); margin-bottom: 8px; font-weight: 600; }
+.naming-card .nc-example { font-size: 12px; color: var(--text-secondary); }
+.naming-card .nc-example code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; background: rgba(0,77,135,.06); color: var(--blue); padding: 1px 5px; border-radius: 3px; }
+.naming-card .nc-arrow { color: var(--text-muted); margin: 0 4px; }
+
+/* ========== IMPACT SECTION ========== */
+.impact-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-lg); margin-bottom: 16px; overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.impact-card:hover { box-shadow: var(--shadow-md); }
+.impact-header { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 12px; }
+.impact-header .impact-icon { width: 40px; height: 40px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.impact-header h4 { font-size: 14px; font-weight: 700; color: var(--text); }
+.impact-body { padding: 16px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.impact-col .ic-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.impact-col .ic-label.ux { color: var(--red); }
+.impact-col .ic-label.dev { color: var(--orange); }
+.impact-col .ic-label.cost { color: var(--blue); }
+.impact-col p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .health-dashboard { grid-template-columns: 1fr; }
+  .card-row { grid-template-columns: 1fr; }
+  .impl-grid { grid-template-columns: 1fr; }
+  .naming-grid { grid-template-columns: 1fr; }
+  .impact-body { grid-template-columns: 1fr; }
+  .phase-meta { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== TAB NAV (preserved) ========== -->
+<nav class="tab-nav">
+  <a href="guide.html">Build Guide</a>
+  <a href="system.html">System Map</a>
+  <a href="audit.html">Audit</a>
+  <a href="roadmap.html" class="active">Roadmap<span class="dot"></span></a>
+</nav>
+
+<div class="app">
+
+<!-- ========== HEADER ========== -->
+<div class="page-header">
+  <div class="label">Decision-Making Roadmap</div>
+  <h1>The <span>Crazy Store</span> — System Audit</h1>
+  <p>Actionable issues, phased execution plan, and missing token inventory. Everything needed to bring the design system to production quality.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: EXECUTIVE SUMMARY                                  -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">1</span> Executive Summary</h2>
+<p class="section-desc">At-a-glance system health, top risks, and quick wins.</p>
+
+<div class="health-dashboard">
+  <div class="health-score">
+    <div class="score-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#E1E6EA" stroke-width="10"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#004D87" stroke-width="10"
+          stroke-dasharray="326.73" stroke-dashoffset="91.48" stroke-linecap="round"/>
+      </svg>
+      <div class="score-value">72<small>/100</small></div>
+    </div>
+    <div class="score-label">System Health</div>
+    <div class="score-sublabel">10 collections, 12 issues found</div>
+  </div>
+
+  <div class="health-right">
+    <div class="risk-card critical">
+      <div class="risk-icon">&#9888;</div>
+      <div class="risk-text">
+        <strong>Biggest UX Risk: No Interactive State Tokens</strong>
+        <p>Hover, focus, and active surface tokens are completely missing. Every interactive element (buttons, links, inputs, cards) will lack visible feedback, violating WCAG 2.1 focus-visible requirements and degrading the perceived quality of the storefront.</p>
+      </div>
+    </div>
+    <div class="risk-card warning">
+      <div class="risk-icon">&#9881;</div>
+      <div class="risk-text">
+        <strong>Biggest System Inconsistency: Legacy Duplicate Collection</strong>
+        <p>The old <code>color/azure/*</code>, <code>color/grey/*</code>, and <code>item spacing/*</code> collection duplicates the Primitive Colours and _spacing systems. Designers will pick the wrong source of truth, causing drift across every component built from here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-row">
+  <div class="mini-card red">
+    <div class="mc-label">Critical Issue 1</div>
+    <div class="mc-title">Duplicate Colour Systems</div>
+    <div class="mc-desc">Legacy <code>color/*</code> collection overlaps Primitive Colours. Causes source-of-truth confusion across all 88 colours.</div>
+  </div>
+  <div class="mini-card red">
+    <div class="mc-label">Critical Issue 2</div>
+    <div class="mc-title">Identical Neutral Stops</div>
+    <div class="mc-desc">Neutral/100 and Neutral/200 both resolve to #FDFCF9 making <code>greyscale/surface/subtle</code> and <code>/default</code> visually identical.</div>
+  </div>
+  <div class="mini-card red">
+    <div class="mc-label">Critical Issue 3</div>
+    <div class="mc-title">No Shadow Tokens</div>
+    <div class="mc-desc">Zero elevation tokens exist. Cards, modals, and dropdowns have no systematic depth hierarchy.</div>
+  </div>
+</div>
+
+<div class="card-row">
+  <div class="mini-card green">
+    <div class="mc-label">Quick Win 1</div>
+    <div class="mc-title">Fix Naming Error</div>
+    <div class="mc-desc">Rename <code>color/black/ 50%</code> (rogue space). Under 1 minute in Figma.</div>
+  </div>
+  <div class="mini-card green">
+    <div class="mc-label">Quick Win 2</div>
+    <div class="mc-title">Add Warning Mode</div>
+    <div class="mc-desc">Duplicate the Error mode in Semantic Colours and swap to Yellow scale. 5 minutes.</div>
+  </div>
+  <div class="mini-card green">
+    <div class="mc-label">Quick Win 3</div>
+    <div class="mc-title">Add Border-Width Tokens</div>
+    <div class="mc-desc">Create 3 tokens: thin(1), default(1.5), thick(2). Instant consistency across all strokes.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ISSUE CARDS                                        -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">2</span> Issue Cards</h2>
+<p class="section-desc">Every issue documented with impact, fix, and implementation details.</p>
+
+<!-- Issue 1 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#1</span>
+    <span class="badge high">High Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">Legacy duplicate collection coexists with Primitive Colours system</div>
+    <div class="why"><strong>Why it matters:</strong> Designers unknowingly pick <code>color/azure/26</code> instead of <code>DeepSeaBlue/500</code>. Components break when one system updates but the other does not. Dev handoff becomes ambiguous with two valid sources for the same colour.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Archive or delete the entire legacy collection (<code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code>, <code>font family/*</code>, <code>font weight/*</code>, <code>font size/*</code>, <code>line height/*</code>, <code>radius/*</code>, <code>stroke weight/*</code>). Remap any remaining usages to the Primitive Colours and _spacing collections.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Collection</div><div class="impl-value">Original File Variables</div></div>
+      <div class="impl-item"><div class="impl-label">Action</div><div class="impl-value">Delete after remap</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">All components using legacy refs</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 2 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#2</span>
+    <span class="badge high">High Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">Neutral/100 and Neutral/200 resolve to the same hex (#FDFCF9)</div>
+    <div class="why"><strong>Why it matters:</strong> Two primitive steps that are visually identical waste a slot in the scale and make the semantic token <code>greyscale/surface/subtle</code> (aliased to Neutral/100) indistinguishable from <code>greyscale/surface/default</code> (Neutral/200). Designers lose the ability to create visual layering.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Change Neutral/100 to a distinct warm off-white such as <code>#FAF8F3</code> so that surface/subtle is perceptibly lighter than surface/default. Alternatively, re-alias <code>greyscale/surface/subtle</code> to Neutral/300 (#FBF9F4).</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variable</div><div class="impl-value"><code>Neutral/100</code></div></div>
+      <div class="impl-item"><div class="impl-label">Current</div><div class="impl-value">#FDFCF9</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value"><code>greyscale/surface/subtle</code></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 3 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#3</span>
+    <span class="badge med">Med Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">greyscale/surface/subtle and greyscale/surface/default resolve to identical hex</div>
+    <div class="why"><strong>Why it matters:</strong> The semantic layer promises a "subtle" background variant but delivers the same colour as "default". Card-inside-page, section dividers, and alternating row patterns will have zero visual differentiation.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Re-alias <code>greyscale/surface/subtle</code> from Neutral/100 to Neutral/300 (#FBF9F4) so there is a visible step down.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variable</div><div class="impl-value"><code>greyscale/surface/subtle</code></div></div>
+      <div class="impl-item"><div class="impl-label">Change alias to</div><div class="impl-value">Neutral/300</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Cards, sections, alternating rows</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 4 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#4</span>
+    <span class="badge high">High Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No hover, focus, or active surface/border semantic tokens exist</div>
+    <div class="why"><strong>Why it matters:</strong> Every interactive element (button, link, card, input, dropdown item) needs visible state changes for usability and accessibility. Without these tokens, developers will hardcode arbitrary colours creating inconsistency. WCAG 2.1 SC 2.4.7 requires visible focus indicators.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Add four tokens to the Colour Tokens collection: <code>greyscale/surface/hover</code>, <code>greyscale/surface/active</code>, <code>greyscale/border/focus</code>, <code>greyscale/border/hover</code>.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variables</div><div class="impl-value"><code>greyscale/surface/hover</code> etc.</div></div>
+      <div class="impl-item"><div class="impl-label">Values</div><div class="impl-value">See Missing Parts table</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Buttons, cards, inputs, nav items</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 5 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#5</span>
+    <span class="badge med">Med Impact</span>
+    <span class="badge next">Next Sprint</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No semantic colour tokens for badge states (Promotion, New, Sale, Out of Stock)</div>
+    <div class="why"><strong>Why it matters:</strong> Badge colours are currently hardcoded to specific primitive values. When the brand refreshes or a new badge type is added, every instance must be hunted down manually. The badge system cannot be themed or mode-switched.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Create a badge colour group in Semantic Colours or Colour Tokens with tokens like <code>badge/promotion/surface</code>, <code>badge/new/surface</code>, <code>badge/sale/surface</code>, <code>badge/out-of-stock/surface</code> plus matching text tokens.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Collection</div><div class="impl-value">Semantic Colours or Colour Tokens</div></div>
+      <div class="impl-item"><div class="impl-label">Tokens needed</div><div class="impl-value">8 (4 surface + 4 text)</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Product card badges</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 6 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#6</span>
+    <span class="badge high">High Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No shadow/elevation tokens exist anywhere in the system</div>
+    <div class="why"><strong>Why it matters:</strong> Cards, modals, dropdowns, and tooltips need consistent depth. Without shadow tokens, every component author invents their own shadow values. The storefront loses visual hierarchy and feels unpolished.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Create a shadow token collection with four levels: <code>shadow/sm</code>, <code>shadow/md</code>, <code>shadow/lg</code>, <code>shadow/xl</code> using the brand's dark blue as the shadow colour for warmth.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variables</div><div class="impl-value"><code>shadow/sm</code> through <code>shadow/xl</code></div></div>
+      <div class="impl-item"><div class="impl-label">Values</div><div class="impl-value">See Missing Parts table</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Cards, modals, dropdowns, tooltips</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 7 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#7</span>
+    <span class="badge med">Med Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No border-width semantic tokens (only primitive stroke weight/1 in legacy)</div>
+    <div class="why"><strong>Why it matters:</strong> Inputs, cards, and dividers use different border widths but there is no systematic way to reference them. Developers must guess or inspect each component individually, creating inconsistency across all bordered elements.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Add three border-width tokens: <code>border-width/thin</code> (1px), <code>border-width/default</code> (1.5px), <code>border-width/thick</code> (2px).</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variables</div><div class="impl-value"><code>border-width/thin</code>, <code>/default</code>, <code>/thick</code></div></div>
+      <div class="impl-item"><div class="impl-label">Values</div><div class="impl-value">1, 1.5, 2</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Inputs, cards, dividers, tables</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 8 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#8</span>
+    <span class="badge low">Low Impact</span>
+    <span class="badge later">Later</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">Typography collection has no letter-spacing tokens</div>
+    <div class="why"><strong>Why it matters:</strong> Headings, buttons, and uppercase labels all need different letter-spacing for optimal readability. Without tokens, spacing is either omitted (resulting in cramped uppercase text) or inconsistently applied.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Add three letter-spacing tokens: <code>letter-spacing/tight</code> (-0.02em), <code>letter-spacing/normal</code> (0), <code>letter-spacing/wide</code> (0.02em).</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Collection</div><div class="impl-value">Typography</div></div>
+      <div class="impl-item"><div class="impl-label">Tokens</div><div class="impl-value">3 (tight, normal, wide)</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Headings, buttons, badge labels</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 9 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#9</span>
+    <span class="badge med">Med Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">Semantic Colours collection has no "Warning" mode (only Primary, Secondary, Success, Error, Accent)</div>
+    <div class="why"><strong>Why it matters:</strong> Warning states are essential for low-stock indicators, price alerts, and form validation messages. Without a Warning mode, developers will either reuse Error (confusing severity) or hardcode yellow values (breaking the semantic system).</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Add a 6th mode "Warning" to Semantic Colours. Use the Yellow primitive scale: surface/subtle = Yellow/50, surface/default = Yellow/200, border/default = Yellow/400, text-icon/default = Yellow/700.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Collection</div><div class="impl-value">Semantic Colours</div></div>
+      <div class="impl-item"><div class="impl-label">Mode name</div><div class="impl-value">Warning</div></div>
+      <div class="impl-item"><div class="impl-label">Base scale</div><div class="impl-value">Yellow (50-950)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 10 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#10</span>
+    <span class="badge low">Low Impact</span>
+    <span class="badge later">Later</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No opacity tokens exist in the system</div>
+    <div class="why"><strong>Why it matters:</strong> Disabled states, overlays, hover highlights, and skeleton loaders all require consistent opacity values. Without tokens, every component uses different opacity levels creating visual inconsistency.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Create four opacity tokens: <code>opacity/disabled</code> (0.4), <code>opacity/hover</code> (0.08), <code>opacity/overlay</code> (0.5), and consider <code>opacity/skeleton</code> (0.12).</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Tokens</div><div class="impl-value">4 opacity tokens</div></div>
+      <div class="impl-item"><div class="impl-label">Values</div><div class="impl-value">0.4, 0.08, 0.5, 0.12</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Disabled states, overlays, hover</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 11 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#11</span>
+    <span class="badge low">Low Impact</span>
+    <span class="badge later">Later</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">No z-index system exists</div>
+    <div class="why"><strong>Why it matters:</strong> Dropdowns, sticky headers, modals, and toasts compete for stacking order. Without a z-index system, developers create arbitrary values leading to stacking bugs where modals appear behind overlays or toasts get buried.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Create a z-index token set with defined layers: <code>z-index/dropdown</code> (100), <code>z-index/sticky</code> (200), <code>z-index/modal</code> (300), <code>z-index/toast</code> (400).</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Tokens</div><div class="impl-value">4 z-index tokens</div></div>
+      <div class="impl-item"><div class="impl-label">Values</div><div class="impl-value">100, 200, 300, 400</div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Dropdowns, header, modals, toasts</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Issue 12 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">#12</span>
+    <span class="badge low">Low Impact</span>
+    <span class="badge now">Fix Now</span>
+  </div>
+  <div class="issue-body">
+    <div class="problem">Naming error: <code>color/black/ 50%</code> has a rogue space before "50%"</div>
+    <div class="why"><strong>Why it matters:</strong> Code generators and token export tools will create broken variable names (e.g., <code>--color-black--50</code>). Any automation pipeline will fail or produce unexpected output when encountering the space character.</div>
+    <div class="fix-title">Recommended Fix</div>
+    <div class="fix-text">Rename to <code>color/black/50%</code> (remove the space). This is a 10-second fix in Figma's variable editor.</div>
+  </div>
+  <div class="issue-impl">
+    <div class="impl-title">Implementation Details</div>
+    <div class="impl-grid">
+      <div class="impl-item"><div class="impl-label">Variable</div><div class="impl-value"><code>color/black/ 50%</code></div></div>
+      <div class="impl-item"><div class="impl-label">Rename to</div><div class="impl-value"><code>color/black/50%</code></div></div>
+      <div class="impl-item"><div class="impl-label">Affected</div><div class="impl-value">Out-of-stock overlay, any opacity usage</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: PHASED ACTION PLAN                                 -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">3</span> Phased Action Plan</h2>
+<p class="section-desc">Three-week execution plan with interactive progress tracking. Checkboxes persist via localStorage.</p>
+
+<!-- Phase 1 -->
+<div class="phase p1">
+  <div class="phase-header">
+    <div class="phase-header-left">
+      <div class="phase-num">1</div>
+      <div>
+        <h3>Foundations</h3>
+        <span style="font-size:11px;color:var(--text-muted)">Week 1 &mdash; Clean, fix, and fill gaps</span>
+      </div>
+    </div>
+    <div class="phase-time">~3-4 hours</div>
+  </div>
+  <div class="phase-meta">
+    <div><dt>Expected Outcome</dt><dd>A clean, single-source-of-truth variable system with all interactive state tokens and elevation</dd></div>
+    <div><dt>Dependencies</dt><dd>None. This phase has no blockers.</dd></div>
+  </div>
+  <div class="phase-progress-label" data-phase="1">0 / 6 complete</div>
+  <div class="phase-progress"><div class="phase-progress-bar" data-phase="1" style="width:0%"></div></div>
+  <div class="phase-body">
+    <ul class="checklist" data-phase="1">
+      <li data-key="p1-1"><div class="cbox"></div><span class="ctext">Delete legacy <code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code> collection after remapping all references to Primitive Colours and _spacing</span></li>
+      <li data-key="p1-2"><div class="cbox"></div><span class="ctext">Fix naming errors: rename <code>color/black/ 50%</code> to <code>color/black/50%</code></span></li>
+      <li data-key="p1-3"><div class="cbox"></div><span class="ctext">Add missing semantic surface tokens: <code>greyscale/surface/hover</code> (Greyscale/50), <code>greyscale/surface/active</code> (Greyscale/100), <code>greyscale/border/focus</code> (DeepSeaBlue/500), <code>greyscale/border/hover</code> (Greyscale/300)</span></li>
+      <li data-key="p1-4"><div class="cbox"></div><span class="ctext">Add shadow tokens: <code>shadow/sm</code>, <code>shadow/md</code>, <code>shadow/lg</code>, <code>shadow/xl</code> with CSS shadow values (see Missing Parts Inventory)</span></li>
+      <li data-key="p1-5"><div class="cbox"></div><span class="ctext">Add border-width tokens: <code>border-width/thin</code> (1), <code>border-width/default</code> (1.5), <code>border-width/thick</code> (2)</span></li>
+      <li data-key="p1-6"><div class="cbox"></div><span class="ctext">Add Warning mode to Semantic Colours collection using the Yellow primitive scale</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase p2">
+  <div class="phase-header">
+    <div class="phase-header-left">
+      <div class="phase-num">2</div>
+      <div>
+        <h3>Components</h3>
+        <span style="font-size:11px;color:var(--text-muted)">Week 2 &mdash; Build atoms, badge system, and variants</span>
+      </div>
+    </div>
+    <div class="phase-time">~5-6 hours</div>
+  </div>
+  <div class="phase-meta">
+    <div><dt>Expected Outcome</dt><dd>All atom components built with proper variable bindings and state variants</dd></div>
+    <div><dt>Dependencies</dt><dd>Phase 1 must be complete (clean token foundation required)</dd></div>
+  </div>
+  <div class="phase-progress-label" data-phase="2">0 / 4 complete</div>
+  <div class="phase-progress"><div class="phase-progress-bar" data-phase="2" style="width:0%"></div></div>
+  <div class="phase-body">
+    <ul class="checklist" data-phase="2">
+      <li data-key="p2-1"><div class="cbox"></div><span class="ctext">Build all atom components from the Build Guide with proper variable bindings for every property</span></li>
+      <li data-key="p2-2"><div class="cbox"></div><span class="ctext">Create badge semantic colour mappings: <code>badge/promotion/surface</code>, <code>badge/new/surface</code>, <code>badge/sale/surface</code>, <code>badge/out-of-stock/surface</code> plus text tokens</span></li>
+      <li data-key="p2-3"><div class="cbox"></div><span class="ctext">Add letter-spacing tokens to Typography: <code>letter-spacing/tight</code> (-0.02em), <code>letter-spacing/normal</code> (0), <code>letter-spacing/wide</code> (0.02em)</span></li>
+      <li data-key="p2-4"><div class="cbox"></div><span class="ctext">Build component variants with proper state bindings (hover, focus, active, disabled) using the new surface/border tokens</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase p3">
+  <div class="phase-header">
+    <div class="phase-header-left">
+      <div class="phase-num">3</div>
+      <div>
+        <h3>Advanced</h3>
+        <span style="font-size:11px;color:var(--text-muted)">Week 3 &mdash; Polish, accessibility, and future-proofing</span>
+      </div>
+    </div>
+    <div class="phase-time">~4-5 hours</div>
+  </div>
+  <div class="phase-meta">
+    <div><dt>Expected Outcome</dt><dd>Fully accessible, dark-mode-ready design system with complete documentation</dd></div>
+    <div><dt>Dependencies</dt><dd>Phase 2 must be complete (components needed for contrast audit)</dd></div>
+  </div>
+  <div class="phase-progress-label" data-phase="3">0 / 6 complete</div>
+  <div class="phase-progress"><div class="phase-progress-bar" data-phase="3" style="width:0%"></div></div>
+  <div class="phase-body">
+    <ul class="checklist" data-phase="3">
+      <li data-key="p3-1"><div class="cbox"></div><span class="ctext">Accessibility audit: verify all colour combinations meet WCAG 2.1 AA contrast ratios (4.5:1 text, 3:1 UI)</span></li>
+      <li data-key="p3-2"><div class="cbox"></div><span class="ctext">Add opacity tokens: <code>opacity/disabled</code> (0.4), <code>opacity/hover</code> (0.08), <code>opacity/overlay</code> (0.5)</span></li>
+      <li data-key="p3-3"><div class="cbox"></div><span class="ctext">Add z-index system: <code>z-index/dropdown</code> (100), <code>z-index/sticky</code> (200), <code>z-index/modal</code> (300), <code>z-index/toast</code> (400)</span></li>
+      <li data-key="p3-4"><div class="cbox"></div><span class="ctext">Add animation/duration tokens: <code>duration/fast</code> (100ms), <code>duration/normal</code> (200ms), <code>duration/slow</code> (350ms), <code>duration/enter</code> (250ms), <code>duration/exit</code> (200ms)</span></li>
+      <li data-key="p3-5"><div class="cbox"></div><span class="ctext">Dark mode preparation: create Mode 2 in Colour Tokens collection with inverted surface/text/border mappings</span></li>
+      <li data-key="p3-6"><div class="cbox"></div><span class="ctext">Documentation and team onboarding: naming conventions, usage guidelines, and contribution rules</span></li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: MISSING PARTS INVENTORY                            -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">4</span> Missing Parts Inventory</h2>
+<p class="section-desc">Complete table of every token that needs to be created, with suggested names and values.</p>
+
+<table class="inv-table">
+  <thead>
+    <tr>
+      <th>What's Missing</th>
+      <th>Type</th>
+      <th>Suggested Name</th>
+      <th>Suggested Value</th>
+      <th>Used Where</th>
+      <th>Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Semantic Surfaces -->
+    <tr class="cat-row"><td colspan="6">Semantic Surface &amp; Border Tokens</td></tr>
+    <tr>
+      <td>Hover surface</td>
+      <td>Color</td>
+      <td><code>greyscale/surface/hover</code></td>
+      <td>Greyscale/50 (#EEF1F3)</td>
+      <td>Card hover, dropdown item hover, nav hover</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Active surface</td>
+      <td>Color</td>
+      <td><code>greyscale/surface/active</code></td>
+      <td>Greyscale/100 (#E1E6EA)</td>
+      <td>Button press, active nav item</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Focus border</td>
+      <td>Color</td>
+      <td><code>greyscale/border/focus</code></td>
+      <td>DeepSeaBlue/500 (#004D87)</td>
+      <td>Input focus, dropdown open, active tab</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Hover border</td>
+      <td>Color</td>
+      <td><code>greyscale/border/hover</code></td>
+      <td>Greyscale/300 (#A8B4BE)</td>
+      <td>Card hover border, input hover</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+
+    <!-- Shadows -->
+    <tr class="cat-row"><td colspan="6">Shadow / Elevation Tokens</td></tr>
+    <tr>
+      <td>Small shadow</td>
+      <td>Effect</td>
+      <td><code>shadow/sm</code></td>
+      <td>0 1px 3px rgba(0,34,68,.08), 0 1px 2px rgba(0,34,68,.06)</td>
+      <td>Buttons, badges, small cards</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Medium shadow</td>
+      <td>Effect</td>
+      <td><code>shadow/md</code></td>
+      <td>0 4px 8px rgba(0,34,68,.08), 0 2px 4px rgba(0,34,68,.06)</td>
+      <td>Cards, dropdowns</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Large shadow</td>
+      <td>Effect</td>
+      <td><code>shadow/lg</code></td>
+      <td>0 12px 24px rgba(0,34,68,.10), 0 4px 8px rgba(0,34,68,.06)</td>
+      <td>Popovers, floating panels</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+    <tr>
+      <td>Extra-large shadow</td>
+      <td>Effect</td>
+      <td><code>shadow/xl</code></td>
+      <td>0 20px 40px rgba(0,34,68,.12), 0 8px 16px rgba(0,34,68,.08)</td>
+      <td>Modals, dialogs</td>
+      <td><span class="badge high">High</span></td>
+    </tr>
+
+    <!-- Border Width -->
+    <tr class="cat-row"><td colspan="6">Border-Width Tokens</td></tr>
+    <tr>
+      <td>Thin border</td>
+      <td>Number</td>
+      <td><code>border-width/thin</code></td>
+      <td>1</td>
+      <td>Dividers, subtle borders</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Default border</td>
+      <td>Number</td>
+      <td><code>border-width/default</code></td>
+      <td>1.5</td>
+      <td>Input borders, card borders</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Thick border</td>
+      <td>Number</td>
+      <td><code>border-width/thick</code></td>
+      <td>2</td>
+      <td>Active tabs, focus rings</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+
+    <!-- Letter Spacing -->
+    <tr class="cat-row"><td colspan="6">Letter-Spacing Tokens</td></tr>
+    <tr>
+      <td>Tight tracking</td>
+      <td>Number</td>
+      <td><code>letter-spacing/tight</code></td>
+      <td>-0.02em</td>
+      <td>Large headings (Dimbo display text)</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+    <tr>
+      <td>Normal tracking</td>
+      <td>Number</td>
+      <td><code>letter-spacing/normal</code></td>
+      <td>0</td>
+      <td>Body text, default</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+    <tr>
+      <td>Wide tracking</td>
+      <td>Number</td>
+      <td><code>letter-spacing/wide</code></td>
+      <td>0.02em</td>
+      <td>Uppercase labels, button text, badges</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+
+    <!-- Opacity -->
+    <tr class="cat-row"><td colspan="6">Opacity Tokens</td></tr>
+    <tr>
+      <td>Disabled opacity</td>
+      <td>Number</td>
+      <td><code>opacity/disabled</code></td>
+      <td>0.4</td>
+      <td>Disabled buttons, inputs, text</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Hover opacity</td>
+      <td>Number</td>
+      <td><code>opacity/hover</code></td>
+      <td>0.08</td>
+      <td>Hover state overlays on coloured surfaces</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Overlay opacity</td>
+      <td>Number</td>
+      <td><code>opacity/overlay</code></td>
+      <td>0.5</td>
+      <td>Modal backdrop, out-of-stock overlay</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+
+    <!-- Z-index -->
+    <tr class="cat-row"><td colspan="6">Z-Index Tokens</td></tr>
+    <tr>
+      <td>Dropdown layer</td>
+      <td>Number</td>
+      <td><code>z-index/dropdown</code></td>
+      <td>100</td>
+      <td>Dropdown menus, popovers</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+    <tr>
+      <td>Sticky layer</td>
+      <td>Number</td>
+      <td><code>z-index/sticky</code></td>
+      <td>200</td>
+      <td>Sticky header, floating CTA</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+    <tr>
+      <td>Modal layer</td>
+      <td>Number</td>
+      <td><code>z-index/modal</code></td>
+      <td>300</td>
+      <td>Modals, dialogs, backdrop</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+    <tr>
+      <td>Toast layer</td>
+      <td>Number</td>
+      <td><code>z-index/toast</code></td>
+      <td>400</td>
+      <td>Toast notifications, alerts</td>
+      <td><span class="badge low">Low</span></td>
+    </tr>
+
+    <!-- Warning Mode -->
+    <tr class="cat-row"><td colspan="6">Semantic Colours: Warning Mode</td></tr>
+    <tr>
+      <td>Warning surface subtle</td>
+      <td>Color</td>
+      <td><code>warning/surface/subtle</code></td>
+      <td>Yellow/50</td>
+      <td>Low-stock banner bg, warning alerts</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Warning surface default</td>
+      <td>Color</td>
+      <td><code>warning/surface/default</code></td>
+      <td>Yellow/200</td>
+      <td>Warning badge bg, highlight bg</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Warning border default</td>
+      <td>Color</td>
+      <td><code>warning/border/default</code></td>
+      <td>Yellow/400</td>
+      <td>Warning alert border</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Warning text-icon</td>
+      <td>Color</td>
+      <td><code>warning/text-icon/default</code></td>
+      <td>Yellow/700</td>
+      <td>Warning message text, warning icons</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+
+    <!-- Badge Colours -->
+    <tr class="cat-row"><td colspan="6">Badge Semantic Tokens</td></tr>
+    <tr>
+      <td>Promotion badge bg</td>
+      <td>Color</td>
+      <td><code>badge/promotion/surface</code></td>
+      <td>BrightCerulean/500</td>
+      <td>Promotion badge on product cards</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>New badge bg</td>
+      <td>Color</td>
+      <td><code>badge/new/surface</code></td>
+      <td>Red/500</td>
+      <td>New item badge on product cards</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Sale badge bg</td>
+      <td>Color</td>
+      <td><code>badge/sale/surface</code></td>
+      <td>Yellow/600</td>
+      <td>Sale badge on product cards</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+    <tr>
+      <td>Out-of-stock badge bg</td>
+      <td>Color</td>
+      <td><code>badge/out-of-stock/surface</code></td>
+      <td>Greyscale/400</td>
+      <td>Out of stock badge overlay</td>
+      <td><span class="badge med">Med</span></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: NAMING CONVENTION REFERENCE                        -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">5</span> Naming Convention Reference</h2>
+<p class="section-desc">The exact naming pattern for every token type. Follow these conventions for all new tokens.</p>
+
+<div class="naming-grid">
+  <div class="naming-card">
+    <div class="nc-type">Primitive Colours</div>
+    <div class="nc-pattern">{Scale}/{Step}</div>
+    <div class="nc-example"><code>DeepSeaBlue/500</code> <span class="nc-arrow">&rarr;</span> #004D87</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Semantic Colours</div>
+    <div class="nc-pattern">{category}/{role}/{variant}</div>
+    <div class="nc-example"><code>greyscale/surface/hover</code> <span class="nc-arrow">&rarr;</span> Greyscale/50</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Primitive Spacing</div>
+    <div class="nc-pattern">space-{value}</div>
+    <div class="nc-example"><code>space-24</code> <span class="nc-arrow">&rarr;</span> 24</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Semantic Spacing</div>
+    <div class="nc-pattern">{component}-{property}</div>
+    <div class="nc-example"><code>card-padding</code> <span class="nc-arrow">&rarr;</span> space-24</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Primitive Radius</div>
+    <div class="nc-pattern">r-{value}</div>
+    <div class="nc-example"><code>r-8</code> <span class="nc-arrow">&rarr;</span> 8</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Semantic Radius</div>
+    <div class="nc-pattern">radius/{component}</div>
+    <div class="nc-example"><code>radius/input</code> <span class="nc-arrow">&rarr;</span> r-8</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Typography</div>
+    <div class="nc-pattern">font/{property}/{scale}</div>
+    <div class="nc-example"><code>font/size/md</code> <span class="nc-arrow">&rarr;</span> 16</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Shadows</div>
+    <div class="nc-pattern">shadow/{size}</div>
+    <div class="nc-example"><code>shadow/md</code> <span class="nc-arrow">&rarr;</span> 0 4px 8px ...</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Border Width</div>
+    <div class="nc-pattern">border-width/{name}</div>
+    <div class="nc-example"><code>border-width/default</code> <span class="nc-arrow">&rarr;</span> 1.5</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Opacity</div>
+    <div class="nc-pattern">opacity/{purpose}</div>
+    <div class="nc-example"><code>opacity/disabled</code> <span class="nc-arrow">&rarr;</span> 0.4</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Z-Index</div>
+    <div class="nc-pattern">z-index/{layer}</div>
+    <div class="nc-example"><code>z-index/modal</code> <span class="nc-arrow">&rarr;</span> 300</div>
+  </div>
+  <div class="naming-card">
+    <div class="nc-type">Animation</div>
+    <div class="nc-pattern">duration/{speed}</div>
+    <div class="nc-example"><code>duration/normal</code> <span class="nc-arrow">&rarr;</span> 200ms</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BUSINESS & UX IMPACT                               -->
+<!-- ============================================================ -->
+<h2 class="section-title"><span class="num">6</span> Business &amp; UX Impact</h2>
+<p class="section-desc">The real cost of the top 5 issues, measured in conversions, development time, and business risk.</p>
+
+<!-- Impact 1 -->
+<div class="impact-card">
+  <div class="impact-header">
+    <div class="impact-icon" style="background:var(--red-bg);">&#9888;</div>
+    <h4>Missing Hover/Focus Tokens &mdash; #4</h4>
+  </div>
+  <div class="impact-body">
+    <div class="impact-col">
+      <div class="ic-label ux">&#128100; Conversion / Usability</div>
+      <p>Users cannot see what is clickable or which element has keyboard focus. E-commerce sites with poor interactive feedback see measurably higher cart abandonment because users lose trust in the interface.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label dev">&#128295; Development Time</div>
+      <p>Every developer creates their own hover colour, leading to 5-10 different greys across the product. Rework to unify later costs 2-3x the effort of doing it right now.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label cost">&#128176; Cost of NOT Fixing</div>
+      <p>Accessibility lawsuit risk (WCAG 2.1 SC 2.4.7 violation). Remediation costs post-launch are typically 5-10x higher than prevention during the design phase.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Impact 2 -->
+<div class="impact-card">
+  <div class="impact-header">
+    <div class="impact-icon" style="background:var(--orange-bg);">&#128736;</div>
+    <h4>Legacy Duplicate Collection &mdash; #1</h4>
+  </div>
+  <div class="impact-body">
+    <div class="impact-col">
+      <div class="ic-label ux">&#128100; Conversion / Usability</div>
+      <p>When colours drift between legacy and new system, buttons and badges become inconsistent. Users subconsciously distrust interfaces with visual inconsistency, reducing conversion.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label dev">&#128295; Development Time</div>
+      <p>Developers waste 15-30 minutes per component deciding which colour source to use. Over 20+ components, this compounds to full days of wasted decision-making.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label cost">&#128176; Cost of NOT Fixing</div>
+      <p>Every week the duplicate exists, more components get built on the wrong source. Migration cost grows linearly. Deleting now: 1 hour. Deleting in 3 months: 1-2 full days.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Impact 3 -->
+<div class="impact-card">
+  <div class="impact-header">
+    <div class="impact-icon" style="background:var(--red-bg);">&#9632;</div>
+    <h4>No Shadow/Elevation Tokens &mdash; #6</h4>
+  </div>
+  <div class="impact-body">
+    <div class="impact-col">
+      <div class="ic-label ux">&#128100; Conversion / Usability</div>
+      <p>Cards, modals, and dropdowns without systematic depth feel flat and disorganized. Users struggle to distinguish foreground actions from background content, reducing task completion rates.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label dev">&#128295; Development Time</div>
+      <p>Each developer invents box-shadow values. Code review catches inconsistencies, spawning back-and-forth. Token-driven shadows eliminate this entirely.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label cost">&#128176; Cost of NOT Fixing</div>
+      <p>The perceived quality gap between "polished" and "amateur" e-commerce is often just elevation consistency. Competitors with systematic depth hierarchy will appear more trustworthy.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Impact 4 -->
+<div class="impact-card">
+  <div class="impact-header">
+    <div class="impact-icon" style="background:var(--orange-bg);">&#9899;</div>
+    <h4>Identical Neutral/100 &amp; Neutral/200 &mdash; #2</h4>
+  </div>
+  <div class="impact-body">
+    <div class="impact-col">
+      <div class="ic-label ux">&#128100; Conversion / Usability</div>
+      <p>Visual layering (page > card > element) depends on subtle surface steps. When two stops are identical, cards blend into pages and content hierarchy collapses, making the layout feel flat.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label dev">&#128295; Development Time</div>
+      <p>Developers will manually override colours to create visual separation that the token system should provide. These overrides accumulate as tech debt.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label cost">&#128176; Cost of NOT Fixing</div>
+      <p>A 2-minute primitive value change now prevents dozens of manual overrides across the entire component library.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Impact 5 -->
+<div class="impact-card">
+  <div class="impact-header">
+    <div class="impact-icon" style="background:var(--orange-bg);">&#9888;</div>
+    <h4>Missing Warning Mode &mdash; #9</h4>
+  </div>
+  <div class="impact-body">
+    <div class="impact-col">
+      <div class="ic-label ux">&#128100; Conversion / Usability</div>
+      <p>Low-stock indicators, price-drop alerts, and partial-form warnings all need a distinct "warning" visual that is not "error". Conflating warning with error causes users to panic or ignore real errors.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label dev">&#128295; Development Time</div>
+      <p>Without a Warning mode, developers hardcode yellow values or misuse the Error mode. Both approaches require rework when the Warning mode is eventually added.</p>
+    </div>
+    <div class="impact-col">
+      <div class="ic-label cost">&#128176; Cost of NOT Fixing</div>
+      <p>Warning patterns exist in almost every e-commerce flow (checkout, inventory, forms). Not having this mode from the start means retrofitting 10-15 components later.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .app -->
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT: localStorage checkbox persistence + progress      -->
+<!-- ============================================================ -->
+<script>
+(function() {
+  const STORAGE_KEY = 'crazystore-audit-checks';
+
+  function load() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch(e) { return {}; }
+  }
+
+  function save(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress() {
+    document.querySelectorAll('.checklist').forEach(function(list) {
+      var phase = list.getAttribute('data-phase');
+      if (!phase) return;
+      var total = list.querySelectorAll('li').length;
+      var done = list.querySelectorAll('li.done').length;
+      var pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      var bar = document.querySelector('.phase-progress-bar[data-phase="' + phase + '"]');
+      if (bar) bar.style.width = pct + '%';
+
+      var label = document.querySelector('.phase-progress-label[data-phase="' + phase + '"]');
+      if (label) label.textContent = done + ' / ' + total + ' complete (' + pct + '%)';
+    });
+  }
+
+  // Initialize
+  var state = load();
+  document.querySelectorAll('.checklist li').forEach(function(li) {
+    var key = li.getAttribute('data-key');
+    if (key && state[key]) {
+      li.classList.add('done');
+    }
+    li.addEventListener('click', function() {
+      li.classList.toggle('done');
+      var s = load();
+      if (li.classList.contains('done')) {
+        s[key] = true;
+      } else {
+        delete s[key];
+      }
+      save(s);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
