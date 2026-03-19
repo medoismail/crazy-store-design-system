@@ -398,7 +398,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 </div>
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=active</th></tr></thead><tbody>
   <tr><td class="prop-name">Background</td><td>transparent</td><td class="changed">rgba(255,255,255,.10)</td><td>transparent</td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text opacity</td><td>85%</td><td class="changed">100%</td><td class="changed">100%</td></tr>
   <tr><td class="prop-name">Font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Font weight</td><td><span class="tk">font/weight/bold</span></td><td class="same">same</td><td class="same">same</td></tr>
@@ -490,7 +490,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <tr><td class="prop-name">Auto layout</td><td>Horizontal, center, gap 0</td></tr>
   <tr><td class="prop-name">Width</td><td>Fill container (flex grow 1)</td></tr>
   <tr><td class="prop-name">Height</td><td>42px (fixed)</td></tr>
-  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/card</span> (r-12, not radius/button — this is larger to look smooth)</td></tr>
+  <tr><td class="prop-name">Radius</td><td><span class="tk">radius/input</span> (→ r-8). Only outer corners: category=left r-8, input=0 all, submit=right r-8</td></tr>
   <tr><td class="prop-name">Clip content</td><td>Yes</td></tr>
   <tr><td class="prop-name">Fill</td><td>none (children fill individually)</td></tr>
 </tbody></table>
@@ -499,16 +499,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Dropdown</th><th>Value</th></tr></thead><tbody>
   <tr><td class="prop-name">Layer name</td><td>.category-trigger</td></tr>
   <tr><td class="prop-name">Auto layout</td><td>Horizontal, center aligned</td></tr>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#E1E6EA"></span> <span class="tk">Greyscale/100</span> (#E1E6EA)</td></tr>
-  <tr><td class="prop-name">Border right</td><td><span class="tk">stroke weight/1</span> <span class="tk">Greyscale/300</span> (#A3B3C1)</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#E1E6EA"></span> <span class="tk">greyscale/surface/active</span> (→ Greyscale/100, #E1E6EA)</td></tr>
+  <tr><td class="prop-name">Border right</td><td><span class="tk">stroke weight/1</span> <span class="tk">greyscale/border/hover</span> (→ Greyscale/300, #A3B3C1)</td></tr>
   <tr><td class="prop-name">Text content</td><td>"All categories"</td></tr>
   <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Inter)</td></tr>
   <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/medium</span> (500) <span class="tag ok">EXISTS</span></td></tr>
   <tr><td class="prop-name">Text size</td><td>14px</td></tr>
   <tr><td class="prop-name">Text line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="cd" style="background:#1D1B15"></span> <span class="tk">Neutral/950</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="cd" style="background:#1D1B15"></span> <span class="tk">greyscale/text/body</span> (→ Neutral/950)</td></tr>
   <tr><td class="prop-name">Chevron icon</td><td>chevron-down, 12x12px</td></tr>
-  <tr><td class="prop-name">Chevron color</td><td><span class="cd" style="background:#74808B"></span> <span class="tk">Greyscale/500</span></td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="cd" style="background:#74808B"></span> <span class="tk">greyscale/text/disabled</span> (→ Greyscale/500)</td></tr>
   <tr><td class="prop-name">Gap</td><td><span class="tk">space-12</span> (10px)</td></tr>
   <tr><td class="prop-name">Padding</td><td><span class="tk">space-12</span> V, <span class="tk">space-20</span> H</td></tr>
   <tr><td class="prop-name">Width</td><td>Hug contents</td></tr>
@@ -518,12 +518,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 
 <!-- ── Category Dropdown: States ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Category Dropdown States</th><th class="state-col">state=closed</th><th class="state-col">state=hover</th><th class="state-col">state=open</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td><span class="tk">Greyscale/100</span></td><td class="changed"><span class="tk">Greyscale/300</span></td><td class="changed"><span class="tk">Greyscale/300</span></td></tr>
-  <tr><td class="prop-name">Border color</td><td><span class="tk">Greyscale/300</span></td><td class="changed"><span class="tk">Greyscale/500</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/950</span></td><td class="same">same</td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">greyscale/surface/active</span> (→ Greyscale/100)</td><td class="changed"><span class="tk">greyscale/border/hover</span> (→ Greyscale/300)</td><td class="changed"><span class="tk">greyscale/border/hover</span> (→ Greyscale/300)</td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="tk">greyscale/border/hover</span> (→ Greyscale/300)</td><td class="changed"><span class="tk">greyscale/border/darker</span> (→ Greyscale/500)</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span> (→ Neutral/950)</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td></tr>
   <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/medium</span> (500)</td><td class="same">same</td><td class="changed"><span class="tk">font/weight/bold</span></td></tr>
   <tr><td class="prop-name">Chevron</td><td>&#9660; down</td><td class="same">same</td><td class="changed">&#9650; up (rotate 180&deg;)</td></tr>
-  <tr><td class="prop-name">Chevron color</td><td><span class="tk">Greyscale/500</span></td><td class="same">same</td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="tk">greyscale/text/disabled</span> (→ Greyscale/500)</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td></tr>
   <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
 </tbody></table>
 
@@ -531,8 +531,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Category Menu Panel</th><th>Value</th></tr></thead><tbody>
   <tr><td class="prop-name">Layer name</td><td>.category-menu</td></tr>
   <tr><td class="prop-name">Position</td><td>Absolute, top: 42px, left: 0</td></tr>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFFFFF"></span> <span class="tk">Neutral/50</span></td></tr>
-  <tr><td class="prop-name">Border</td><td><span class="tk">stroke weight/1</span> <span class="tk">Greyscale/100</span></td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFFFFF"></span> <span class="tk">Neutral/50</span> (pure white)</td></tr>
+  <tr><td class="prop-name">Border</td><td><span class="tk">stroke weight/1</span> <span class="tk">greyscale/border/disabled</span> (→ Greyscale/100)</td></tr>
   <tr><td class="prop-name">Radius</td><td>0 0 <span class="tk">radius/button</span> <span class="tk">radius/button</span> (bottom corners only)</td></tr>
   <tr><td class="prop-name">Shadow</td><td>0 4px 12px rgba(0,0,0,.1)</td></tr>
   <tr><td class="prop-name">Auto layout</td><td>Vertical, stretch, gap 0</td></tr>
@@ -542,11 +542,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 
 <!-- ── Category Dropdown: Menu Item ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Category Menu Item</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=selected</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td>transparent</td><td class="changed"><span class="tk">Greyscale/50</span> (#EEF1F3)</td><td class="changed">rgba(0,77,135,.05)</td></tr>
+  <tr><td class="prop-name">Fill</td><td>transparent</td><td class="changed"><span class="tk">greyscale/surface/hover</span> (→ Greyscale/50, #EEF1F3)</td><td class="changed">rgba(0,77,135,.05)</td></tr>
   <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Inter)</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text size</td><td>14px</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/regular</span></td><td class="same">same</td><td class="changed"><span class="tk">font/weight/bold</span></td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/950</span></td><td class="same">same</td><td class="changed"><span class="tk">DeepSeaBlue/500</span> (#004D87)</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span> (→ Neutral/950)</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500, #004D87)</td></tr>
   <tr><td class="prop-name">Padding</td><td>8px H, <span class="tk">button-padding-x</span> (16px) V</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Height</td><td>Hug contents (min 36px)</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Cursor</td><td>pointer</td><td class="same">same</td><td class="same">same</td></tr>
@@ -556,26 +556,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Text Input</th><th>Value</th></tr></thead><tbody>
   <tr><td class="prop-name">Layer name</td><td>.search-input</td></tr>
   <tr><td class="prop-name">Auto layout</td><td>Horizontal, center aligned</td></tr>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#EEF1F3"></span> <span class="tk">Greyscale/50</span> (#EEF1F3)</td></tr>
-  <tr><td class="prop-name">Border left</td><td>0 (shared with category)</td></tr>
-  <tr><td class="prop-name">Border top/bottom</td><td><span class="tk">stroke weight/1</span> <span class="tk">Greyscale/100</span></td></tr>
-  <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Inter)</td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#FFFFFF"></span> <span class="tk">Neutral/50</span> (#FFFFFF) — white input bg</td></tr>
+  <tr><td class="prop-name">Border left</td><td>0 (shared edge with category dropdown)</td></tr>
+  <tr><td class="prop-name">Border top/bottom/right</td><td><span class="tk">border-width/thin</span> (1px) + <span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
+  <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Haas-Grot-Text-Trial)</td></tr>
   <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/regular</span></td></tr>
   <tr><td class="prop-name">Text size</td><td><span class="tk">font/size/md</span></td></tr>
   <tr><td class="prop-name">Text line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
-  <tr><td class="prop-name">Input text color</td><td><span class="cd" style="background:#1D1B15"></span> <span class="tk">Neutral/950</span></td></tr>
+  <tr><td class="prop-name">Input text color</td><td><span class="cd" style="background:#1D1B15"></span> <span class="tk">greyscale/text/body</span> (→ Neutral/950)</td></tr>
   <tr><td class="prop-name">Placeholder text</td><td>"Search..."</td></tr>
-  <tr><td class="prop-name">Placeholder color</td><td><span class="cd" style="background:#74808B"></span> <span class="tk">Greyscale/500</span></td></tr>
+  <tr><td class="prop-name">Placeholder color</td><td><span class="cd" style="background:#74808B"></span> <span class="tk">greyscale/text/disabled</span> (→ Greyscale/500)</td></tr>
   <tr><td class="prop-name">Width</td><td>Fill container (flex: 1)</td></tr>
   <tr><td class="prop-name">Height</td><td>Fill container (42px)</td></tr>
-  <tr><td class="prop-name">Padding</td><td><span class="tk">space-12</span> V, <span class="tk">button-padding-x</span> (16px) H</td></tr>
-  <tr><td class="prop-name">Radius</td><td>0 (clipped by outer frame)</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">input-padding-y</span> (→ space-12, 12px) V, <span class="tk">input-padding-x</span> (→ space-16, 16px) H</td></tr>
+  <tr><td class="prop-name">Radius</td><td><strong>0 all corners</strong> — this is a form input but sits between category and submit, so all edges are sharp</td></tr>
 </tbody></table>
 
 <!-- ── Text Input: States ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Text Input States</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=focus</th></tr></thead><tbody>
-  <tr><td class="prop-name">Fill</td><td><span class="tk">Greyscale/50</span></td><td class="changed"><span class="tk">Greyscale/100</span></td><td class="changed"><span class="tk">Neutral/50</span></td></tr>
-  <tr><td class="prop-name">Border color</td><td><span class="tk">Greyscale/100</span></td><td class="changed"><span class="tk">Greyscale/500</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="tk">greyscale/surface/hover</span> (→ Greyscale/50)</td><td class="changed"><span class="tk">greyscale/surface/active</span> (→ Greyscale/100)</td><td class="changed"><span class="tk">Neutral/50</span> (white)</td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="tk">greyscale/border/disabled</span> (→ Greyscale/100)</td><td class="changed"><span class="tk">greyscale/border/darker</span> (→ Greyscale/500)</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td></tr>
   <tr><td class="prop-name">Outer focus ring</td><td>none</td><td>none</td><td class="changed">0 0 0 2px <span class="tk">Yellow/500</span></td></tr>
   <tr><td class="prop-name">Placeholder</td><td>"Search..."</td><td class="same">same</td><td class="changed">hidden (user text replaces)</td></tr>
   <tr><td class="prop-name">Cursor</td><td>text</td><td class="same">same</td><td class="same">same</td></tr>
@@ -590,16 +590,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <tr><td class="prop-name">Height</td><td>Fill container (42px)</td></tr>
   <tr><td class="prop-name">Auto layout</td><td>Horizontal, center/center</td></tr>
   <tr><td class="prop-name">Icon</td><td>Search SVG, 20 x 20px</td></tr>
-  <tr><td class="prop-name">Icon stroke</td><td><span class="cd" style="background:#1D1B15"></span> <span class="tk">Neutral/950</span>, 2px weight</td></tr>
-  <tr><td class="prop-name">Padding</td><td><span class="tk">space-12</span> all sides</td></tr>
-  <tr><td class="prop-name">Radius</td><td>0 (clipped by outer frame)</td></tr>
+  <tr><td class="prop-name">Icon stroke</td><td><span class="cd" style="background:#002244"></span> <span class="tk">greyscale/text/body</span> (→ DarkMidnightBlue/700), 2px weight</td></tr>
+  <tr><td class="prop-name">Padding</td><td><span class="tk">button-padding-y</span> (→ space-12) V, <span class="tk">button-padding-x</span> (→ space-16) H</td></tr>
+  <tr><td class="prop-name">Radius</td><td><strong>0 left corners, <span class="tk">radius/input</span> (→ r-8) right corners only</strong></td></tr>
   <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
 </tbody></table>
 
 <!-- ── Submit Button: States ── -->
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Submit Button States</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=active</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td><span class="tk">Yellow/500</span></td><td class="changed"><span class="tk">Yellow/300</span></td><td class="changed">darken 10%</td></tr>
-  <tr><td class="prop-name">Icon stroke</td><td><span class="tk">Neutral/950</span></td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Icon stroke</td><td><span class="tk">greyscale/text/body</span> (→ Neutral/950)</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Scale</td><td>1</td><td class="same">same</td><td class="changed">0.95 (press effect)</td></tr>
 </tbody></table>
 
@@ -625,7 +625,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">type=promotion</th><th class="state-col">type=new</th><th class="state-col">type=sale</th><th class="state-col">type=out-of-stock</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#0069A8"></span><span class="tk">DeepSeaBlue/400</span></td><td class="changed"><span class="cd" style="background:#E5672E"></span><span class="tk">Red/500</span></td><td class="changed"><span class="cd" style="background:#E2A700"></span><span class="tk">Yellow/600</span></td><td class="changed"><span class="cd" style="background:#74808B"></span><span class="tk">greyscale/text/disabled</span></td></tr>
   <tr><td class="prop-name">Text content</td><td>"PROMOTION"</td><td class="changed">"NEW"</td><td class="changed">"SALE"</td><td class="changed">"OUT OF STOCK"</td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text font</td><td><span class="tk">font/family/body</span> (Haas Grot Text)</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text weight</td><td><span class="tk">font/weight/bold</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Text size</td><td>10px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
@@ -691,7 +691,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">type=primary</th><th class="state-col">type=secondary</th><th class="state-col">type=ghost</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#004D87"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Neutral/50</span></td><td class="changed">transparent</td></tr>
   <tr><td class="prop-name">Border</td><td>none</td><td class="changed">2px <span class="tk">DeepSeaBlue/500</span></td><td class="changed">none</td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">Neutral/50</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
   <tr><td class="prop-name">Font</td><td>Inter 600</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Font size</td><td><span class="tk">font/size/md</span></td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Radius</td><td><span class="tk">radius/button</span></td><td class="same">same</td><td class="same">same</td></tr>
@@ -732,12 +732,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=focus</th><th class="state-col">state=error</th><th class="state-col">state=disabled</th></tr></thead><tbody>
   <tr><td class="prop-name">Input fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td></tr>
   <tr><td class="prop-name">Border width</td><td><span class="tk">stroke weight/1</span></td><td class="changed">2px</td><td class="changed">2px</td><td><span class="tk">stroke weight/1</span></td></tr>
-  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004D87"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="cd" style="background:#E5672E"></span><span class="tk">Red/500</span></td><td><span class="tk">greyscale/border/default</span></td></tr>
-  <tr><td class="prop-name">Label color</td><td><span class="tk">greyscale/text/body</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
-  <tr><td class="prop-name">Value color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004D87"></span><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td><td class="changed"><span class="cd" style="background:#E5672E"></span><span class="tk">Red/500</span></td><td><span class="tk">greyscale/border/default</span></td></tr>
+  <tr><td class="prop-name">Label color</td><td><span class="tk">greyscale/text/body</span></td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
+  <tr><td class="prop-name">Value color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
   <tr><td class="prop-name">Value font</td><td>Inter 400 <span class="tk">font/size/md</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
-  <tr><td class="prop-name">Placeholder</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
-  <tr><td class="prop-name">Helper color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Placeholder</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
+  <tr><td class="prop-name">Helper color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="same">same</td><td class="changed"><span class="tk">Red/500</span></td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
   <tr><td class="prop-name">Helper font</td><td>Inter 400 12px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Label font</td><td>Inter 500 14px</td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Radius</td><td><span class="tk">radius/button</span></td><td class="same">same</td><td class="same">same</td><td class="same">same</td></tr>
@@ -763,10 +763,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=closed</th><th class="state-col">state=open</th><th class="state-col">state=disabled</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td></tr>
   <tr><td class="prop-name">Border width</td><td><span class="tk">stroke weight/1</span></td><td class="changed">2px</td><td><span class="tk">stroke weight/1</span></td></tr>
-  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004D87"></span><span class="tk">DeepSeaBlue/500</span></td><td><span class="tk">greyscale/border/default</span></td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Border color</td><td><span class="cd" style="background:#E1E6EA"></span><span class="tk">greyscale/border/default</span></td><td class="changed"><span class="cd" style="background:#004D87"></span><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td><td><span class="tk">greyscale/border/default</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
   <tr><td class="prop-name">Text font</td><td>Inter 400 14px</td><td class="same">same</td><td class="same">same</td></tr>
-  <tr><td class="prop-name">Chevron color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Chevron color</td><td><span class="tk">greyscale/text/disabled</span></td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td><td class="changed"><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
   <tr><td class="prop-name">Chevron rotation</td><td>0&deg; (&#9660;)</td><td class="changed">180&deg; (&#9650;)</td><td>0&deg; (&#9660;)</td></tr>
   <tr><td class="prop-name">Radius</td><td><span class="tk">radius/button</span></td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Padding V</td><td><span class="tk">stack-gap-sm</span></td><td>9px (border offset)</td><td><span class="tk">stack-gap-sm</span></td></tr>
@@ -789,9 +789,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 </div>
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th><th class="state-col">state=selected</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td>transparent</td><td class="changed"><span class="tk">greyscale/surface/subtle</span></td><td class="changed">rgba(0,75,133,.03)</td></tr>
-  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">DeepSeaBlue/500</span></td></tr>
+  <tr><td class="prop-name">Text color</td><td><span class="tk">greyscale/text/body</span></td><td class="same">same</td><td class="changed"><span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</td></tr>
   <tr><td class="prop-name">Text font</td><td>Inter 400 14px</td><td class="same">same</td><td class="changed">Inter 600 14px (bold)</td></tr>
-  <tr><td class="prop-name">Checkmark</td><td>hidden</td><td>hidden</td><td class="changed">visible (&#10003; 12px, <span class="tk">DeepSeaBlue/500</span>)</td></tr>
+  <tr><td class="prop-name">Checkmark</td><td>hidden</td><td>hidden</td><td class="changed">visible (&#10003; 12px, <span class="tk">greyscale/border/focus</span> → DeepSeaBlue/500)</td></tr>
   <tr><td class="prop-name">Height</td><td>40px</td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Padding V</td><td><span class="tk">stack-gap-sm</span></td><td class="same">same</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Padding H</td><td>14px</td><td class="same">same</td><td class="same">same</td></tr>
@@ -820,12 +820,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name" style="width:30%">Icon</th><th>Value</th></tr></thead><tbody>
   <tr><td class="prop-name">Type</td><td>SVG vector</td></tr>
   <tr><td class="prop-name">Size</td><td>14 x 14px</td></tr>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#fff"></span><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#fff"></span><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td></tr>
   <tr><td class="prop-name">Stroke</td><td>none (filled icons)</td></tr>
 </tbody></table>
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=default</th><th class="state-col">state=hover</th></tr></thead><tbody>
   <tr><td class="prop-name">Fill</td><td>rgba(255,255,255, 0.12)</td><td class="changed">rgba(255,255,255, 0.22)</td></tr>
-  <tr><td class="prop-name">Icon fill</td><td><span class="tk">Neutral/50</span></td><td class="same">same</td></tr>
+  <tr><td class="prop-name">Icon fill</td><td><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Transform</td><td>none</td><td class="changed">scale(1.05)</td></tr>
 </tbody></table>
 <table class="dtable" style="margin-top:4px"><thead><tr><th class="prop-name">platform</th><th>Icon</th></tr></thead><tbody>
@@ -848,7 +848,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <tr><td class="prop-name">Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
   <tr><td class="prop-name">Size</td><td><span class="tk">font/size/md</span> (16px)</td></tr>
   <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
-  <tr><td class="prop-name">Color</td><td><span class="cd" style="background:#fff"></span><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Color</td><td><span class="cd" style="background:#fff"></span><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td></tr>
   <tr><td class="prop-name">Margin bottom</td><td>8px</td></tr>
   <tr><td class="prop-name">Text prop</td><td>title (expose as Figma text property)</td></tr>
 </tbody></table>
@@ -858,7 +858,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <tr><td class="prop-name">Size</td><td>14px</td></tr>
   <tr><td class="prop-name">Line height</td><td><span class="tk">font/line-height/sm</span></td></tr>
   <tr><td class="prop-name">Color</td><td>rgba(255,255,255, 0.65)</td></tr>
-  <tr><td class="prop-name">Hover color</td><td class="changed"><span class="tk">Neutral/50</span></td></tr>
+  <tr><td class="prop-name">Hover color</td><td class="changed"><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</td></tr>
   <tr><td class="prop-name">Decoration</td><td>none (underline on hover optional)</td></tr>
   <tr><td class="prop-name">Cursor</td><td>pointer</td></tr>
 </tbody></table>
@@ -886,7 +886,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <table class="dtable"><thead><tr><th class="prop-name">Property</th><th class="state-col">state=active</th><th class="state-col">state=inactive</th></tr></thead><tbody>
   <tr><td class="prop-name">Width</td><td>10px</td><td class="changed">8px</td></tr>
   <tr><td class="prop-name">Height</td><td>10px</td><td class="changed">8px</td></tr>
-  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#004D87"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="cd" style="background:#D1D5DC"></span><span class="tk">Greyscale/200</span></td></tr>
+  <tr><td class="prop-name">Fill</td><td><span class="cd" style="background:#004D87"></span><span class="tk">DeepSeaBlue/500</span></td><td class="changed"><span class="cd" style="background:#D1D5DC"></span><span class="tk">greyscale/border/default</span> (→ Greyscale/200)</td></tr>
   <tr><td class="prop-name">Radius</td><td>full (9999px)</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Border</td><td>none</td><td class="same">same</td></tr>
   <tr><td class="prop-name">Opacity</td><td>100%</td><td class="same">same</td></tr>
@@ -1068,7 +1068,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <div class="step-body"><div class="spec">
   <div class="spec-row"><span class="spec-key">Auto layout</span><span class="spec-val">Horizontal, center, gap 4px</span></div>
   <div class="spec-row"><span class="spec-key">Text</span><span class="spec-val">Inter 600 14px / <span class="tk">font/line-height/sm</span></span></div>
-  <div class="spec-row"><span class="spec-key">Color</span><span class="spec-val"><span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Color</span><span class="spec-val"><span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</span></div>
   <div class="spec-row"><span class="spec-key">Icon</span><span class="spec-val">Chevron down 8px, white 60% opacity</span></div>
 </div>
 <div class="tip"><strong>Tip:</strong> Expose text as a component text property so you can override each nav item.</div></div></div>
@@ -1190,7 +1190,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 
 <div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Nav/Footer/LinkGroup + SocialIcon</div></div>
 <div class="step-body"><div class="spec">
-  <div class="spec-row"><span class="spec-key">Heading</span><span class="spec-val">Inter 700 <span class="tk">font/size/md</span>, <span class="tk">Neutral/50</span></span></div>
+  <div class="spec-row"><span class="spec-key">Heading</span><span class="spec-val">Inter 700 <span class="tk">font/size/md</span>, <span class="tk">greyscale/text/inverse</span> (→ Neutral/50)</span></div>
   <div class="spec-row"><span class="spec-key">Links</span><span class="spec-val">Inter 400 14px, white 65% opacity</span></div>
   <div class="spec-row"><span class="spec-key">Social bg</span><span class="spec-val"><span class="tk">DeepSeaBlue/500</span>, radius <span class="tk">radius/button</span></span></div>
   <div class="spec-row"><span class="spec-key">Social variant</span><span class="spec-val">platform: fb / X / ig / in / tk</span></div>
@@ -1252,7 +1252,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <tr><td><span class="pill">out-of-stock</span></td><td><span class="cd" style="background:#74808B"></span> <span class="tk">greyscale/text/disabled</span></td></tr>
 </tbody></table>
 <div class="spec">
-  <div class="spec-row"><span class="spec-key">Text</span><span class="spec-val">Inter 700 10px, <span class="tk">Neutral/50</span>, center</span></div>
+  <div class="spec-row"><span class="spec-key">Text</span><span class="spec-val">Inter 700 10px, <span class="tk">greyscale/text/inverse</span> (→ Neutral/50), center</span></div>
   <div class="spec-row"><span class="spec-key">Width</span><span class="spec-val">Fill container</span></div>
   <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">3px vertical</span></div>
 </div></div></div>
@@ -1339,7 +1339,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build trigger + menu container</div></div>
 <div class="step-body"><div class="spec">
   <div class="spec-row"><span class="spec-key">Closed border</span><span class="spec-val"><span class="tk">stroke weight/1</span> <span class="tk">greyscale/border/default</span></span></div>
-  <div class="spec-row"><span class="spec-key">Open border</span><span class="spec-val">2px <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Open border</span><span class="spec-val">2px <span class="tk">greyscale/border/focus</span> (→ DeepSeaBlue/500)</span></div>
   <div class="spec-row"><span class="spec-key">Menu shadow</span><span class="spec-val">0, 4, 16, rgba(0,0,0,.12)</span></div>
   <div class="spec-row"><span class="spec-key">Radius</span><span class="spec-val"><span class="tk">radius/button</span></span></div>
 </div>
@@ -1454,14 +1454,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Indicator/Dot atom</div></div>
 <div class="step-body"><div class="spec">
   <div class="spec-row"><span class="spec-key">Active</span><span class="spec-val">10px, radius full, <span class="tk">DeepSeaBlue/500</span></span></div>
-  <div class="spec-row"><span class="spec-key">Inactive</span><span class="spec-val">8px, radius full, <span class="tk">Greyscale/200</span></span></div>
+  <div class="spec-row"><span class="spec-key">Inactive</span><span class="spec-val">8px, radius full, <span class="tk">greyscale/border/default</span> (→ Greyscale/200)</span></div>
   <div class="spec-row"><span class="spec-key">Variant</span><span class="spec-val">state: active / inactive</span></div>
 </div></div></div>
 
 <div class="step" data-step><div class="step-head" onclick="toggleStep(this)"><div class="step-check"></div><div class="step-title">Build Indicator/Carousel container (3 types)</div></div>
 <div class="step-body"><div class="spec">
   <div class="spec-row"><span class="spec-key">Dots</span><span class="spec-val">Horizontal, center, gap 8px</span></div>
-  <div class="spec-row"><span class="spec-key">Progress</span><span class="spec-val">200px x 4px, radius full, track <span class="tk">Greyscale/200</span>, fill <span class="tk">DeepSeaBlue/500</span></span></div>
+  <div class="spec-row"><span class="spec-key">Progress</span><span class="spec-val">200px x 4px, radius full, track <span class="tk">greyscale/border/default</span> (→ Greyscale/200), fill <span class="tk">DeepSeaBlue/500</span></span></div>
   <div class="spec-row"><span class="spec-key">Pagination</span><span class="spec-val">30x30 icon btns + "Page X of Y" text</span></div>
 </div>
 <table class="vtable"><thead><tr><th>Property</th><th>Values</th></tr></thead><tbody>
