@@ -253,7 +253,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
       <div class="risk-icon">&#9881;</div>
       <div class="risk-text">
         <strong>Biggest System Inconsistency: Legacy Duplicate Collection</strong>
-        <p>The old <code>color/azure/*</code>, <code>color/grey/*</code>, and <code>item spacing/*</code> collection duplicates the Primitive Colours and _spacing systems. Designers will pick the wrong source of truth, causing drift across every component built from here.</p>
+        <p>The legacy MCP-sourced names (<code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code>) duplicate the Primitive Colours (e.g., <code>DeepSeaBlue/500</code>, <code>Greyscale/100</code>) and _spacing systems. Designers will pick the wrong source of truth, causing drift across every component built from here.</p>
       </div>
     </div>
   </div>
@@ -263,7 +263,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
   <div class="mini-card red">
     <div class="mc-label">Critical Issue 1</div>
     <div class="mc-title">Duplicate Colour Systems</div>
-    <div class="mc-desc">Legacy <code>color/*</code> collection overlaps Primitive Colours. Causes source-of-truth confusion across all 88 colours.</div>
+    <div class="mc-desc">Legacy MCP-sourced <code>color/*</code> names overlap Primitive Colours (e.g., <code>DeepSeaBlue/500</code>, <code>Yellow/500</code>). Causes source-of-truth confusion across all 88 colours.</div>
   </div>
   <div class="mini-card red">
     <div class="mc-label">Critical Issue 2</div>
@@ -310,9 +310,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
   </div>
   <div class="issue-body">
     <div class="problem">Legacy duplicate collection coexists with Primitive Colours system</div>
-    <div class="why"><strong>Why it matters:</strong> Designers unknowingly pick <code>color/azure/26</code> instead of <code>DeepSeaBlue/500</code>. Components break when one system updates but the other does not. Dev handoff becomes ambiguous with two valid sources for the same colour.</div>
+    <div class="why"><strong>Why it matters:</strong> Designers unknowingly pick legacy MCP names instead of the correct Primitive Colours names (e.g., <code>DeepSeaBlue/500</code>, <code>Yellow/500</code>, <code>Neutral/950</code>). Components break when one system updates but the other does not. Dev handoff becomes ambiguous with two valid sources for the same colour.</div>
     <div class="fix-title">Recommended Fix</div>
-    <div class="fix-text">Archive or delete the entire legacy collection (<code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code>, <code>font family/*</code>, <code>font weight/*</code>, <code>font size/*</code>, <code>line height/*</code>, <code>radius/*</code>, <code>stroke weight/*</code>). Remap any remaining usages to the Primitive Colours and _spacing collections.</div>
+    <div class="fix-text">Archive or delete the entire legacy collection (MCP-sourced names like <code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code>, <code>font family/*</code>, <code>font weight/*</code>, <code>font size/*</code>, <code>line height/*</code>, <code>radius/*</code>, <code>stroke weight/*</code>). Remap all usages to the correct Primitive Colours (e.g., <code>DeepSeaBlue/500</code>, <code>Greyscale/100</code>), _spacing (e.g., <code>space-12</code>, <code>space-20</code>), and Typography (e.g., <code>font/family/body</code>, <code>font/weight/bold</code>) collections.</div>
   </div>
   <div class="issue-impl">
     <div class="impl-title">Implementation Details</div>
@@ -402,7 +402,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
   </div>
   <div class="issue-body">
     <div class="problem">No semantic colour tokens for badge states (Promotion, New, Sale, Out of Stock)</div>
-    <div class="why"><strong>Why it matters:</strong> Badge colours are currently hardcoded to specific primitive values. When the brand refreshes or a new badge type is added, every instance must be hunted down manually. The badge system cannot be themed or mode-switched.</div>
+    <div class="why"><strong>Why it matters:</strong> Badge colours are currently hardcoded to specific primitive values (e.g., <code>DeepSeaBlue/400</code> for Promotion, <code>Red/400</code> for New, <code>Yellow/600</code> for Sale, <code>Greyscale/500</code> for Out of Stock). When the brand refreshes or a new badge type is added, every instance must be hunted down manually. The badge system cannot be themed or mode-switched.</div>
     <div class="fix-title">Recommended Fix</div>
     <div class="fix-text">Create a badge colour group in Semantic Colours or Colour Tokens with tokens like <code>badge/promotion/surface</code>, <code>badge/new/surface</code>, <code>badge/sale/surface</code>, <code>badge/out-of-stock/surface</code> plus matching text tokens.</div>
   </div>
@@ -447,7 +447,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
     <span class="badge now">Fix Now</span>
   </div>
   <div class="issue-body">
-    <div class="problem">No border-width semantic tokens (only primitive stroke weight/1 in legacy)</div>
+    <div class="problem">No border-width semantic tokens (only primitive <code>stroke weight/1</code> in legacy MCP data)</div>
     <div class="why"><strong>Why it matters:</strong> Inputs, cards, and dividers use different border widths but there is no systematic way to reference them. Developers must guess or inspect each component individually, creating inconsistency across all bordered elements.</div>
     <div class="fix-title">Recommended Fix</div>
     <div class="fix-text">Add three border-width tokens: <code>border-width/thin</code> (1px), <code>border-width/default</code> (1.5px), <code>border-width/thick</code> (2px).</div>
@@ -562,8 +562,8 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
     <span class="badge now">Fix Now</span>
   </div>
   <div class="issue-body">
-    <div class="problem">Naming error: <code>color/black/ 50%</code> has a rogue space before "50%"</div>
-    <div class="why"><strong>Why it matters:</strong> Code generators and token export tools will create broken variable names (e.g., <code>--color-black--50</code>). Any automation pipeline will fail or produce unexpected output when encountering the space character.</div>
+    <div class="problem">Naming error: <code>color/black/ 50%</code> has a rogue space before "50%" (from MCP data, not in export.json)</div>
+    <div class="why"><strong>Why it matters:</strong> Code generators and token export tools will create broken variable names (e.g., <code>--color-black--50</code>). Any automation pipeline will fail or produce unexpected output when encountering the space character. Note: this variable name was captured via MCP component inspection, not from the Figma Variables panel export.</div>
     <div class="fix-title">Recommended Fix</div>
     <div class="fix-text">Rename to <code>color/black/50%</code> (remove the space). This is a 10-second fix in Figma's variable editor.</div>
   </div>
@@ -604,8 +604,8 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
   <div class="phase-progress"><div class="phase-progress-bar" data-phase="1" style="width:0%"></div></div>
   <div class="phase-body">
     <ul class="checklist" data-phase="1">
-      <li data-key="p1-1"><div class="cbox"></div><span class="ctext">Delete legacy <code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code> collection after remapping all references to Primitive Colours and _spacing</span></li>
-      <li data-key="p1-2"><div class="cbox"></div><span class="ctext">Fix naming errors: rename <code>color/black/ 50%</code> to <code>color/black/50%</code></span></li>
+      <li data-key="p1-1"><div class="cbox"></div><span class="ctext">Delete legacy MCP-sourced names (<code>color/azure/*</code>, <code>color/grey/*</code>, <code>item spacing/*</code>, <code>font family/*</code>, <code>font weight/*</code>, <code>font size/*</code>) after remapping all references to Primitive Colours (e.g., <code>DeepSeaBlue/500</code>, <code>Neutral/950</code>, <code>Yellow/500</code>), _spacing (e.g., <code>space-12</code>, <code>space-20</code>), and Typography (e.g., <code>font/family/body</code>, <code>font/weight/bold</code>)</span></li>
+      <li data-key="p1-2"><div class="cbox"></div><span class="ctext">Fix naming error: rename <code>color/black/ 50%</code> to <code>color/black/50%</code> (from MCP data, not in export.json)</span></li>
       <li data-key="p1-3"><div class="cbox"></div><span class="ctext">Add missing semantic surface tokens: <code>greyscale/surface/hover</code> (Greyscale/50), <code>greyscale/surface/active</code> (Greyscale/100), <code>greyscale/border/focus</code> (DeepSeaBlue/500), <code>greyscale/border/hover</code> (Greyscale/300)</span></li>
       <li data-key="p1-4"><div class="cbox"></div><span class="ctext">Add shadow tokens: <code>shadow/sm</code>, <code>shadow/md</code>, <code>shadow/lg</code>, <code>shadow/xl</code> with CSS shadow values (see Missing Parts Inventory)</span></li>
       <li data-key="p1-5"><div class="cbox"></div><span class="ctext">Add border-width tokens: <code>border-width/thin</code> (1), <code>border-width/default</code> (1.5), <code>border-width/thick</code> (2)</span></li>
@@ -1057,7 +1057,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); font
   <div class="impact-body">
     <div class="impact-col">
       <div class="ic-label ux">&#128100; Conversion / Usability</div>
-      <p>When colours drift between legacy and new system, buttons and badges become inconsistent. Users subconsciously distrust interfaces with visual inconsistency, reducing conversion.</p>
+      <p>When colours drift between legacy MCP-sourced names and the correct Primitive Colours (e.g., <code>DeepSeaBlue/500</code>, <code>Yellow/500</code>), buttons and badges become inconsistent. Users subconsciously distrust interfaces with visual inconsistency, reducing conversion.</p>
     </div>
     <div class="impact-col">
       <div class="ic-label dev">&#128295; Development Time</div>

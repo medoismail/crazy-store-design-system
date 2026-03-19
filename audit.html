@@ -122,44 +122,44 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <div class="section-hdr"><h2>Section A — Current Variable Audit</h2><span class="section-badge a">Audit</span></div>
 <div class="section-body">
 
-<h3>Collection 1: Original File Variables (Primitives)</h3>
-<p class="desc">These are the variables directly in your Figma file. They use a flat <code>color/type/value</code> naming.</p>
+<h3>Collection 1: Primitive Colours — Mapped from File Variables</h3>
+<p class="desc">These variables are mapped to the Primitive Colours collection from your Figma file (export.json). Old legacy names shown in italics for reference.</p>
 
 <table class="at">
 <thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
 <tbody>
-<tr><td><span class="tk">color/azure/26</span></td><td><span class="cd" style="background:#004B85"></span>#004B85</td><td><span class="tag ok">good</span></td><td>Primary brand blue. Used in navbar, footer, links.</td></tr>
-<tr><td><span class="tk">color/azure/26 80%</span></td><td><span class="cd" style="background:#004D87cc"></span>#004D87cc</td><td><span class="tag ok">good</span></td><td>Footer CTA background</td></tr>
-<tr><td><span class="tk">color/azure/26 90%</span></td><td><span class="cd" style="background:#004B85e5"></span>#004B85e5</td><td><span class="tag ok">good</span></td><td>Footer background</td></tr>
-<tr><td><span class="tk">color/azure/33</span></td><td><span class="cd" style="background:#0069A8"></span>#0069A8</td><td><span class="tag ok">good</span></td><td>"On Promotion" badge, secondary blue</td></tr>
-<tr><td><span class="tk">color/azure/44</span></td><td><span class="cd" style="background:#0075E2"></span>#0075E2</td><td><span class="tag warn">unused?</span></td><td>Not clearly used in current mocks. Verify usage.</td></tr>
-<tr><td><span class="tk">color/azure/84</span></td><td><span class="cd" style="background:#D1D5DC"></span>#D1D5DC</td><td><span class="tag warn">overlap</span></td><td>Close to <span class="tk">color/grey/91</span> (#E5E7EB). Creates confusion.</td></tr>
-<tr><td><span class="tk">color/cyan/63</span></td><td><span class="cd" style="background:#42D5FE"></span>#42D5FE</td><td><span class="tag warn">unused?</span></td><td>Sky/decoration color. Not in component specs.</td></tr>
-<tr><td><span class="tk">color/yellow/50</span></td><td><span class="cd" style="background:#FFEB00"></span>#FFEB00</td><td><span class="tag ok">good</span></td><td>Primary accent. CTA buttons, search submit, focus ring.</td></tr>
-<tr><td><span class="tk">color/yellow/56</span></td><td><span class="cd" style="background:#FFDF20"></span>#FFDF20</td><td><span class="tag ok">good</span></td><td>Yellow border on buttons</td></tr>
-<tr><td><span class="tk">color/orange/54</span></td><td><span class="cd" style="background:#E5672E"></span>#E5672E</td><td><span class="tag ok">good</span></td><td>"New" badge</td></tr>
-<tr><td><span class="tk">color/orange/44</span></td><td><span class="cd" style="background:#E2A700"></span>#E2A700</td><td><span class="tag ok">good</span></td><td>"Sale" badge</td></tr>
-<tr><td><span class="tk">color/grey/13</span></td><td><span class="cd" style="background:#231F20"></span>#231F20</td><td><span class="tag ok">good</span></td><td>Primary text dark</td></tr>
-<tr><td><span class="tk">color/grey/53</span></td><td><span class="cd" style="background:#878787"></span>#878787</td><td><span class="tag ok">good</span></td><td>Secondary text, "out of stock" badge</td></tr>
-<tr><td><span class="tk">color/grey/80</span></td><td><span class="cd" style="background:#CCCCCC"></span>#CCCCCC</td><td><span class="tag ok">good</span></td><td>Subtle borders</td></tr>
-<tr><td><span class="tk">color/grey/91</span></td><td><span class="cd" style="background:#E5E7EB"></span>#E5E7EB</td><td><span class="tag warn">overlap</span></td><td>Overlaps with <span class="tk">color/azure/84</span>. Use one for borders.</td></tr>
-<tr><td><span class="tk">color/grey/98</span></td><td><span class="cd" style="background:#F9FAFB"></span>#F9FAFB</td><td><span class="tag ok">good</span></td><td>Light background, input fill</td></tr>
-<tr><td><span class="tk">color/white/solid</span></td><td><span class="cd" style="background:#FFFFFF;border-color:#ddd"></span>#FFFFFF</td><td><span class="tag ok">good</span></td><td>Card backgrounds, nav text</td></tr>
-<tr><td><span class="tk">color/black/solid</span></td><td><span class="cd" style="background:#000000"></span>#000000</td><td><span class="tag ok">good</span></td><td>Pure black</td></tr>
-<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="cd" style="background:#00000080"></span>#00000080</td><td><span class="tag err">bad name</span></td><td>Space before "50%". Should be <code>color/black/50%</code></td></tr>
+<tr><td><span class="tk">DeepSeaBlue/500</span></td><td><span class="cd" style="background:#004D87"></span>#004D87</td><td><span class="tag ok">good</span></td><td>Primary brand blue. Used in navbar, footer, links. <em style="color:var(--text3)">(was color/azure/26 #004B85)</em></td></tr>
+<tr><td><span class="tk">DeepSeaBlue/500 80%</span></td><td><span class="cd" style="background:#004D87cc"></span>#004D87cc</td><td><span class="tag ok">good</span></td><td>Footer CTA background <em style="color:var(--text3)">(was color/azure/26 80%)</em></td></tr>
+<tr><td><span class="tk">DeepSeaBlue/500 90%</span></td><td><span class="cd" style="background:#004D87e5"></span>#004D87e5</td><td><span class="tag ok">good</span></td><td>Footer background <em style="color:var(--text3)">(was color/azure/26 90%)</em></td></tr>
+<tr><td><span class="tk">DeepSeaBlue/400</span></td><td><span class="cd" style="background:#0070C0"></span>#0070C0</td><td><span class="tag ok">good</span></td><td>"On Promotion" badge, secondary blue <em style="color:var(--text3)">(was color/azure/33 #0069A8)</em></td></tr>
+<tr><td><span class="tk">BrightCerulean/400</span></td><td><span class="cd" style="background:#4EC0FF"></span>#4EC0FF</td><td><span class="tag warn">unused?</span></td><td>Not clearly used in current mocks. Verify usage. <em style="color:var(--text3)">(was color/azure/44 #0075E2)</em></td></tr>
+<tr><td><span class="tk">Greyscale/200</span></td><td><span class="cd" style="background:#C0CBD4"></span>#C0CBD4</td><td><span class="tag warn">overlap</span></td><td>Close to <span class="tk">Greyscale/100</span> (#E1E6EA). Creates confusion. <em style="color:var(--text3)">(was color/azure/84 #D1D5DC)</em></td></tr>
+<tr><td><span class="tk">BrightCerulean/400</span></td><td><span class="cd" style="background:#4EC0FF"></span>#4EC0FF</td><td><span class="tag warn">unused?</span></td><td>Sky/decoration color. Not in component specs. <em style="color:var(--text3)">(was color/cyan/63 #42D5FE)</em></td></tr>
+<tr><td><span class="tk">Yellow/500</span></td><td><span class="cd" style="background:#FFE800"></span>#FFE800</td><td><span class="tag ok">good</span></td><td>Primary accent. CTA buttons, search submit, focus ring. <em style="color:var(--text3)">(was color/yellow/50 #FFEB00)</em></td></tr>
+<tr><td><span class="tk">Yellow/300</span></td><td><span class="cd" style="background:#FFF2AC"></span>#FFF2AC</td><td><span class="tag ok">good</span></td><td>Yellow border on buttons <em style="color:var(--text3)">(was color/yellow/56 #FFDF20)</em></td></tr>
+<tr><td><span class="tk">Red/400</span></td><td><span class="cd" style="background:#E5672E"></span>#E5672E</td><td><span class="tag ok">good</span></td><td>"New" badge (closest match) <em style="color:var(--text3)">(was color/orange/54)</em></td></tr>
+<tr><td><span class="tk">Yellow/600</span></td><td><span class="cd" style="background:#C7B500"></span>#C7B500</td><td><span class="tag ok">good</span></td><td>"Sale" badge (closest match) <em style="color:var(--text3)">(was color/orange/44 #E2A700)</em></td></tr>
+<tr><td><span class="tk">Neutral/950</span></td><td><span class="cd" style="background:#1D1B15"></span>#1D1B15</td><td><span class="tag ok">good</span></td><td>Primary text dark <em style="color:var(--text3)">(was color/grey/13 #231F20)</em></td></tr>
+<tr><td><span class="tk">Greyscale/500</span></td><td><span class="cd" style="background:#74808B"></span>#74808B</td><td><span class="tag ok">good</span></td><td>Secondary text, "out of stock" badge <em style="color:var(--text3)">(was color/grey/53 #878787)</em></td></tr>
+<tr><td><span class="tk">Greyscale/300</span></td><td><span class="cd" style="background:#A3B3C1"></span>#A3B3C1</td><td><span class="tag ok">good</span></td><td>Subtle borders <em style="color:var(--text3)">(was color/grey/80 #CCCCCC)</em></td></tr>
+<tr><td><span class="tk">Greyscale/100</span></td><td><span class="cd" style="background:#E1E6EA"></span>#E1E6EA</td><td><span class="tag warn">overlap</span></td><td>Overlaps with <span class="tk">Greyscale/200</span>. Use one for borders. <em style="color:var(--text3)">(was color/grey/91 #E5E7EB)</em></td></tr>
+<tr><td><span class="tk">Greyscale/50</span></td><td><span class="cd" style="background:#EEF1F3"></span>#EEF1F3</td><td><span class="tag ok">good</span></td><td>Light background, input fill <em style="color:var(--text3)">(was color/grey/98 #F9FAFB)</em></td></tr>
+<tr><td><span class="tk">Neutral/50</span></td><td><span class="cd" style="background:#FFFFFF;border-color:#ddd"></span>#FFFFFF</td><td><span class="tag ok">good</span></td><td>Card backgrounds, nav text <em style="color:var(--text3)">(was color/white/solid)</em></td></tr>
+<tr><td><span class="tk">color/black/solid</span></td><td><span class="cd" style="background:#000000"></span>#000000</td><td><span class="tag ok">good</span></td><td>Pure black (no equivalent in Primitive Colours)</td></tr>
+<tr><td><span class="tk">color/black/ 50%</span></td><td><span class="cd" style="background:#00000080"></span>#00000080</td><td><span class="tag err">bad name</span></td><td>Space before "50%". From MCP data, not export.json. Should be <code>color/black/50%</code></td></tr>
 </tbody>
 </table>
 
 <table class="at" style="margin-top:16px">
 <thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
 <tbody>
-<tr><td><span class="tk">font family/Font 1</span></td><td>Inter</td><td><span class="tag ok">good</span></td><td>Primary body font</td></tr>
-<tr><td><span class="tk">font family/Font 2</span></td><td>Helvetica</td><td><span class="tag ok">good</span></td><td>Footer CTA / accent text</td></tr>
-<tr><td><span class="tk">font family/Font 3</span></td><td>Dimbo</td><td><span class="tag ok">good</span></td><td>Display/promo headings</td></tr>
-<tr><td><span class="tk">font weight/400</span></td><td>400</td><td><span class="tag ok">good</span></td><td>Regular</td></tr>
-<tr><td><span class="tk">font weight/700</span></td><td>700</td><td><span class="tag miss">missing 500/600</span></td><td>No Medium (500) or SemiBold (600) — needed for nav items, badges</td></tr>
-<tr><td><span class="tk">font size/16</span></td><td>16</td><td><span class="tag ok">good</span></td><td>Base body size</td></tr>
-<tr><td><span class="tk">font size/18</span></td><td>18</td><td><span class="tag ok">good</span></td><td>Footer CTA</td></tr>
+<tr><td><span class="tk">font/family/body</span></td><td>Inter</td><td><span class="tag ok">good</span></td><td>Primary body font <em style="color:var(--text3)">(was font family/Font 1)</em></td></tr>
+<tr><td><span class="tk">font family/Font 2</span></td><td>Helvetica</td><td><span class="tag ok">good</span></td><td>Footer CTA / accent text (Helvetica, not in Typography collection)</td></tr>
+<tr><td><span class="tk">font/family/title</span></td><td>Dimbo</td><td><span class="tag ok">good</span></td><td>Display/promo headings <em style="color:var(--text3)">(was font family/Font 3)</em></td></tr>
+<tr><td><span class="tk">font/weight/regular</span></td><td>400</td><td><span class="tag ok">good</span></td><td>Regular <em style="color:var(--text3)">(was font weight/400)</em></td></tr>
+<tr><td><span class="tk">font/weight/bold</span></td><td>700</td><td><span class="tag miss">missing 500/600</span></td><td>No Medium (500) or SemiBold (600) — needed for nav items, badges <em style="color:var(--text3)">(was font weight/700)</em></td></tr>
+<tr><td><span class="tk">font/size/md</span></td><td>16</td><td><span class="tag ok">good</span></td><td>Base body size <em style="color:var(--text3)">(was font size/16)</em></td></tr>
+<tr><td><span class="tk">font/size/lg</span></td><td>18</td><td><span class="tag ok">good</span></td><td>Footer CTA <em style="color:var(--text3)">(was font size/18)</em></td></tr>
 <tr><td><span class="tk">font size/36</span></td><td>36</td><td><span class="tag miss">gap</span></td><td>Jump from 18→36 is huge. Missing 24, 28, 32.</td></tr>
 <tr><td><span class="tk">font size/48</span></td><td>48</td><td><span class="tag miss">gap</span></td><td>Only for hero. OK but scale is incomplete.</td></tr>
 <tr><td><span class="tk">line height/20</span></td><td>20</td><td><span class="tag ok">good</span></td><td>Small text line height</td></tr>
@@ -173,15 +173,15 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>Variable</th><th>Value</th><th>Status</th><th>Notes</th></tr></thead>
 <tbody>
 <tr><td><span class="tk">item spacing/0</span></td><td>≈0</td><td><span class="tag err">float</span></td><td>Value is 2.84e-14, not clean 0. Should be exactly 0.</td></tr>
-<tr><td><span class="tk">item spacing/10</span></td><td>10</td><td><span class="tag ok">good</span></td><td>Small gaps</td></tr>
-<tr><td><span class="tk">item spacing/12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Medium-small gaps</td></tr>
-<tr><td><span class="tk">item spacing/s</span></td><td>16</td><td><span class="tag err">naming</span></td><td>Inconsistent — uses "s" label while others use numbers. Should be <code>item spacing/16</code></td></tr>
-<tr><td><span class="tk">item spacing/20</span></td><td>20</td><td><span class="tag ok">good</span></td><td>Navigation item gaps</td></tr>
-<tr><td><span class="tk">item spacing/40</span></td><td>40</td><td><span class="tag ok">good</span></td><td>Section spacing</td></tr>
+<tr><td><span class="tk">space-12</span></td><td>10</td><td><span class="tag ok">good</span></td><td>Small gaps <em style="color:var(--text3)">(was item spacing/10)</em></td></tr>
+<tr><td><span class="tk">space-12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Medium-small gaps <em style="color:var(--text3)">(was item spacing/12)</em></td></tr>
+<tr><td><span class="tk">stack-gap-md</span></td><td>16</td><td><span class="tag err">naming</span></td><td>Maps to stack-gap-md (= space-12). <em style="color:var(--text3)">(was item spacing/s)</em></td></tr>
+<tr><td><span class="tk">space-20</span></td><td>20</td><td><span class="tag ok">good</span></td><td>Navigation item gaps <em style="color:var(--text3)">(was item spacing/20)</em></td></tr>
+<tr><td><span class="tk">space-40</span></td><td>40</td><td><span class="tag ok">good</span></td><td>Section spacing <em style="color:var(--text3)">(was item spacing/40)</em></td></tr>
 <tr><td><span class="tk">item spacing/150</span></td><td>150</td><td><span class="tag warn">one-off</span></td><td>Very specific value. Verify usage.</td></tr>
 <tr><td colspan="4" style="color:var(--text3);font-style:italic">+ 12 other odd spacings (34.27, 70.66, 102.36, 111.5, 114.05, 125.12, 157.69, 164.67, 164.81) — all appear auto-generated from layout measurements, not design tokens.</td></tr>
-<tr><td><span class="tk">radius/4</span></td><td>4</td><td><span class="tag ok">good</span></td><td>Default radius (cards, badges, buttons)</td></tr>
-<tr><td><span class="tk">radius/12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Larger radius (search bar, modals)</td></tr>
+<tr><td><span class="tk">radius/button</span> / <span class="tk">r-4</span></td><td>4</td><td><span class="tag ok">good</span></td><td>Default radius (cards, badges, buttons) <em style="color:var(--text3)">(was radius/4)</em></td></tr>
+<tr><td><span class="tk">radius/card</span> / <span class="tk">r-12</span></td><td>12</td><td><span class="tag ok">good</span></td><td>Larger radius (search bar, modals) <em style="color:var(--text3)">(was radius/12)</em></td></tr>
 <tr><td><span class="tk">height/48</span></td><td>48</td><td><span class="tag ok">good</span></td><td>Navbar height</td></tr>
 <tr><td><span class="tk">stroke weight/1</span></td><td>1</td><td><span class="tag ok">good</span></td><td>Default border</td></tr>
 <tr><td><span class="tk">width/1280</span></td><td>1280</td><td><span class="tag ok">good</span></td><td>Desktop container</td></tr>
@@ -257,14 +257,14 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <strong>🔴 Critical Issues (5)</strong><br>
 1. <strong><code>color/black/ 50%</code></strong> — has a rogue space. Rename to <code>color/black/50%</code><br>
 2. <strong><code>item spacing/0</code></strong> — value is 2.84e-14 (float rounding), not 0. Reset to exactly 0<br>
-3. <strong><code>item spacing/s</code></strong> — named "s" while all others use numbers. Rename to <code>item spacing/16</code><br>
+3. <strong><code>item spacing/s</code></strong> — named "s" while all others use numbers. Map to <code>stack-gap-md</code> (= space-12)<br>
 4. <strong><code>greyscale/text/negative v1</code></strong> — "negative v1" is unclear. Rename to <code>greyscale/text/inverse</code><br>
 5. <strong><code>greyscale/text/negative v2</code></strong> — "negative v2" is unclear. Rename to <code>greyscale/text/highlight</code>
 </div>
 
 <div style="background:rgba(226,167,0,.04);border:1px solid rgba(226,167,0,.12);border-radius:4px;padding:12px 14px;margin:10px 0;font-size:12px;color:#9E7A00;line-height:1.6">
 <strong>⚠️ Warnings (4)</strong><br>
-1. <strong><code>color/azure/84</code></strong> (#D1D5DC) overlaps with <strong><code>color/grey/91</code></strong> (#E5E7EB) — both used as borders. Pick one per context.<br>
+1. <strong><code>Greyscale/200</code></strong> (#C0CBD4) overlaps with <strong><code>Greyscale/100</code></strong> (#E1E6EA) — both used as borders. Pick one per context.<br>
 2. <strong><code>greyscale/surface/subtle</code></strong> resolves to same hex as <code>greyscale/surface/default</code> — they're visually identical<br>
 3. <strong>12 floating-point spacings</strong> (34.27, 70.66, etc.) appear auto-extracted from layouts, not intentional tokens. Clean up or move to a "layout" collection.<br>
 4. <strong>Font size scale jumps from 18→36</strong> — missing intermediate sizes for subheadings
@@ -272,7 +272,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 
 <div class="good-box">
 <strong>✅ What works well (keep as-is)</strong><br>
-• Color naming convention <code>color/{hue}/{lightness}</code> is clear and consistent<br>
+• Primitive Colours naming convention <code>{Scale}/{Step}</code> (e.g., DeepSeaBlue/500) is clear and consistent<br>
 • Semantic collection structure (surface, border, text) is well-organized<br>
 • Primitive → Semantic aliasing pattern is correct<br>
 • Radius, stroke, height, width tokens are clean<br>
@@ -294,7 +294,7 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <thead><tr><th>Current Name</th><th>→ Rename To</th><th>Reason</th></tr></thead>
 <tbody>
 <tr><td><span class="tk">color/black/ 50%</span></td><td><span class="tk">color/black/50%</span></td><td>Remove rogue space</td></tr>
-<tr><td><span class="tk">item spacing/s</span></td><td><span class="tk">item spacing/16</span></td><td>Consistent with numeric naming pattern</td></tr>
+<tr><td><span class="tk">item spacing/s</span></td><td><span class="tk">stack-gap-md</span> (= space-12)</td><td>Map to _spacing system</td></tr>
 <tr><td><span class="tk">greyscale/text/negative v1</span></td><td><span class="tk">greyscale/text/inverse</span></td><td>"negative v1" is confusing — this is light text on dark bg</td></tr>
 <tr><td><span class="tk">greyscale/text/negative v2</span></td><td><span class="tk">greyscale/text/highlight</span></td><td>Yellow text for emphasis on dark backgrounds</td></tr>
 </tbody>
@@ -346,21 +346,21 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <table class="at">
 <thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
 <tbody>
-<tr><td>Navbar bg</td><td>Fill</td><td><span class="tk">color/azure/26</span></td></tr>
+<tr><td>Navbar bg</td><td>Fill</td><td><span class="tk">DeepSeaBlue/500</span></td></tr>
 <tr><td>Navbar height</td><td>Height</td><td><span class="tk">height/48</span></td></tr>
-<tr><td>Nav item text</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
-<tr><td>Nav item text</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
+<tr><td>Nav item text</td><td>Color</td><td><span class="tk">Neutral/50</span></td></tr>
+<tr><td>Nav item text</td><td>Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
 <tr><td>Nav item text</td><td>Size</td><td><span class="tk">font size/14</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Nav item gap</td><td>Gap</td><td><span class="tk">item spacing/20</span></td></tr>
-<tr><td>Logo bg</td><td>Fill</td><td><span class="tk">color/yellow/50</span></td></tr>
-<tr><td>Logo radius</td><td>Radius</td><td><span class="tk">radius/4</span></td></tr>
-<tr><td>Search category bg</td><td>Fill</td><td><span class="tk">color/grey/91</span></td></tr>
+<tr><td>Nav item gap</td><td>Gap</td><td><span class="tk">space-20</span></td></tr>
+<tr><td>Logo bg</td><td>Fill</td><td><span class="tk">Yellow/500</span></td></tr>
+<tr><td>Logo radius</td><td>Radius</td><td><span class="tk">radius/button</span> / <span class="tk">r-4</span></td></tr>
+<tr><td>Search category bg</td><td>Fill</td><td><span class="tk">Greyscale/100</span></td></tr>
 <tr><td>Search category text</td><td>Weight</td><td><span class="tk">font weight/500</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Search input bg</td><td>Fill</td><td><span class="tk">color/grey/98</span></td></tr>
-<tr><td>Search input border</td><td>Stroke</td><td><span class="tk">stroke weight/1</span> + <span class="tk">color/grey/91</span></td></tr>
-<tr><td>Search submit bg</td><td>Fill</td><td><span class="tk">color/yellow/50</span></td></tr>
+<tr><td>Search input bg</td><td>Fill</td><td><span class="tk">Greyscale/50</span></td></tr>
+<tr><td>Search input border</td><td>Stroke</td><td><span class="tk">stroke weight/1</span> + <span class="tk">Greyscale/100</span></td></tr>
+<tr><td>Search submit bg</td><td>Fill</td><td><span class="tk">Yellow/500</span></td></tr>
 <tr><td>Search bar radius</td><td>Radius</td><td><span class="tk">radius/8</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Focus ring</td><td>Shadow</td><td>0 0 0 2px <span class="tk">color/yellow/50</span></td></tr>
+<tr><td>Focus ring</td><td>Shadow</td><td>0 0 0 2px <span class="tk">Yellow/500</span></td></tr>
 </tbody>
 </table>
 
@@ -368,21 +368,21 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <table class="at">
 <thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
 <tbody>
-<tr><td>Card bg</td><td>Fill</td><td><span class="tk">color/white/solid</span></td></tr>
-<tr><td>Card radius</td><td>Radius</td><td><span class="tk">radius/4</span></td></tr>
+<tr><td>Card bg</td><td>Fill</td><td><span class="tk">Neutral/50</span></td></tr>
+<tr><td>Card radius</td><td>Radius</td><td><span class="tk">radius/button</span> / <span class="tk">r-4</span></td></tr>
 <tr><td>Card title</td><td>Size</td><td><span class="tk">font size/14</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Card title</td><td>Weight</td><td><span class="tk">font weight/400</span></td></tr>
-<tr><td>Card title</td><td>Color</td><td><span class="tk">color/grey/13</span></td></tr>
-<tr><td>Price current</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
+<tr><td>Card title</td><td>Weight</td><td><span class="tk">font/weight/regular</span></td></tr>
+<tr><td>Card title</td><td>Color</td><td><span class="tk">Neutral/950</span></td></tr>
+<tr><td>Price current</td><td>Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
 <tr><td>Price current</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Price was</td><td>Color</td><td><span class="tk">color/grey/53</span></td></tr>
-<tr><td>Badge "Promotion"</td><td>Fill</td><td><span class="tk">color/azure/33</span></td></tr>
-<tr><td>Badge "New"</td><td>Fill</td><td><span class="tk">color/orange/54</span></td></tr>
-<tr><td>Badge "Sale"</td><td>Fill</td><td><span class="tk">color/orange/44</span></td></tr>
-<tr><td>Badge "Out of Stock"</td><td>Fill</td><td><span class="tk">color/grey/53</span></td></tr>
+<tr><td>Price was</td><td>Color</td><td><span class="tk">Greyscale/500</span></td></tr>
+<tr><td>Badge "Promotion"</td><td>Fill</td><td><span class="tk">DeepSeaBlue/400</span></td></tr>
+<tr><td>Badge "New"</td><td>Fill</td><td><span class="tk">Red/400</span></td></tr>
+<tr><td>Badge "Sale"</td><td>Fill</td><td><span class="tk">Yellow/600</span></td></tr>
+<tr><td>Badge "Out of Stock"</td><td>Fill</td><td><span class="tk">Greyscale/500</span></td></tr>
 <tr><td>Badge text</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
-<tr><td>Badge text</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
-<tr><td>Grid gap</td><td>Gap</td><td><span class="tk">item spacing/16</span> (renamed from /s)</td></tr>
+<tr><td>Badge text</td><td>Color</td><td><span class="tk">Neutral/50</span></td></tr>
+<tr><td>Grid gap</td><td>Gap</td><td><span class="tk">stack-gap-md</span> (= space-12)</td></tr>
 <tr><td>Card hover shadow</td><td>Effect</td><td>0 8 20 rgba(0,75,133,.12)</td></tr>
 <tr><td>Out of stock overlay</td><td>Fill</td><td><span class="tk">color/black/50%</span> (renamed)</td></tr>
 </tbody>
@@ -392,14 +392,14 @@ p.desc{font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6}
 <table class="at">
 <thead><tr><th>Element</th><th>Property</th><th>Variable</th></tr></thead>
 <tbody>
-<tr><td>Footer bg</td><td>Fill</td><td><span class="tk">color/azure/26 90%</span></td></tr>
-<tr><td>Section heading</td><td>Color</td><td><span class="tk">color/white/solid</span></td></tr>
-<tr><td>Section heading</td><td>Weight</td><td><span class="tk">font weight/700</span></td></tr>
-<tr><td>Link text</td><td>Color</td><td><span class="tk">color/white/solid</span> at 65% opacity</td></tr>
-<tr><td>CTA bg</td><td>Fill</td><td><span class="tk">color/azure/26 80%</span></td></tr>
-<tr><td>CTA font</td><td>Family</td><td><span class="tk">font family/Font 2</span> (Helvetica)</td></tr>
-<tr><td>CTA size</td><td>Size</td><td><span class="tk">font size/18</span></td></tr>
-<tr><td>Column gap</td><td>Gap</td><td><span class="tk">item spacing/40</span></td></tr>
+<tr><td>Footer bg</td><td>Fill</td><td><span class="tk">DeepSeaBlue/500 90%</span></td></tr>
+<tr><td>Section heading</td><td>Color</td><td><span class="tk">Neutral/50</span></td></tr>
+<tr><td>Section heading</td><td>Weight</td><td><span class="tk">font/weight/bold</span></td></tr>
+<tr><td>Link text</td><td>Color</td><td><span class="tk">Neutral/50</span> at 65% opacity</td></tr>
+<tr><td>CTA bg</td><td>Fill</td><td><span class="tk">DeepSeaBlue/500 80%</span></td></tr>
+<tr><td>CTA font</td><td>Family</td><td><span class="tk">font family/Font 2</span> (Helvetica, not in Typography collection)</td></tr>
+<tr><td>CTA size</td><td>Size</td><td><span class="tk">font/size/lg</span></td></tr>
+<tr><td>Column gap</td><td>Gap</td><td><span class="tk">space-40</span></td></tr>
 <tr><td>Copyright text</td><td>Size</td><td><span class="tk">font size/12</span> <span class="tag miss">new</span></td></tr>
 </tbody>
 </table>
